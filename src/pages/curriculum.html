@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nickolas</title>
+    <link rel="icon" type="image/png" href="./assets/faviconNick.ico">
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body onload="onload()">
+    <header class="cabecalho">
+        <nav class="cabecalho__menu">   <!-- Tag usada para navegar na página -->
+            <a class="cabecalho__menu__link" href="../../index.html">Home</a>
+            <a class="cabecalho__menu__link" href="./about.html">Bio</a>
+            <a class="cabecalho__menu__link" href="./curriculum.html">Currículo</a>
+            <a class="cabecalho__menu__link" href="./projects.html">Projetos</a>
+            <a class="cabecalho__menu__link" href="./contact.html">Contato</a>
+            <label class="botao__mobile">
+                <input class="cabecalho__menu__checkbox" id="toggleLightMode" type="checkbox" onclick="toggleLightMode()">
+                <ion-icon name="sunny" class="sun"></ion-icon>
+                <ion-icon name="moon" class="moon"></ion-icon>
+                <span class="toggle"></span>
+            </label>
+        </nav>
+        <nav class="cabecalho__menu__mobile">   <!-- Tag usada para navegar na página -->
+            <a class="cabecalho__menu__link" href="../../index.html">
+                <label class="botao__mobile">
+                    <ion-icon name="home" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a>
+            <a class="cabecalho__menu__link" href="./about.html">
+                <label class="botao__mobile">
+                    <ion-icon name="person" class="botao__mobile__icone"></ion-icon>            
+                </label>
+            </a>
+            <a class="cabecalho__menu__link" href="./curriculum.html">
+                <label class="botao__mobile">
+                    <ion-icon name="document" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a>
+            <a class="cabecalho__menu__link" href="./projects.html">
+                <label class="botao__mobile">
+                    <ion-icon name="clipboard" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a> 
+            <a class="cabecalho__menu__link" href="./contact.html">
+                <label class="botao__mobile">
+                    <ion-icon name="call" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a>     
+            <label class="botao__mobile">
+                <input class="cabecalho__menu__checkbox" id="toggleLightMode" type="checkbox" onclick="toggleLightMode()">
+                <ion-icon name="sunny" class="sun"></ion-icon>
+                <ion-icon name="moon" class="moon"></ion-icon>
+                <span class="toggle"></span>
+            </label>
+        </nav>
+        <div class="separador"></div>
+    </header>
+    
+    <main class="apresentacao">
+        <video autoplay muted loop class="video-background">
+            <source src="../../assets/backgroundNick.mp4" type="video/mp4">
+        </video>
+        <section class="apresentacao__conteudo__curriculum">
+            <h1 class="apresentacao__titulo">Currículo</h1>
+            <div class="apresentacao__conteudo__curriculum__divisao">
+                <h2 class="apresentacao__subtitulo">Experiências</h2>
+                <ul class="apresentacao__conteudo__texto">
+                    <li> Empresa tal (2020 - 2021) - fazia isso e aquilo </li>
+                    <li> Empresa tal (2021 - 2023) - fazia isso e aquilo </li>
+                </ul>
+            </div>
+            <div class="apresentacao__conteudo__bio__divisao">
+                <h2 class="apresentacao__subtitulo">Estudos</h2>
+                <ul class="apresentacao__conteudo__texto">
+                    <li>Curso tal - Alura Cursos <a href="linkdocertificado">com certificado</a> </li>
+                    <li>Curso tal - Alura Cursos <a href="linkdocertificado">com certificado</a></li>
+                    <li>Curso tal - Alura Cursos <a href="linkdocertificado">com certificado</a></li>
+                </ul>
+            </div>
+        </section>
+    </main> 
+
+    <footer class="rodape">
+        <p>Desenvolvido por Nickolas Corrêa</p>
+    </footer>
+
+    <script src="../../app.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

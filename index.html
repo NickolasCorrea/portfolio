@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nickolas</title>
+    <link rel="icon" type="image/png" href="./assets/faviconNick.ico">
+    <link rel="stylesheet" href="styles.css"> <!-- Linkando o CSS -->
+</head>
+
+<body onload="onload()">
+
+    <header class="cabecalho">
+        
+        <div class="cabecalho__total">
+            <img class="logo" src="./assets/NickLogo.png">
+            <nav class="cabecalho__menu" class="cabecalho__menu__mobile">   <!-- Tag usada para navegar na página -->
+                <a class="cabecalho__menu__link" href="./index.html">
+                    <ion-icon name="home"></ion-icon>
+                    Inicio
+                </a>
+                <a class="cabecalho__menu__link" href="./src/pages/about.html">
+                    <ion-icon name="person" ></ion-icon>
+                    Bio
+                </a>
+                <a class="cabecalho__menu__link" href="./src/pages/projects.html">
+                    <ion-icon name="clipboard"></ion-icon>
+                    Projetos
+                </a>
+                <a class="cabecalho__menu__link" href="./src/pages/contact.html">
+                    <ion-icon name="call"></ion-icon>
+                    Contato
+                </a>
+            </nav>
+            <nav class="cabecalho__menu__mobile">   <!-- Tag usada para navegar na página -->
+                <a class="cabecalho__menu__link" href="./index.html">
+                    <label class="botao__mobile">
+                        <ion-icon name="home" class="botao__mobile__icone"></ion-icon>
+                    </label>
+                </a>
+                <a class="cabecalho__menu__link" href="./src/pages/about.html">
+                    <label class="botao__mobile">
+                        <ion-icon name="person" class="botao__mobile__icone"></ion-icon>            
+                    </label>
+                </a>
+                <a class="cabecalho__menu__link" href="./src/pages/projects.html">
+                    <label class="botao__mobile">
+                        <ion-icon name="clipboard" class="botao__mobile__icone"></ion-icon>
+                    </label>
+                </a> 
+                <a class="cabecalho__menu__link" href="./src/pages/contact.html">
+                    <label class="botao__mobile">
+                        <ion-icon name="call" class="botao__mobile__icone"></ion-icon>
+                    </label>
+                </a>    
+            </nav>
+            <label class="botao__mobile">
+                <input class="cabecalho__menu__checkbox" id="toggleDarkModeBtn" type="checkbox" onclick="toggleLightMode()">
+                <ion-icon name="sunny" class="sun"></ion-icon>
+                <ion-icon name="moon" class="moon"></ion-icon>
+                <span class="toggle"></span>
+            </label>
+        </div>
+        <div class="separador"></div>
+    </header> <!-- Cabeçalho -->
+
+    
+
+    <main class="apresentacao"> <!-- Conteúdo principal -->
+        <video autoplay muted loop class="video-background">
+            <source src="./assets/backgroundNick.mp4" type="video/mp4">
+        </video>
+
+        <section class="apresentacao__inicial">
+            <h1 class="apresentacao__titulo__efeito">Olá! Sou <strong class="nome-destaque">Nickolas Corrêa</strong>.</h1> <!-- <h1> é usado como título principal-->
+            <h2 class="apresentacao__subtitulo__efeito">Engenheiro da computação e desenvolvedor</h2>
+        </section>
+
+        <section class="apresentacao__conteudo hidden"> <!-- Cria uma seção para uma parte do conteúdo principal,e a classe filha tem "__" para indicar que é filha, além de ter um complemento "conteudo"-->
+            <p class="apresentacao__conteudo__texto hiddenText" id="textoIntroducao">Seja bem-vindo ao meu <strong class="nome-destaque">portfólio</strong>. </br></br> Me chamo <strong class="nome-destaque">Nickolas Corrêa</strong>, tenho 21 anos e desde pequeno sempre fui apaixonado por computadores e tecnologia.</br></br>Atualmente, estou focado em aprimorar minhas habilidades em desenvolvimento de software para agregar valor ao negócio. Já tive a oportunidade de trabalhar no desenvolvimento de back-end e front-end de diversos projetos, e estou constantemente em busca de novos conhecimentos, aprendizados e desafios.</br></br>Vamos nos conhecer?</p>
+            <div class="apresentacao__conteudo__div">
+                <img class="apresentacao__imagem" src="./assets/NickolasCorrea.jpg" alt="Foto do Nickolas Corrêa">
+                <a class="apresentacao__links__navegacao" href="#" target="_blank">
+                    Baixar CV
+                </a> 
+            </div>         
+        </section>
+
+
+        
+        <section class="apresentacao__links"> <!-- A tag <div> é usada para indicar uma divisão genérica, sem muita semântica. Pode ser usado para agrupar elementos para fins de estilos.-->
+            <h2 class="apresentacao__links__subtitulo">Acesse meus links:</h2> <!-- <h2> é usado como subtítulo-->
+            <a class="apresentacao__links__navegacao__clear" href="https://www.instagram.com/nickolas.correa/" target="_blank">
+                <ion-icon name="logo-linkedin"></ion-icon>
+            </a>
+            <a class="apresentacao__links__navegacao__clear" href="https://github.com/NickolasCorrea" target="_blank"> <!-- Tag âncora que liga leva a outro site. -->
+                <ion-icon name="logo-github"></ion-icon>
+            </a>
+            <a class="apresentacao__links__navegacao__clear" href="https://wa.me/5513982118181" target="_blank">
+                <ion-icon name="logo-whatsapp" class="apresentacao__links__navegacao__clear__icon"></ion-icon>
+            </a>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <p>Desenvolvido por Nickolas Corrêa</p>
+        <p>Todos os direitos reservados © 2024</p>
+    </footer> <!-- Rodapé -->
+    
+    <script src="app.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

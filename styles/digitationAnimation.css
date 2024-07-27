@@ -1,0 +1,90 @@
+.apresentacao__titulo__efeito {
+    opacity: 0;
+    font-size: 3rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
+    font-family: var(--fonte-primaria);
+    border-right: 16px solid var(--cor-terciaria);
+
+    white-space: nowrap; /*white-space: nowrap - utilizada para não permitir quebra d elinha*/
+    overflow: hidden;
+    width: 18.25ch;
+    animation: mark 0.5s step-end infinite, habilita 0.5s forwards 1s, escrita 3s steps(30, end) 1s, removerMark 0s 4s forwards;
+}
+
+.apresentacao__subtitulo__efeito {
+    opacity: 0;
+    font-size: 2.5rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
+    font-family: var(--fonte-secundaria);
+    border-right: 16px solid var(--cor-terciaria);
+
+    white-space: nowrap; 
+    overflow: hidden;
+    width: 34.5ch;
+    animation: mark 0.5s step-end infinite, habilita 0.5s forwards 5s, escrita 3s steps(30, end) 5s, removerMark 0s 12s forwards;
+}
+
+.cursor {
+    display: inline-block;
+    width: 3px;
+    background-color: var(--cor-terciaria);
+    animation: blink 0.5s step-end infinite 0.5s;
+}
+
+@keyframes blink {
+    from, to {
+        visibility: hidden;
+    }
+    50% {
+        visibility: visible;
+    }
+}
+
+
+@keyframes mark {
+    50% {
+        border-right-color: transparent;
+    }
+}
+
+@keyframes escrita {
+    0% {
+        width: 0;
+    }
+}
+
+@keyframes habilita {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes removerMark {
+    to {
+        border-right: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .apresentacao__titulo__efeito {
+        opacity: 1;
+        width: auto;
+        font-size: 1.75rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
+        font-family: var(--fonte-primaria);
+
+        white-space: normal; /* Permite a quebra de linha */
+        border-right: none; /* Remove o marcador de borda */
+        animation: none;
+        overflow: visible; /* Garante que todo o conteúdo seja visível */
+    }
+
+    .apresentacao__subtitulo__efeito {
+        opacity: 1;
+        width: auto;
+        font-size: 1.75rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
+        font-family: var(--fonte-primaria);
+
+        white-space: normal; /* Permite a quebra de linha */
+        border-right: none; /* Remove o marcador de borda */
+        animation: none;
+        overflow: visible; /* Garante que todo o conteúdo seja visível */
+    }
+}

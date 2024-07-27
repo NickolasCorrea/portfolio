@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nickolas</title>
+    <link rel="icon" type="image/png" href="./assets/faviconNick.ico">
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body onload="onload()">
+    <header class="cabecalho">
+        <nav class="cabecalho__menu">
+            <a class="cabecalho__menu__link" href="../../index.html">Inicio</a>
+            <a class="cabecalho__menu__link" href="./about.html">Bio</a>
+            <a class="cabecalho__menu__link" href="./projects.html">Projetos</a>
+            <a class="cabecalho__menu__link" href="./contact.html">Contato</a>
+            <label class="botao__mobile">
+                <input class="cabecalho__menu__checkbox" type="checkbox" onclick="toggleLightMode()">
+                <ion-icon name="sunny" class="sun"></ion-icon>
+                <ion-icon name="moon" class="moon"></ion-icon>
+                <span class="toggle"></span>
+            </label>
+        </nav>
+        <nav class="cabecalho__menu__mobile">
+            <a class="cabecalho__menu__link" href="../../index.html">
+                <label class="botao__mobile">
+                    <ion-icon name="home" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a>
+            <a class="cabecalho__menu__link" href="./about.html">
+                <label class="botao__mobile">
+                    <ion-icon name="person" class="botao__mobile__icone"></ion-icon>            
+                </label>
+            </a>
+            <a class="cabecalho__menu__link" href="./projects.html">
+                <label class="botao__mobile">
+                    <ion-icon name="clipboard" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a> 
+            <a class="cabecalho__menu__link" href="./contact.html">
+                <label class="botao__mobile">
+                    <ion-icon name="call" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a>     
+            <label class="botao__mobile">
+                <input class="cabecalho__menu__checkbox" id="toggleDarkModeBtn" type="checkbox" onclick="toggleLightMode()">
+                <ion-icon name="sunny" class="sun"></ion-icon>
+                <ion-icon name="moon" class="moon"></ion-icon>
+                <span class="toggle"></span>
+            </label>
+        </nav>
+        <div class="separador"></div>
+    </header>
+    
+    <main class="apresentacao">
+        <video autoplay muted loop class="video-background">
+            <source src="../../assets/backgroundNick.mp4" type="video/mp4">
+        </video>
+
+        <section class="apresentacao__conteudo__contact">
+            <h1 class="apresentacao__titulo">Contato</h1>
+            <p class="apresentacao__conteudo__texto hiddenText">Email: nickolasscorrea@gmail.com</p>
+            <a class="apresentacao__links__navegacao" href="https://wa.me/5513982118181" target="_blank">
+                <ion-icon name="logo-whatsapp"></ion-icon>
+                WhatsApp
+            </a>
+            <a class="apresentacao__links__navegacao" href="https://www.instagram.com/nickolas.correa/" target="_blank">
+                <ion-icon name="logo-linkedin"></ion-icon>
+                LinkedIn
+            </a>
+            <a class="apresentacao__links__navegacao" href="https://github.com/NickolasCorrea" target="_blank"> <!-- Tag âncora que liga leva a outro site. -->
+                <ion-icon name="logo-github"></ion-icon>
+                GitHub
+            </a>
+            <a class="apresentacao__links__navegacao" href="https://www.instagram.com/nickolas.correa/" target="_blank">
+                <ion-icon name="logo-instagram"></ion-icon>
+                Instagram
+            </a>
+        </section>
+
+    </main> 
+
+    <footer class="rodape">
+        <p>Desenvolvido por Nickolas Corrêa</p>
+        <p>Todos os direitos reservados © 2024</p>
+    </footer>
+
+    <script src="../../app.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

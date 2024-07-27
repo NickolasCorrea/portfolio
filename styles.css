@@ -1,0 +1,489 @@
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Montserrat:wght@400;600&display=swap');
+/*Realiza a importação de uma fonte de texto*/
+@import url("styles/about.css");
+@import url("styles/digitationAnimation.css");
+@import url("styles/contact.css");
+
+/*Variáveis CSS*/
+/*.root é um seletor especial para utilizar variáveis globalmente*/
+/*A variável precisa ser declarada com um hífen duplo (--) no início, para que seja reconhecida como variável e não como propriedade CSS.*/
+:root {
+    --cor-primaria: #000000;
+    --cor-secundaria: #FFFFFF;
+    --cor-terciaria: #d8b800;
+
+    --cor-hover: #999999;
+
+    --fonte-primaria: 'Krona One', sans-serif;
+    --fonte-secundaria: 'Montserrat', sans-serif;
+}
+
+
+/* O "*" é usado para selecionar todos os elementos na página HTML*/
+* { /* Utilizado para restar o CSS de uma página. Útil para ser utilizado antes da estilização */
+    margin: 0;
+    padding: 0;
+}
+
+body { 
+    /*height: 100vh; // Define o tamanho do corpo do site para ser todo o tamanho da viewport*/
+    box-sizing: border-box; /*box-sizing é usado calcular a largura e altura de um elemento. Isso acontece porque o border-box informa ao navegador para contabilizar qualquer borda e preenchimento nos valores especificados para a largura e a altura de um elemento.*/
+    /*Utilizar "box-sizing: border-box;" em um elemento, faz com que os elementos filhos nunca sejam maiores do que o elemento pai*/
+    background-color: var(--cor-primaria); /* Chama a variável CSS por meio da função var()*/
+    color: var(--cor-secundaria);
+}
+
+body:not(.light-mode) {
+    --cor-primaria: #000000;
+    --cor-secundaria: #FFFFFF;
+    --cor-terciaria: #d8b800;
+}
+
+.light-mode {
+    --cor-primaria: #c0c0c0;
+    --cor-secundaria: #000000;
+    --cor-terciaria: #0000FF;
+}
+
+.logo {
+    width: 6%;
+}
+
+.cabecalho__menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+    margin: 1em 0;
+}
+
+.container__vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.cabecalho {
+    position: fixed;
+    width: 100%;
+    height: auto;
+    background: var(--cor-primaria);
+    z-index: 2;
+}
+
+.cabecalho__total {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    margin: 1.5em 10%;
+}
+
+.cabecalho__menu__mobile {
+    display: none;
+}
+
+.cabecalho__menu__link {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-family: var(--fonte-secundaria);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--cor-terciaria);
+    text-decoration: none;
+    transition: all 300ms;
+    text-shadow: 0 0 15px var(--cor-terciaria);
+}
+
+.cabecalho__menu__link:hover {
+    color: var(--cor-hover);
+    font-size: 1.6rem;
+}
+
+.botao__mobile {
+    width: 3.5em;
+    height: 3.5em;
+    border-radius: 50%;
+    cursor: pointer; /* contorola como o cursor irá aparecer no elemento */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--cor-terciaria);
+    transition: all 300ms;
+}
+
+.botao__mobile:hover {
+    transform: scale(1);
+}
+
+.botao__mobile__icone {
+    font-size: 2em;
+    color: var(--cor-primaria);
+}
+
+.cabecalho__menu__checkbox {
+    position: absolute;
+    opacity: 0;
+}
+
+.moon {
+    font-size: 2em;
+    color: var(--cor-primaria);
+    transition: 1s ease;
+    transition-delay: 0.5s;
+}
+
+input:checked~.moon {
+    transition-delay: 0s;
+    transform: scale(0) rotate(360deg);
+}
+
+.sun {
+    position: absolute;
+    font-size: 2em;
+    color: var(--cor-primaria);
+    transform: scale(0);
+    transition: 1s ease;
+    z-index: 1;
+}
+
+input:checked~.sun {
+    transition-delay: 0.5s;
+    transform: scale(1) rotate(360deg);
+}
+
+.toggle {
+    position: absolute; 
+    display: block;
+    width: 3.5em;
+    height: 3.5em;
+    border-radius: 50%;
+    z-index: 0;
+    transition: 1s;
+}
+
+input:checked~.toggle {
+    background: var(--cor-terciaria);
+}
+
+.separador {
+    width: 100%;
+    height: 1.3px; /* Ajuste a espessura da linha conforme necessário */
+    background-color: var(--cor-terciaria); /* Cor da linha */
+}
+
+.apresentacao {
+    /*padding: 5% 15%;*/ /*Define o padding da altura e do comprimento respectivamente. Faz sentido usar padding, pois estamos mechendo com a borda até o conteúdo.*/
+    display: flex; /*Usada para criar um contêiner flexível e ativar o modelo de layout flexível em seus elementos filhos*/
+    align-items: center; /*Alinha os elementos filhos ao centro de acordo com os próprios elementos. Se uma imagem for maior do que os textos, os textos serão alinhados de acordo com o centro da imagem.*/
+    justify-content: space-between; /*justify-content está relacionada a como o espaço será distribuído entre cada elemento.*/
+    flex-direction: column; /*Cria um flex do tipo coluna, para que os elementos sejam organizados em uma coluna. Por padrão eles são organizados em linha (row).*/
+    gap: 50px; /*Cria um espaçamento entre os elementos filhos de um elemento*/
+    position: relative;
+    padding: 2em;
+}
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.13; /* Ajuste o valor de opacidade conforme necessário */
+    z-index: -1; /* Coloca o vídeo atrás do conteúdo */
+}
+
+.apresentacao__inicial {
+    height: 100vh;
+    width: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.apresentacao__conteudo {
+    height: 70vh;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.apresentacao__conteudo__texto {
+    width: 90%;
+    min-width: none;
+    padding: 1.5em 1.5em;
+    font-size: 1.5rem;
+    font-family: var(--fonte-secundaria);
+    background-color: var(--cor-primaria);
+    border: 2px solid var(--cor-terciaria);
+    border-radius: 15px;
+    text-align: justify;
+    box-shadow: 0 0 15px var(--cor-terciaria);
+}
+
+.apresentacao__conteudo__div {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.apresentacao__titulo {
+    font-size: 3rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
+    font-family: var(--fonte-primaria);
+    color: var(--cor-terciaria);
+}
+
+.apresentacao__subtitulo {
+    font-size: 2rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
+    font-family: var(--fonte-primaria);
+    color: var(--cor-terciaria);
+    text-shadow: 0 0 15px var(--cor-terciaria);
+}
+
+.nome-destaque {
+    color: var(--cor-terciaria);
+    text-shadow: 0 0 10px var(--cor-terciaria);
+}
+
+.apresentacao__links {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    gap: 25px;
+}
+
+.apresentacao__links__subtitulo {
+    font-family: var(--fonte-primaria);
+    font-weight: 400;
+    font-size: 2rem;
+}
+
+.apresentacao__links__navegacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid var(--cor-terciaria);
+    width: 8em;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 21.5px 1em; 
+    text-decoration: none;  
+    color: var(--cor-primaria); 
+    background-color: var(--cor-terciaria);
+    font-family: var(--fonte-secundaria);  
+    transition: all 300ms;
+    box-shadow: 0 0 15px var(--cor-terciaria);
+}
+
+.apresentacao__links__navegacao:hover { /*hover: efeito de destaque ao passar o mouse por cima do elemento qualquer*/ 
+    background-color: var(--cor-hover);
+    transform: scale(1.1);
+}
+
+.apresentacao__links__navegacao__clear {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--cor-terciaria);
+    width: 2em;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 3em;
+    font-weight: 600;
+    padding: 21.5px 0.25em; 
+    text-decoration: none;  
+    color: var(--cor-terciaria); 
+    font-family: var(--fonte-secundaria);  
+    transition: all 300ms;
+    box-shadow: 0 0 15px var(--cor-terciaria);
+    text-shadow: 0 0 15px var(--cor-terciaria);
+}
+
+
+
+.apresentacao__links__navegacao__clear:hover { 
+    background-color: var(--cor-hover);
+    transform: scale(1.1);
+}
+
+/*.apresentacao__links__navegacao__clear__icon {
+
+}*/
+
+.apresentacao__imagem {
+    width: 24em;
+    border: 2px solid var(--cor-terciaria);
+    border-radius: 10%;
+    transition: all 300ms;
+    box-shadow: 0 0 15px var(--cor-terciaria);
+}
+
+.apresentacao__imagem:hover {
+    transform: scale(1.05);
+}
+
+.rodape {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    color: var(--cor-primaria);
+    background-color: var(--cor-terciaria);
+    text-align: center;
+    font-family: var(--fonte-secundaria);
+    font-size: 1.3rem;
+    font-weight: 400;
+    gap: 18px;
+    box-shadow: 0 0 15px var(--cor-terciaria);
+}
+
+.hidden {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateX(-100%);
+    transition: all 1.5s;
+    transition-delay: 0.5s
+}
+
+.hiddenText {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateX(-100%);
+    transition: all 1.5s;
+    transition-delay: 0.5s
+}
+
+.show {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateX(0);
+}
+
+/*Media Queries (consultas de mídia) são um recurso do CSS 3 que permite que a renderização do conteúdo se adapte a diferentes condições, como a resolução da tela. */
+/* Primeiro devemos escrever a condição da futura adpatação entre os parenteses, e depois colocar dentro de uma detreminada classe seletora, o que se deseja alterar */
+@media (max-width: 1024px) {
+    .cabecalho {
+        width: 100%;
+    }
+
+    .cabecalho__menu__link {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--cor-terciaria);
+        text-decoration: none;
+        transition: all 300ms;
+    }
+
+    .separador {
+        width: 100%;
+        height: 1px; /* Ajuste a espessura da linha conforme necessário */
+        background-color: var(--cor-terciaria); /* Cor da linha */
+        margin: 0; /* Remove a margem se não for necessária */
+    }
+
+    .cabecalho__menu {
+        display: none;
+    }
+
+    .cabecalho__menu__mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        margin: 1.5em;
+        gap: 1em;
+    }
+
+    .botao__mobile {
+        background-color: var(--cor-terciaria);
+        box-shadow: 0 0 15px var(--cor-terciaria);
+    }
+
+    .apresentacao__inicial {
+        height: 85vh;
+        width: 80%;
+    }
+    
+    .apresentacao__conteudo {
+        height: 100vh;
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .apresentacao__conteudo__texto {
+        width: 80%;
+        font-size: 1.2rem;
+    }
+
+    .apresentacao__imagem {
+        width: 15em;
+        border: 2px solid var(--cor-terciaria);
+        border-radius: 10%;
+        transition: all 300ms;
+    }
+
+    .apresentacao__links__subtitulo {
+        font-size: 1.5rem;
+    }
+    
+    .apresentacao__links__navegacao {
+        width: 8em; 
+        font-size: 1.5rem;
+        padding: 21.5px 1em;  
+    }
+
+    .rodape {
+        padding: 20px;
+        font-size: 1.2rem;
+    }
+    
+}
+
+/**/
+
+
+/* Unidades de medida em CSS 
+
+Comprimentos Absolutos
+As unidades de comprimento absoluto são fixas e um comprimento expresso em qualquer uma delas aparecerá exatamente nesse tamanho.
+
+Unidades de comprimento absoluto não são recomendadas para uso na tela, porque os tamanhos das telas variam muito. No entanto, eles podem ser usados ​​se o meio de saída for conhecido, como no layout de impressão.
+
+Unit	Description
+cm	centimeters
+mm	millimeters
+in	inches (1in = 96px = 2.54cm)
+px *	pixels (1px = 1/96th of 1in)
+pt	points (1pt = 1/72 of 1in)
+pc	picas (1pc = 12 pt)
+
+-------------------------------------------------------------------------------------------
+
+Comprimentos Relativos
+As unidades de comprimento relativo especificam um comprimento relativo a outra propriedade de comprimento. As unidades de comprimento relativo são melhor dimensionadas entre diferentes mídias de renderização.
+
+Unit	Description	
+em	Relative to the font-size of the element (2em means 2 times the size of the current font)	
+ex	Relative to the x-height of the current font (rarely used)	
+ch	Relative to width of the "0" (zero)	
+rem	Relative to font-size of the root element	
+vw	Relative to 1% of the width of the viewport*	
+vh	Relative to 1% of the height of the viewport*	
+vmin	Relative to 1% of viewport's* smaller dimension	
+vmax	Relative to 1% of viewport's* larger dimension	
+%	Relative to the parent element

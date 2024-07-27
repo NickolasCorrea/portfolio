@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nickolas</title>
+    <link rel="icon" type="image/png" href="../assets/faviconNick.ico">
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body onload="onload()">
+    <header class="cabecalho">
+        <nav class="cabecalho__menu">
+            <a class="cabecalho__menu__link" href="../../index.html">Inicio</a>
+            <a class="cabecalho__menu__link" href="./about.html">Bio</a>
+            <a class="cabecalho__menu__link" href="./projects.html">Projetos</a>
+            <a class="cabecalho__menu__link" href="./contact.html">Contato</a>
+            <label class="botao__mobile">
+                <input class="cabecalho__menu__checkbox" type="checkbox" onclick="toggleLightMode()">
+                <ion-icon name="sunny" class="sun"></ion-icon>
+                <ion-icon name="moon" class="moon"></ion-icon>
+                <span class="toggle"></span>
+            </label>
+        </nav>
+        <nav class="cabecalho__menu__mobile">
+            <a class="cabecalho__menu__link" href="../../index.html">
+                <label class="botao__mobile">
+                    <ion-icon name="home" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a>
+            <a class="cabecalho__menu__link" href="./about.html">
+                <label class="botao__mobile">
+                    <ion-icon name="person" class="botao__mobile__icone"></ion-icon>            
+                </label>
+            </a>
+            <a class="cabecalho__menu__link" href="./projects.html">
+                <label class="botao__mobile">
+                    <ion-icon name="clipboard" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a> 
+            <a class="cabecalho__menu__link" href="./contact.html">
+                <label class="botao__mobile">
+                    <ion-icon name="call" class="botao__mobile__icone"></ion-icon>
+                </label>
+            </a>     
+            <label class="botao__mobile">
+                <input class="cabecalho__menu__checkbox" id="toggleDarkModeBtn" type="checkbox" onclick="toggleLightMode()">
+                <ion-icon name="sunny" class="sun"></ion-icon>
+                <ion-icon name="moon" class="moon"></ion-icon>
+                <span class="toggle" id="toggleDarkModeBtn"></span>
+            </label>
+        </nav>
+        <div class="separador"></div>
+    </header>
+    
+    <main class="apresentacao">
+        <video autoplay muted loop class="video-background">
+            <source src="../../assets/backgroundNick.mp4" type="video/mp4">
+        </video>
+        <section  class="apresentacao__conteudo__bio">
+            <div class="apresentacao__conteudo__bio__div"> 
+                <h1 class="apresentacao__titulo">Sobre mim</h1>
+                <p class="apresentacao__conteudo__texto hiddenText">Me  chamo Nickolas Corrêa, apaixonado por tecnologia, com 21 anos. Desde a infância, sempre fui fascinado por computadores e o universo digital. Minha curiosidade me levou a trilhar um caminho no desenvolvimento de software, onde hoje me especializo tanto em back-end quanto em front-end.</p>
+            </div>
+            </br>
+            <div class="apresentacao__conteudo__bio__div"> 
+                <h2 class="apresentacao__subtitulo">Minha Jornada</h2>
+                <p class="apresentacao__conteudo__texto">Minha trajetória no desenvolvimento de software começou um pouco antes de adentrar ao curso de engenharia da computação, onde eu comecei a praticar C++, linguagem essa que seria uma das primeiras a ver durante o curso.</p>
+                <p class="apresentacao__conteudo__texto hiddenText">Ao longo dos anos, desenvolvi e participei de diversos projetos, adquirindo uma vasta experiência em diversas linguagens e tecnologias. Estou constantemente em busca de novos conhecimentos e práticas que possam aprimorar minhas habilidades e agregar valor aos projetos que desenvolvo.</p>
+            </div>
+            </br>
+            <div class="apresentacao__conteudo__bio__div"> 
+                <h2 class="apresentacao__subtitulo">Objetivos</h2>
+                <p class="apresentacao__conteudo__texto">Meu objetivo é continuar crescendo como desenvolvedor e contribuir para projetos inovadores. Estou sempre à procura de oportunidades para aprender novas tecnologias e enfrentar desafios que me permitam evoluir profissionalmente.</p>
+                <p class="apresentacao__conteudo__texto">Tenho como missão explorar e adotar as melhores práticas do setor, bem como ter uma boa colaboração com diversos tipos de equipes. Aspiro a participar de iniciativas que não só aprimorem minhas habilidades técnicas, mas também proporcionem um impacto positivo e significativo.</p>
+            </div>
+            </br>
+            <div class="apresentacao__conteudo__bio__div"> 
+                <h2 class="apresentacao__subtitulo">Interesses e Hobbies</h2>
+                <p class="apresentacao__conteudo__texto">Durante meu tempo livre, opto por me entreter com atividades que proporcionam um desafio para minha mente ou meu corpo. Jogos de videogame de quebra-cabeça e estratégia são algumas das minhas paixões, pois me permitem relaxar enquanto exercito meu raciocínio lógico. Além disso, também sempre pratiquei esportes ao longo da minha vida, como natação, apesar de que  atualmente pratico musculação, mantendo um estilo de vida ativo e saudável.</p>
+                <p class="apresentacao__conteudo__texto">Outro interesse que me ocupa bastante é a impressão 3D. Adorode criar, modelar e materializar ideias em objetos físicos. Ás vezes eu faço e vendo peças impressas em 3D, desde itens decorativos até componentes personalizados.</p>
+            </div> 
+            </br>
+            <img class="apresentacao__imagem" src="../../assets/NickolasCorrea.jpg" alt="Foto do Nickolas Corrêa">
+        </section>
+    </main> 
+
+    <footer class="rodape">
+        <p>Desenvolvido por Nickolas Corrêa</p>
+    </footer>
+
+
+    <script src="../../app.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
