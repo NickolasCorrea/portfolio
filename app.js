@@ -83,15 +83,32 @@ function typeWriterEffect(element, txt, speed) {
 // Light mode e Dark mode
 function toggleLightMode() {
     const wasLightmode = localStorage.getItem('lightmode') === 'true';
-    localStorage.setItem('lightmode', !wasLightmode);
+    const isNowLightmode = !wasLightmode;
+    localStorage.setItem('lightmode', isNowLightmode);
+
     const element = document.body;
-    element.classList.toggle('light-mode', !wasLightmode);
-    console.log(wasLightmode);
+    element.classList.toggle('light-mode', isNowLightmode);
+
+    const logo = document.getElementById('logoPrincipal');
+    if (isNowLightmode) {
+        logo.src = './assets/NickLogoLight.png'; // Altere para o caminho da logo do modo claro
+    } else {
+        logo.src = './assets/NickLogo.png'; // Altere para o caminho da logo do modo escuro
+    }
+    console.log('Light mode:', isNowLightmode);
 }
 
 function onload() {
-    const wasLightmode = localStorage.getItem('lightmode') === 'true';
-    document.body.classList.toggle('light-mode', localStorage.getItem('lightmode') === 'true');
-    document.getElementById('toggleDarkModeBtn').checked = wasLightmode;
-    console.log(wasLightmode);
+    const isLightmode = localStorage.getItem('lightmode') === 'true';
+    document.body.classList.toggle('light-mode', isLightmode);
+
+    const logo = document.getElementById('logoPrincipal');
+    if (isLightmode) {
+        logo.src = './assets/NickLogoLight.png';; // Altere para o caminho da logo do modo claro
+    } else {
+        logo.src = './assets/NickLogo.png'; // Altere para o caminho da logo do modo escuro
+    }
+
+    document.getElementById('toggleDarkModeBtn').checked = isLightmode;
+    console.log('Light mode:', isLightmode);
 }
