@@ -1,4 +1,4 @@
-.apresentacao__titulo__efeito {
+.titulo__animacao {
     opacity: 0;
     font-size: 3rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
     font-family: var(--fonte-primaria);
@@ -10,7 +10,7 @@
     animation: mark 0.5s step-end infinite, habilita 0.5s forwards 1s, escrita 3s steps(30, end) 1s, removerMark 0s 4s forwards;
 }
 
-.apresentacao__subtitulo__efeito {
+.subtitulo__animacao {
     opacity: 0;
     font-size: 2.5rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
     font-family: var(--fonte-secundaria);
@@ -64,10 +64,10 @@
 }
 
 @media (max-width: 1024px) {
-    .apresentacao__titulo__efeito {
+    .titulo__animacao {
         opacity: 1;
         width: auto;
-        font-size: 1.75rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
+        font-size: 1.7rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
         font-family: var(--fonte-primaria);
 
         white-space: normal; /* Permite a quebra de linha */
@@ -76,10 +76,10 @@
         overflow: visible; /* Garante que todo o conteúdo seja visível */
     }
 
-    .apresentacao__subtitulo__efeito {
+    .subtitulo__animacao {
         opacity: 1;
         width: auto;
-        font-size: 1.75rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
+        font-size: 1.5rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
         font-family: var(--fonte-primaria);
 
         white-space: normal; /* Permite a quebra de linha */

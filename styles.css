@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Montserrat:wght@400;600&display=swap');
 /*Realiza a importação de uma fonte de texto*/
-@import url("styles/about.css");
 @import url("styles/digitationAnimation.css");
-@import url("styles/contact.css");
 
 /*Variáveis CSS*/
 /*.root é um seletor especial para utilizar variáveis globalmente*/
@@ -46,19 +44,39 @@ body:not(.light-mode) {
 }
 
 .container__vertical {
+    width: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 2em;
+    justify-content: center;
+    gap: 25px;
 }
 
 .container__horizontal {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    margin: 1em 10%;
+    justify-content: center;
+    gap: 25px;
+}
+
+.container__div {
+    width: 65%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    margin: 4em 0;
+}
+
+.apresentacao__inicial {
+    height: 100vh;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
 }
 
 .cabecalho {
@@ -67,6 +85,14 @@ body:not(.light-mode) {
     height: auto;
     background: var(--cor-primaria);
     z-index: 2;
+}
+
+.cabecalho__div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1em 10%;
 }
 
 .cabecalho__menu {
@@ -107,8 +133,8 @@ body:not(.light-mode) {
 }
 
 .botao__mobile {
-    width: 3.5em;
-    height: 3.5em;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     cursor: pointer; /* contorola como o cursor irá aparecer no elemento */
     display: flex;
@@ -116,6 +142,7 @@ body:not(.light-mode) {
     align-items: center;
     background: var(--cor-terciaria);
     transition: all 300ms;
+    box-shadow: 0 0 15px var(--cor-terciaria);
 }
 
 .botao__mobile:hover {
@@ -123,7 +150,7 @@ body:not(.light-mode) {
 }
 
 .botao__mobile__icone {
-    font-size: 2em;
+    font-size: 36px;
     color: var(--cor-primaria);
 }
 
@@ -133,7 +160,7 @@ body:not(.light-mode) {
 }
 
 .moon {
-    font-size: 2em;
+    font-size: 36px;
     color: var(--cor-primaria);
     transition: 1s ease;
     transition-delay: 0.5s;
@@ -146,7 +173,7 @@ input:checked~.moon {
 
 .sun {
     position: absolute;
-    font-size: 2em;
+    font-size: 36px;
     color: var(--cor-primaria);
     transform: scale(0);
     transition: 1s ease;
@@ -161,11 +188,12 @@ input:checked~.sun {
 .toggle {
     position: absolute; 
     display: block;
-    width: 3.5em;
-    height: 3.5em;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     z-index: 0;
     transition: 1s;
+    box-shadow: 0 0 15px var(--cor-terciaria);
 }
 
 input:checked~.toggle {
@@ -186,7 +214,7 @@ input:checked~.toggle {
     flex-direction: column; /*Cria um flex do tipo coluna, para que os elementos sejam organizados em uma coluna. Por padrão eles são organizados em linha (row).*/
     gap: 50px; /*Cria um espaçamento entre os elementos filhos de um elemento*/
     position: relative;
-    padding: 2em;
+    padding: 2.5em;
 }
 
 .video-background {
@@ -200,27 +228,9 @@ input:checked~.toggle {
     z-index: -1; /* Coloca o vídeo atrás do conteúdo */
 }
 
-.apresentacao__inicial {
-    height: 100vh;
-    width: 75%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.apresentacao__conteudo {
-    width: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-}
-
-.apresentacao__conteudo__texto {
+.conteudo__texto {
     padding: 1.5em 1.5em;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-family: var(--fonte-secundaria);
     background-color: var(--cor-primaria);
     border: 2px solid var(--cor-terciaria);
@@ -229,21 +239,14 @@ input:checked~.toggle {
     box-shadow: 0 0 15px var(--cor-terciaria);
 }
 
-.apresentacao__conteudo__div {
-    width: 50%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.apresentacao__titulo {
+.titulo {
     font-size: 3rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
     font-family: var(--fonte-primaria);
     color: var(--cor-terciaria);
+    text-shadow: 0 0 15px var(--cor-terciaria);
 }
 
-.apresentacao__subtitulo {
+.subtitulo {
     font-size: 2rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
     font-family: var(--fonte-primaria);
     color: var(--cor-terciaria);
@@ -255,22 +258,7 @@ input:checked~.toggle {
     text-shadow: 0 0 10px var(--cor-terciaria);
 }
 
-.apresentacao__links {
-    height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: end;
-    gap: 25px;
-}
-
-.apresentacao__links__subtitulo {
-    font-family: var(--fonte-primaria);
-    font-weight: 400;
-    font-size: 2rem;
-}
-
-.apresentacao__links__navegacao {
+.links__navegacao {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -290,12 +278,12 @@ input:checked~.toggle {
     box-shadow: 0 0 15px var(--cor-terciaria);
 }
 
-.apresentacao__links__navegacao:hover { /*hover: efeito de destaque ao passar o mouse por cima do elemento qualquer*/ 
+.links__navegacao:hover { /*hover: efeito de destaque ao passar o mouse por cima do elemento qualquer*/ 
     background-color: var(--cor-hover);
     transform: scale(1.1);
 }
 
-.apresentacao__links__navegacao__clear {
+.links__navegacao__clear {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -314,68 +302,22 @@ input:checked~.toggle {
     text-shadow: 0 0 15px var(--cor-terciaria);
 }
 
-
-
-.apresentacao__links__navegacao__clear:hover { 
+.links__navegacao__clear:hover { 
     background-color: var(--cor-hover);
     transform: scale(1.1);
 }
 
-/*.apresentacao__links__navegacao__clear__icon {
-
-}*/
-
-.apresentacao__imagem {
-    width: 24em;
+.imagem {
+    width: 20em;
     border: 2px solid var(--cor-terciaria);
     border-radius: 10%;
     transition: all 300ms;
     box-shadow: 0 0 15px var(--cor-terciaria);
 }
 
-.apresentacao__imagem:hover {
+.imagem:hover {
     transform: scale(1.05);
 }
-
-.apresentacao__conteudo__bio {
-    height: auto;
-    width: 75%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.apresentacao__conteudo__bio__div {
-    height: 65vh;
-    width: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.contact__section {
-    margin-top: 2.5em;
-    height: 100vh;
-    width: 75%;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    flex-direction: column;
-    gap: 35px;
-}
-
-.apresentacao__conteudo__contact__div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 2em;
-}
-
 
 .rodape {
     display: flex;
@@ -416,25 +358,31 @@ input:checked~.toggle {
 /*Media Queries (consultas de mídia) são um recurso do CSS 3 que permite que a renderização do conteúdo se adapte a diferentes condições, como a resolução da tela. */
 /* Primeiro devemos escrever a condição da futura adpatação entre os parenteses, e depois colocar dentro de uma detreminada classe seletora, o que se deseja alterar */
 @media (max-width: 1220px) {
-    .cabecalho {
-        width: 100%;
+    .container__vertical {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
-    .cabecalho__menu__link {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--cor-terciaria);
-        text-decoration: none;
-        transition: all 300ms;
+    .container__div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
     }
-
-    .separador {
-        width: 100%;
-        height: 1px; /* Ajuste a espessura da linha conforme necessário */
-        background-color: var(--cor-terciaria); /* Cor da linha */
-        margin: 0; /* Remove a margem se não for necessária */
+    
+    .container__horizontal {
+        flex-direction: column;
     }
-
+    
+    .cabecalho__div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    
     .cabecalho__menu {
         display: none;
     }
@@ -448,61 +396,47 @@ input:checked~.toggle {
         gap: 1em;
     }
 
-    .botao__mobile {
-        background-color: var(--cor-terciaria);
-        box-shadow: 0 0 15px var(--cor-terciaria);
-    }
+    .logo__principal {
+        display: none;
+     }
 
     .apresentacao__inicial {
         height: 85vh;
-        width: 80%;
-    }
-    
-    .apresentacao__conteudo {
-        height: 100vh;
-        width: 75%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 
-    .apresentacao__conteudo__texto {
-        width: 80%;
+    .titulo {
+        font-size: 1.7rem;
+    }
+    
+    .subtitulo {
+        font-size: 1.5rem; 
+    }
+
+    .conteudo__texto {
         font-size: 1.2rem;
     }
 
-    .apresentacao__imagem {
+    .imagem {
         width: 15em;
         border: 2px solid var(--cor-terciaria);
         border-radius: 10%;
         transition: all 300ms;
     }
-
-    .apresentacao__links__subtitulo {
-        font-size: 1.5rem;
-    }
     
-    .apresentacao__links__navegacao {
+    .links__navegacao {
         width: 8em; 
         font-size: 1.5rem;
         padding: 21.5px 1em;  
-    }
-
-    .apresentacao__conteudo__bio {
-        height: auto;
-        width: 75%;
-    }
-    
-    .apresentacao__conteudo__bio__div{
-        height: auto;
-        width: auto;
     }
 
     .rodape {
         padding: 20px;
         font-size: 1.2rem;
     }
-    
+}
+
+#bio {
+    scroll-margin-top: 150px; /* Ajuste este valor conforme necessário */
 }
 
 /**/
