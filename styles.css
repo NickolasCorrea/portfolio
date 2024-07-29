@@ -35,12 +35,14 @@ body:not(.light-mode) {
     --cor-primaria: #000000;
     --cor-secundaria: #FFFFFF;
     --cor-terciaria: #d8b800;
+    --cor-hover: #999999;
 }
 
 .light-mode {
-    --cor-primaria: #c0c0c0;
+    --cor-primaria: #c7c7c7;
     --cor-secundaria: #000000;
-    --cor-terciaria: #0000FF;
+    --cor-terciaria: #1a1acf;
+    --cor-hover: #d8702b;
 }
 
 .container__vertical {
@@ -57,7 +59,7 @@ body:not(.light-mode) {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 25px;
+    gap: 20px;
 }
 
 .container__div {
@@ -66,7 +68,18 @@ body:not(.light-mode) {
     align-items: center;
     flex-direction: column;
     gap: 20px;
-    margin: 4em 0;
+    margin: 3em 0;
+}
+
+.linha__vertical {
+    position: absolute;
+    top: 70em;
+    left: 50%;
+    height: 65%;
+    width: 2px;
+    background-color: var(--cor-terciaria);
+    opacity: 0.35;
+    z-index: -1;
 }
 
 .apresentacao__inicial {
@@ -121,6 +134,7 @@ body:not(.light-mode) {
 .cabecalho__menu__link:hover {
     color: var(--cor-hover);
     font-size: 1.6rem;
+    text-shadow: 0 0 15px var(--cor-hover);
 }
 
 .logo__principal {
@@ -129,7 +143,7 @@ body:not(.light-mode) {
 }
 
 .logo__principal:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .botao__mobile {
@@ -146,7 +160,7 @@ body:not(.light-mode) {
 }
 
 .botao__mobile:hover {
-    transform: scale(1);
+    transform: scale(1.1);
 }
 
 .botao__mobile__icone {
@@ -244,6 +258,11 @@ input:checked~.toggle {
     font-family: var(--fonte-primaria);
     color: var(--cor-terciaria);
     text-shadow: 0 0 15px var(--cor-terciaria);
+    background-color: var(--cor-primaria);
+    border: 2px solid var(--cor-terciaria);
+    border-radius: 15px;
+    padding: 0.3em 0.3em;
+    box-shadow: 0 0 15px var(--cor-terciaria);
 }
 
 .subtitulo {
@@ -251,6 +270,11 @@ input:checked~.toggle {
     font-family: var(--fonte-primaria);
     color: var(--cor-terciaria);
     text-shadow: 0 0 15px var(--cor-terciaria);
+    background-color: var(--cor-primaria);
+    border: 2px solid var(--cor-terciaria);
+    border-radius: 15px;
+    padding: 0.3em 0.3em;
+    box-shadow: 0 0 15px var(--cor-terciaria);
 }
 
 .nome-destaque {
@@ -264,12 +288,12 @@ input:checked~.toggle {
     align-items: center;
     gap: 8px;
     border: 2px solid var(--cor-terciaria);
-    width: 8em;
+    width: 7.5em;
     text-align: center;
     border-radius: 8px;
     font-size: 2rem;
     font-weight: 600;
-    padding: 21.5px 1em; 
+    padding: 21px 1em; 
     text-decoration: none;  
     color: var(--cor-primaria); 
     background-color: var(--cor-terciaria);
@@ -281,6 +305,8 @@ input:checked~.toggle {
 .links__navegacao:hover { /*hover: efeito de destaque ao passar o mouse por cima do elemento qualquer*/ 
     background-color: var(--cor-hover);
     transform: scale(1.1);
+    border: 2px solid var(--cor-hover);
+    box-shadow: 0 0 15px var(--cor-hover);
 }
 
 .links__navegacao__clear {
@@ -316,7 +342,7 @@ input:checked~.toggle {
 }
 
 .imagem:hover {
-    transform: scale(1.05);
+    transform: scale(1.07);
 }
 
 .rodape {
@@ -358,15 +384,9 @@ input:checked~.toggle {
 /*Media Queries (consultas de mídia) são um recurso do CSS 3 que permite que a renderização do conteúdo se adapte a diferentes condições, como a resolução da tela. */
 /* Primeiro devemos escrever a condição da futura adpatação entre os parenteses, e depois colocar dentro de uma detreminada classe seletora, o que se deseja alterar */
 @media (max-width: 1220px) {
-    .container__vertical {
-        width: 60%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
 
     .container__div {
+        width: auto;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -380,7 +400,8 @@ input:checked~.toggle {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        margin: 1em 10%;
     }
     
     .cabecalho__menu {
@@ -393,12 +414,8 @@ input:checked~.toggle {
         justify-content: center;
         width: auto;
         margin: 1.5em;
-        gap: 1em;
+        gap: 1.75em;
     }
-
-    .logo__principal {
-        display: none;
-     }
 
     .apresentacao__inicial {
         height: 85vh;
@@ -435,8 +452,92 @@ input:checked~.toggle {
     }
 }
 
+@media (max-width: 750px) {
+
+    .logo__principal {
+        display: none;
+    }
+    
+    .cabecalho__div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+    }
+
+    .cabecalho__menu__mobile {
+        gap: 1em;
+    }
+
+    .botao__mobile {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer; /* contorola como o cursor irá aparecer no elemento */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--cor-terciaria);
+        transition: all 300ms;
+        box-shadow: 0 0 15px var(--cor-terciaria);
+    }
+    
+    .botao__mobile:hover {
+        transform: scale(1);
+    }
+    
+    .botao__mobile__icone {
+        font-size: 25px;
+        color: var(--cor-primaria);
+    }
+    
+    .cabecalho__menu__checkbox {
+        position: absolute;
+        opacity: 0;
+    }
+    
+    .moon {
+        font-size: 25px;
+        color: var(--cor-primaria);
+        transition: 1s ease;
+        transition-delay: 0.5s;
+    }
+    
+    input:checked~.moon {
+        transition-delay: 0s;
+        transform: scale(0) rotate(360deg);
+    }
+    
+    .sun {
+        position: absolute;
+        font-size: 25px;
+        color: var(--cor-primaria);
+        transform: scale(0);
+        transition: 1s ease;
+        z-index: 1;
+    }
+    
+    input:checked~.sun {
+        transition-delay: 0.5s;
+        transform: scale(1) rotate(360deg);
+    }
+    
+    .toggle {
+        position: absolute; 
+        display: block;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        z-index: 0;
+        transition: 1s;
+        box-shadow: 0 0 15px var(--cor-terciaria);
+    }
+}
+
+
 #bio {
-    scroll-margin-top: 150px; /* Ajuste este valor conforme necessário */
+    scroll-margin-top: 100px; /* Ajuste este valor conforme necessário */
 }
 
 /**/
