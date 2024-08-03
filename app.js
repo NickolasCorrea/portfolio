@@ -112,3 +112,90 @@ function onload() {
     document.getElementById('toggleDarkModeBtn').checked = isLightmode;
     console.log('Light mode:', isLightmode);
 }
+
+
+// Cursor customizado
+let innerCursor = document.querySelector('.inner-cursor');
+let outerCursor = document.querySelector('.outer-cursor');
+let isCursorEnlarged = false;
+
+document.addEventListener('mousemove', moveCursor);
+document.addEventListener('mousedown', growCursor);
+document.addEventListener('mouseup', shrinkCursor);
+document.addEventListener('dblclick', toggleCursorSize);
+
+function moveCursor(e) {
+    let x = e.clientX;
+    let y = e.clientY;
+
+    innerCursor.style.left = `${x}px`;
+    innerCursor.style.top = `${y}px`;
+    outerCursor.style.left = `${x}px`;
+    outerCursor.style.top = `${y}px`;
+}
+
+function growCursor() {
+    innerCursor.classList.add('grow');
+}
+
+function shrinkCursor() {
+    innerCursor.classList.remove('grow');
+}
+
+function toggleCursorSize() {
+    if (isCursorEnlarged) {
+        innerCursor.classList.remove('enlarged');
+    } else {
+        innerCursor.classList.add('enlarged');
+    }
+    isCursorEnlarged = !isCursorEnlarged;
+}
+
+// Modal 
+/*
+const openProject = () => {
+    window.open(lista[id].linkProjeto, '_blank');
+    modalButtonRepository.removeEventListener("click", openRepository);
+    
+}
+const openRepository = () => {
+    window.open(lista[id].linkRepositorio, '_blank');
+    modalButtonProject.removeEventListener("click",openProject);    
+}
+*/
+
+
+const openButtons = document.querySelectorAll(".projeto-botao");
+const closeButton = document.querySelector(".closeButton");
+const modal = document.querySelector(".modal");
+const sombra = document.querySelector(".sombra");
+const modalTitle = document.getElementById("modal-title");
+const modalDescription = document.getElementById("modal-description");
+const modalVideo = document.getElementById("modal-video");
+
+openButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        const title = button.getAttribute("data-title");
+        const description = button.getAttribute("data-description");
+        const video = button.getAttribute("data-video");
+        
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        modalVideo.src = video;
+
+        modal.classList.add("open");
+        sombra.classList.add("open");
+    });
+});
+
+closeButton.addEventListener("click", () => {
+    modal.classList.remove("open");
+    sombra.classList.remove("open");
+    modalVideo.src = ""; // Stop the video when closing the modal
+});
+
+sombra.addEventListener("click", () => {
+    modal.classList.remove("open");
+    sombra.classList.remove("open");
+    modalVideo.src = ""; // Stop the video when clicking outside the modal
+});

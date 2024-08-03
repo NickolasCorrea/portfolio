@@ -11,9 +11,12 @@
 </head>
 
 <body onload="onload()">
+    <div class="inner-cursor"></div>
+    <div class="outer-cursor"></div>
+
     <header class="cabecalho">
         <div class="cabecalho__div">
-            <img class="logo__principal" id="logoPrincipal" src="./assets/NickLogo.png">
+            <img class="logo__principal" id="logoPrincipal" src="./assets/NickLogo.png" alt="Logo de Nickolas Corrêa">
             <nav class="cabecalho__menu" >   <!-- Tag usada para navegar na página -->
                 <a class="cabecalho__menu__link" href="#home">
                     <ion-icon name="home"></ion-icon>
@@ -79,7 +82,7 @@
         </video>
 
         <section class="apresentacao__inicial" id="home">
-            <h1 class="titulo__animacao">Olá! Sou <strong class="nome-destaque">Nickolas Corrêa</strong>.</h1> <!-- <h1> é usado como título principal-->
+            <h1 class="titulo__animacao">Olá! Sou <strong class="palavra-destaque">Nickolas Corrêa</strong>.</h1> <!-- <h1> é usado como título principal-->
             <h2 class="subtitulo__animacao">Engenheiro da computação e desenvolvedor</h2>
         </section>
 
@@ -89,7 +92,7 @@
             <div class="container__div">
                 <h1 class="titulo">Sobre mim</h1>
                 <div class="container__horizontal hidden">
-                <p class="conteudo__texto hiddenText" id="textoIntroducao">Seja bem-vindo ao meu <strong class="nome-destaque">portfólio</strong>. </br></br> Me chamo <strong class="nome-destaque">Nickolas Corrêa</strong>, tenho 21 anos e desde pequeno sempre fui apaixonado por computadores e tecnologia.</br></br>Atualmente, estou focado em aprimorar minhas habilidades em desenvolvimento de software para agregar valor ao negócio. Já tive a oportunidade de trabalhar no desenvolvimento de back-end e front-end de diversos projetos, e estou constantemente em busca de novos conhecimentos, aprendizados e desafios.</br></br>Vamos nos conhecer?</p>
+                <p class="conteudo__texto hiddenText" id="textoIntroducao">Seja bem-vindo ao meu <strong class="palavra-destaque">portfólio</strong>. </br></br> Me chamo <strong class="palavra-destaque">Nickolas Corrêa</strong>, tenho 21 anos e desde pequeno sempre fui apaixonado por computadores e tecnologia.</br></br>Atualmente, estou focado em aprimorar minhas habilidades em desenvolvimento de software para agregar valor ao negócio. Já tive a oportunidade de trabalhar no desenvolvimento de back-end e front-end de diversos projetos, e estou constantemente em busca de novos conhecimentos, aprendizados e desafios.</br></br>Vamos nos conhecer?</p>
                     <div class="container__div">
                         <img class="imagem" src="./assets/NickolasCorrea.jpg" alt="Foto do Nickolas Corrêa">
                         <a class="links__navegacao" href="#" target="_blank">
@@ -100,27 +103,108 @@
             </div>
             <div class="container__div hidden"> 
                 <h2 class="subtitulo">Minha Jornada</h2>
-                <p class="conteudo__texto hiddenText">Desde a infância, sempre fui fascinado por computadores e o universo digital. Minha trajetória no desenvolvimento de software começou um pouco antes de adentrar ao curso de engenharia da computação, onde eu comecei a praticar C++, linguagem essa que seria uma das primeiras a ver durante o curso. Ao longo dos anos, desenvolvi e participei de diversos projetos, adquirindo uma vasta experiência em diversas linguagens e tecnologias.</br></br>Estou constantemente em busca de novos conhecimentos e práticas que possam aprimorar minhas habilidades e agregar valor aos projetos que desenvolvo.</p>
+                <div class="container__horizontal">
+                    <p class="conteudo__texto hiddenText">Desde a infância, sempre fui fascinado por computadores e o universo digital. Minha trajetória no desenvolvimento de software começou um pouco antes de adentrar ao curso de engenharia da computação, onde eu comecei a praticar C++, linguagem essa que seria uma das primeiras a ver durante o curso. Ao longo dos anos, desenvolvi e participei de diversos projetos, adquirindo uma vasta experiência com várias tecnologias.</br></br>Estou constantemente em busca de novos conhecimentos e práticas que possam aprimorar minhas habilidades e agregar valor aos projetos que desenvolvo.</p>
+                    <img class="imagem" src="./assets/HelloWorldCpp.png" alt="Foto do primeiro código C++ feito por Nickolas Corrêa">
+                </div>
+                
             </div>
             </br>
             <div class="container__div hidden"> 
-                <h2 class="subtitulo">Objetivos</h2>
-                <p class="conteudo__texto hiddenText">Meu objetivo é continuar crescendo como desenvolvedor e contribuir para projetos inovadores. Estou sempre à procura de oportunidades para aprender novas tecnologias e enfrentar desafios que me permitam evoluir profissionalmente.</p>
+                <h2 class="subtitulo">Objetivos</h2>                <p class="conteudo__texto hiddenText">Meu objetivo é continuar crescendo como desenvolvedor e como engenheiro, contribuindo para projetos inovadores e que façam a diferença. Estou sempre à procura de oportunidades para aprender novas ferramentas e tecnologia, além de estar disposto a enfrentar desafios que me permitam evoluir profissionalmente.</p>
             </div>
             </br>
             <div class="container__div hidden"> 
                 <h2 class="subtitulo">Interesses e Hobbies</h2>
-                <p class="conteudo__texto hiddenText">Nos meus momentos de lazer, gosto de atividades que desafiam minha mente e corpo. Jogos de videogame de quebra-cabeça e estratégia são algumas das minhas paixões, pois me permitem relaxar e exercitar o raciocínio. Além disso, sempre pratiquei esportes, como natação, e atualmente faço musculação para manter um estilo de vida ativo e saudável. Também me interesso por impressão 3D, criando e modelando ideias em objetos físicos, e às vezes vendo peças personalizadas, desde itens decorativos até componentes utilitários.</p>
+                <div class="container__horizontal">
+                    <p class="conteudo__texto hiddenText">Nos meus momentos de lazer, gosto de atividades que desafiam minha mente e corpo. Jogos de videogame de quebra-cabeça e estratégia são algumas das minhas paixões. Além disso, sempre pratiquei esportes, como natação, e atualmente faço musculação para manter um estilo de vida saudável.</br></br>Também me interesso por impressão 3D, criando e modelando ideias em objetos físicos, e às vezes vendo peças personalizadas.</p>
+                    <img class="imagem" src="./assets/Impressao3DFantasma.jpg" alt="Foto do primeiro código C++ feito por Nickolas Corrêa">
+                </div>
             </div> 
             </br>
         </section>
 
-        <section class="container__vertical hidden" id="projects">
+        <div class="sombra"></div>
+            <div class="modal">
+                <div class="modalHeader">
+                    <p id="modal-title" class="modalTitle">Projeto A</p>
+                    <button class="closeButton" onclick="toggleModal()">
+                        <img src="./assets/close.png" alt="Botão fechar seleção de projeto ou repositório" class="closeImg">
+                    </button>
+                </div>
+                <div class="modalContent">
+                    <video id="modal-video" class="modalVideo"></video>
+                    <p id="modal-description" class="projeto-texto">Descrição do Projeto</p>
+                    <div class="container__horizontal">
+                        <button class="projeto-botao">Baixar código</button>
+                        <button class="projeto-botao">Repositório</button>
+                    </div>
+                </div>
+            </div>
 
+        <section class="container__vertical hidden" id="projects">
+            <h1 class="titulo">Projetos</h1>         
+            <div class="container__div-projeto">
+                <h2 class="subtitulo">Desenvolvimento de software</h2>
+                <ul class="lista">
+                    <li class="projeto hidden">
+                        <p class="projeto-titulo"><b class="palavra-destaque">ReciclaAcao</b></p>
+                        <img src="./assets/ReciclaAcaoMenu.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C#, Unity<br><br><b class="palavra-destaque">Descrição:</b> Jogo 2D educativo, desenvolvido para ensinar e incentivar crianças a praticarem a reciclagem, disponível para computadores com sistema operacional Windows.</p>
+                        <button class="projeto-botao" data-title="ReciclaAcao" data-description="Descrição do Projeto 1" data-video="https://www.youtube.com/embed/VIDEO_ID_1">Ver projeto</button>
+                    </li>
+                    <li class="projeto hidden">
+                        <p class="projeto-titulo"><b class="palavra-destaque">ReciclaAcao</b></p>
+                        <img src="./assets/ReciclaAcaoMenu.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C#, Unity<br><br><b class="palavra-destaque">Descrição:</b> Jogo 2D educativo, desenvolvido para ensinar e incentivar crianças a praticarem a reciclagem, disponível para computadores com sistema operacional Windows.</p>
+                        <button class="projeto-botao">Ver projeto</button>
+                    </li>
+                    <li class="projeto hidden">
+                        <p class="projeto-titulo"><b class="palavra-destaque">ReciclaAcao</b></p>
+                        <img src="./assets/ReciclaAcaoMenu.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C#, Unity<br><br><b class="palavra-destaque">Descrição:</b> Jogo 2D educativo, desenvolvido para ensinar e incentivar crianças a praticarem a reciclagem, disponível para computadores com sistema operacional Windows.</p>
+                        <button class="projeto-botao">Ver projeto</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="container__div-projeto">
+                <h2 class="subtitulo">Engenharia</h2>
+                <ul class="lista">
+                    <li class="projeto hidden">
+                        <p class="projeto-titulo"><b class="palavra-destaque">Braço Robótico</b></p>
+                        <img src="./assets/BraçoRobotico.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C++, Microcontrolador Arduino, Circuito eletrônico personalizado.<br><br><b class="palavra-destaque">Descrição:</b> Projeto desenvolvido com o propósito de pegar pequenos objetos e transportá-los para outras posições. O braço robótico possui modos de funcionamento manual e automático, podendo ser escolhido o modo de operação.</p>
+                        <button class="projeto-botao">Ver projeto</button>
+                    </li>
+                    <li class="projeto hidden">
+                        <p class="projeto-titulo"><b class="palavra-destaque">Seguidor de Linha</b></p>
+                        <img src="./assets/SeguidorDeLinha.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C++, Microcontrolador Arduino Nano, Circuito eletrônico personalizado.<br><br><b class="palavra-destaque">Descrição:</b> Desenvolvido como um projeto para uma corrida competitiva, que ocorreu durante o curso de Engenharia da Computação, o seguidor de linha possui 3 rodas, com tração nas duas traseiras, e 4 sensores para identificar o caminho a ser seguido.</p>
+                        <button class="projeto-botao">Ver projeto</button>
+                    </li>
+                    <li class="projeto hidden">
+                        <p class="projeto-titulo"><b class="palavra-destaque">Identificador de Ossos</b></p>
+                        <img src="./assets/IdentificadorDeOssos.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> Python, Jupyter Notebook, TensorFlow, Raspbian OS, Raspberry.<br><br><b class="palavra-destaque">Descrição:</b> Identificador de ossos humanos com suporte para deficientes visuais, voltado para a área acadêmica. O treinamento da IA foi realizado utilizando TensorFlow, enquanto a identificação dos ossos é feita por meio de uma câmera, junto com o código em Python e o OpenCV.</p>
+                        <button class="projeto-botao">Ver projeto</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="container__div-projeto">
+                <h2 class="subtitulo">Outros</h2>
+                <ul class="lista">
+                    <li class="projeto hidden">
+                        <p class="projeto-titulo"><b class="palavra-destaque">Serviços de Impressão 3D</b></p>
+                        <img src="./assets/Deadpool3D.jpg" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
+                        <p class="projeto-texto"><b class="palavra-destaque">Ferramentas:</b> Impressora 3D, Ultimaker Cura, Fusion 360.<br><br><b class="palavra-destaque">Descrição:</b> Impressões 3D personalizadas, algumas modeladas com o software Fusion 360, que vão desde itens decorativos até utilitários funcionais.</p>
+                        <button class="projeto-botao">Ver projeto</button>
+                    </li>
+                </ul>
+            </div>
         </section>
 
         <section class="container__vertical hidden" id="certificates">
-
+            <h1 class="titulo">Certificados</h1>
         </section>
 
         <section class="container__vertical hidden"  id="contact">
