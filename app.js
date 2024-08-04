@@ -165,23 +165,29 @@ const openRepository = () => {
 */
 
 
-const openButtons = document.querySelectorAll(".projeto-botao");
+const openButtons = document.querySelectorAll(".projeto-botao[data-type='open-modal']");
 const closeButton = document.querySelector(".closeButton");
 const modal = document.querySelector(".modal");
 const sombra = document.querySelector(".sombra");
 const modalTitle = document.getElementById("modal-title");
 const modalDescription = document.getElementById("modal-description");
 const modalVideo = document.getElementById("modal-video");
+const botaoRepositorio = document.getElementById("botao-repositorio");
+const botaoDownload = document.getElementById("botao-download");
 
 openButtons.forEach(button => {
     button.addEventListener("click", () => {
         const title = button.getAttribute("data-title");
         const description = button.getAttribute("data-description");
         const video = button.getAttribute("data-video");
-        
+        const linkRepositorio = button.getAttribute("data-repo");
+        const linkDownload = button.getAttribute("data-download");
+
         modalTitle.textContent = title;
         modalDescription.textContent = description;
         modalVideo.src = video;
+        botaoRepositorio.href = linkRepositorio;
+        botaoDownload.href = linkDownload;
 
         modal.classList.add("open");
         sombra.classList.add("open");
@@ -191,11 +197,13 @@ openButtons.forEach(button => {
 closeButton.addEventListener("click", () => {
     modal.classList.remove("open");
     sombra.classList.remove("open");
-    modalVideo.src = ""; // Stop the video when closing the modal
+    modalVideo.pause();
+    modalVideo.currentTime = 0; // Reset video to start
 });
 
 sombra.addEventListener("click", () => {
     modal.classList.remove("open");
     sombra.classList.remove("open");
-    modalVideo.src = ""; // Stop the video when clicking outside the modal
+    modalVideo.pause();
+    modalVideo.currentTime = 0; // Reset video to start
 });

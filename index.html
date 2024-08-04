@@ -95,7 +95,7 @@
                 <p class="conteudo__texto hiddenText" id="textoIntroducao">Seja bem-vindo ao meu <strong class="palavra-destaque">portfólio</strong>. </br></br> Me chamo <strong class="palavra-destaque">Nickolas Corrêa</strong>, tenho 21 anos e desde pequeno sempre fui apaixonado por computadores e tecnologia.</br></br>Atualmente, estou focado em aprimorar minhas habilidades em desenvolvimento de software para agregar valor ao negócio. Já tive a oportunidade de trabalhar no desenvolvimento de back-end e front-end de diversos projetos, e estou constantemente em busca de novos conhecimentos, aprendizados e desafios.</br></br>Vamos nos conhecer?</p>
                     <div class="container__div">
                         <img class="imagem" src="./assets/NickolasCorrea.jpg" alt="Foto do Nickolas Corrêa">
-                        <a class="links__navegacao" href="#" target="_blank">
+                        <a class="botao-navegacao" href="#" target="_blank">
                             Baixar CV
                         </a> 
                     </div>    
@@ -125,22 +125,28 @@
         </section>
 
         <div class="sombra"></div>
-            <div class="modal">
-                <div class="modalHeader">
-                    <p id="modal-title" class="modalTitle">Projeto A</p>
-                    <button class="closeButton" onclick="toggleModal()">
-                        <img src="./assets/close.png" alt="Botão fechar seleção de projeto ou repositório" class="closeImg">
-                    </button>
-                </div>
-                <div class="modalContent">
-                    <video id="modal-video" class="modalVideo"></video>
-                    <p id="modal-description" class="projeto-texto">Descrição do Projeto</p>
-                    <div class="container__horizontal">
-                        <button class="projeto-botao">Baixar código</button>
-                        <button class="projeto-botao">Repositório</button>
-                    </div>
+        <div class="modal">
+            <div class="modalHeader">
+                <p id="modal-title" class="modalTitle">Projeto A</p>
+                <button class="closeButton">
+                    <img src="./assets/close.png" alt="Botão fechar seleção de projeto ou repositório" class="closeImg">
+                </button>
+            </div>
+            <div class="modalContent">
+                <iframe id="modal-video" class="modalVideo" src="" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+                <p id="modal-description" class="projeto-texto">Descrição do Projeto</p>
+                <div class="container__horizontal">
+                    <a id="botao-download" class="botao-navegacao" href="#" target="_blank">
+                        <ion-icon class="projeto-botao-icone" name="download"></ion-icon>                            
+                        Baixar código
+                    </a>
+                    <a id="botao-repositorio" class="botao-navegacao" href="#" target="_blank">
+                        <ion-icon class="projeto-botao-icone" name="logo-github"></ion-icon>
+                        Repositório
+                    </a>
                 </div>
             </div>
+        </div>
 
         <section class="container__vertical hidden" id="projects">
             <h1 class="titulo">Projetos</h1>         
@@ -150,20 +156,14 @@
                     <li class="projeto hidden">
                         <p class="projeto-titulo"><b class="palavra-destaque">ReciclaAcao</b></p>
                         <img src="./assets/ReciclaAcaoMenu.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
-                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C#, Unity<br><br><b class="palavra-destaque">Descrição:</b> Jogo 2D educativo, desenvolvido para ensinar e incentivar crianças a praticarem a reciclagem, disponível para computadores com sistema operacional Windows.</p>
-                        <button class="projeto-botao" data-title="ReciclaAcao" data-description="Descrição do Projeto 1" data-video="https://www.youtube.com/embed/VIDEO_ID_1">Ver projeto</button>
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C#, Unity<br><br><b class="palavra-destaque">Descrição:</b> Jogo 2D educativo, desenvolvido para ensinar e incentivar crianças a reciclarem.</p>
+                        <button class="projeto-botao" data-type="open-modal" data-title="ReciclaAcao" data-description="Jogo 2D educativo, desenvolvido para ensinar e incentivar crianças a praticarem a reciclagem. O objetivo do jogo é descartar diferentes tipos de resíduos nos compartimentos de lixo corretos. Disponível para computadores com sistema operacional Windows." data-video="https://drive.google.com/file/d/1Q5LWxSzvtkPlsCA-jal3vVUOBEMiZOuq/preview" data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                     <li class="projeto hidden">
-                        <p class="projeto-titulo"><b class="palavra-destaque">ReciclaAcao</b></p>
-                        <img src="./assets/ReciclaAcaoMenu.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
-                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C#, Unity<br><br><b class="palavra-destaque">Descrição:</b> Jogo 2D educativo, desenvolvido para ensinar e incentivar crianças a praticarem a reciclagem, disponível para computadores com sistema operacional Windows.</p>
-                        <button class="projeto-botao">Ver projeto</button>
-                    </li>
-                    <li class="projeto hidden">
-                        <p class="projeto-titulo"><b class="palavra-destaque">ReciclaAcao</b></p>
-                        <img src="./assets/ReciclaAcaoMenu.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
-                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C#, Unity<br><br><b class="palavra-destaque">Descrição:</b> Jogo 2D educativo, desenvolvido para ensinar e incentivar crianças a praticarem a reciclagem, disponível para computadores com sistema operacional Windows.</p>
-                        <button class="projeto-botao">Ver projeto</button>
+                        <p class="projeto-titulo"><b class="palavra-destaque">Software de Rede Neural</b></p>
+                        <img src="./assets/RedeNeuralPython.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> Python<br><br><b class="palavra-destaque">Descrição:</b> Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline.</p>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                 </ul>
             </div>
@@ -174,19 +174,19 @@
                         <p class="projeto-titulo"><b class="palavra-destaque">Braço Robótico</b></p>
                         <img src="./assets/BraçoRobotico.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
                         <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C++, Microcontrolador Arduino, Circuito eletrônico personalizado.<br><br><b class="palavra-destaque">Descrição:</b> Projeto desenvolvido com o propósito de pegar pequenos objetos e transportá-los para outras posições. O braço robótico possui modos de funcionamento manual e automático, podendo ser escolhido o modo de operação.</p>
-                        <button class="projeto-botao">Ver projeto</button>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                     <li class="projeto hidden">
                         <p class="projeto-titulo"><b class="palavra-destaque">Seguidor de Linha</b></p>
                         <img src="./assets/SeguidorDeLinha.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
                         <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C++, Microcontrolador Arduino Nano, Circuito eletrônico personalizado.<br><br><b class="palavra-destaque">Descrição:</b> Desenvolvido como um projeto para uma corrida competitiva, que ocorreu durante o curso de Engenharia da Computação, o seguidor de linha possui 3 rodas, com tração nas duas traseiras, e 4 sensores para identificar o caminho a ser seguido.</p>
-                        <button class="projeto-botao">Ver projeto</button>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                     <li class="projeto hidden">
                         <p class="projeto-titulo"><b class="palavra-destaque">Identificador de Ossos</b></p>
                         <img src="./assets/IdentificadorDeOssos.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
                         <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> Python, Jupyter Notebook, TensorFlow, Raspbian OS, Raspberry.<br><br><b class="palavra-destaque">Descrição:</b> Identificador de ossos humanos com suporte para deficientes visuais, voltado para a área acadêmica. O treinamento da IA foi realizado utilizando TensorFlow, enquanto a identificação dos ossos é feita por meio de uma câmera, junto com o código em Python e o OpenCV.</p>
-                        <button class="projeto-botao">Ver projeto</button>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                 </ul>
             </div>
@@ -197,7 +197,7 @@
                         <p class="projeto-titulo"><b class="palavra-destaque">Serviços de Impressão 3D</b></p>
                         <img src="./assets/Deadpool3D.jpg" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
                         <p class="projeto-texto"><b class="palavra-destaque">Ferramentas:</b> Impressora 3D, Ultimaker Cura, Fusion 360.<br><br><b class="palavra-destaque">Descrição:</b> Impressões 3D personalizadas, algumas modeladas com o software Fusion 360, que vão desde itens decorativos até utilitários funcionais.</p>
-                        <button class="projeto-botao">Ver projeto</button>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                 </ul>
             </div>
@@ -210,19 +210,19 @@
         <section class="container__vertical hidden"  id="contact">
             <h1 class="titulo">Contato e links</h1>
             <p class="conteudo__texto hiddenText">Email: nickolasscorrea@gmail.com</p>
-            <a class="links__navegacao" href="https://wa.me/5513982118181" target="_blank">
+            <a class="botao-navegacao" href="https://wa.me/5513982118181" target="_blank">
                 <ion-icon name="logo-whatsapp"></ion-icon>
                 WhatsApp
             </a>
-            <a class="links__navegacao" href="https://www.instagram.com/nickolas.correa/" target="_blank">
+            <a class="botao-navegacao" href="https://www.instagram.com/nickolas.correa/" target="_blank">
                 <ion-icon name="logo-linkedin"></ion-icon>
                 LinkedIn
             </a>
-            <a class="links__navegacao" href="https://github.com/NickolasCorrea" target="_blank"> <!-- Tag âncora que liga leva a outro site. -->
+            <a class="botao-navegacao" href="https://github.com/NickolasCorrea" target="_blank"> <!-- Tag âncora que liga leva a outro site. -->
                 <ion-icon name="logo-github"></ion-icon>
                 GitHub
             </a>
-            <a class="links__navegacao" href="https://www.instagram.com/nickolas.correa/" target="_blank">
+            <a class="botao-navegacao" href="https://www.instagram.com/nickolas.correa/" target="_blank">
                 <ion-icon name="logo-instagram"></ion-icon>
                 Instagram
             </a>
