@@ -613,6 +613,10 @@ input:checked~.toggle {
     transform: translateX(0);
 }
 
+.hide {
+    display: none;
+}
+
 /*Media Queries (consultas de mídia) são um recurso do CSS 3 que permite que a renderização do conteúdo se adapte a diferentes condições, como a resolução da tela. */
 /* Primeiro devemos escrever a condição da futura adpatação entre os parenteses, e depois colocar dentro de uma detreminada classe seletora, o que se deseja alterar */
 @media (max-width: 1220px) {

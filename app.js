@@ -214,6 +214,18 @@ openButtons.forEach(button => {
         botaoRepositorio.href = linkRepositorio;
         botaoDownload.href = linkDownload;
 
+        if (!linkRepositorio) {
+            botaoRepositorio.classList.add('hide');
+        } else {
+            botaoRepositorio.classList.remove('hide');
+        }
+
+        if (!linkDownload) {
+            botaoDownload.classList.add('hide');
+        } else {
+            botaoDownload.classList.remove('hide');
+        }
+
         modal.classList.add("open");
         sombra.classList.add("open");
     });
