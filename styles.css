@@ -808,12 +808,12 @@ input:checked~.toggle {
     }
     
     .projeto {
-        width: 60%;
+        width: 80%;
     }
 
     .modal{
-        width: 90%;
-        height: 85%;
+        width: 95%;
+        height: auto;
     }
 
     .modalVideo {
