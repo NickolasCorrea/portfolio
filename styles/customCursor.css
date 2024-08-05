@@ -38,3 +38,8 @@
   transition: transform 0.3s, width 0.3s, height 0.3s; /* Corrigido e ajustado para 300ms */
   z-index: 10;
 }
+
+.hide-cursor .inner-cursor,
+.hide-cursor .outer-cursor {
+    display: none;
+}

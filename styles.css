@@ -12,6 +12,7 @@
     --cor-terciaria: #d8b800;
 
     --cor-hover: #999999;
+    --cor-links: #0676c0;
 
     --fonte-primaria: 'Krona One', sans-serif;
     --fonte-secundaria: 'Montserrat', sans-serif;
@@ -54,7 +55,7 @@ body:not(.light-mode) {
     align-items: center;
     justify-content: center;
     gap: 25px;
-    margin: 5em 0;
+    margin: 6em 0;
 }
 
 .container__horizontal {
@@ -81,18 +82,6 @@ body:not(.light-mode) {
     flex-direction: column;
     gap: 20px;
     margin: 5em 0;
-}
-
-.linha__vertical {
-    position: absolute;
-    top: 65em;
-    left: 50%;
-    height: 70%;
-    width: 2px;
-    transform: translate(50%);
-    background-color: var(--cor-terciaria);
-    opacity: 0.35;
-    z-index: -1;
 }
 
 .apresentacao__inicial {
@@ -261,6 +250,18 @@ input:checked~.toggle {
     z-index: -1; /* Coloca o vídeo atrás do conteúdo */
 }
 
+.titulo-inicial {
+    font-size: 3rem;
+    font-family: var(--fonte-primaria);
+    white-space: nowrap; 
+}
+
+.subtitulo-inicial {
+    font-size: 2.5rem;
+    font-family: var(--fonte-secundaria);
+    white-space: nowrap; 
+}
+
 .conteudo__texto {
     padding: 1.5em 1.5em;
     font-size: 1.3rem;
@@ -356,17 +357,11 @@ input:checked~.toggle {
     box-shadow: 0 0 15px var(--cor-hover);
 }
 
-.certificados {
-    padding: 1.5em 1.5em;
-    background-color: var(--cor-primaria);
-    
-}
-
 /* Modal */
-.modal{
+.modal {
     display: none;
     position: fixed;
-    width: 64em;
+    width: 75em;
     height: 42em;
     top: 50%;
     left: 50%;
@@ -378,7 +373,7 @@ input:checked~.toggle {
     z-index: 5;
 }
 
-.modalHeader{
+.modalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -387,16 +382,18 @@ input:checked~.toggle {
     border-bottom: 5px solid var(--cor-terciaria);
 }
 
-.modalTitle{
+.modalTitle {
     font-size: 1.5rem;
     font-family: var(--fonte-secundaria);
     font-weight: 600;
     margin-left: 0.5em;
 }
 
-.closeButton{
+.closeButton {
     display: flex;
-    opacity: 0.9;
+    font-size: 2em;
+    color: var(--cor-terciaria);
+    opacity: 1;
     border: 2px solid var(--cor-terciaria);
     border-radius: 15px;
     padding: 5px;
@@ -407,12 +404,6 @@ input:checked~.toggle {
 
 .closeButton:hover {
     transform: scale(1.1);
-}
-
-.closeImg{
-    width: 3em;
-    height: auto;
-    background-color: var(--cor-primaria);
 }
 
 .modalVideo {
@@ -451,10 +442,47 @@ input:checked~.toggle {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 1;
+    background: rgba(0,0,0,0.7);
+    z-index: 3;
 }
 
+.certificado-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5em 1.5em;
+    font-family: var(--fonte-secundaria);
+    background-color: var(--cor-primaria);
+    border: 2px solid var(--cor-terciaria);
+    border-radius: 15px;
+    text-align: justify;
+    box-shadow: 0 0 15px var(--cor-terciaria);
+}
+
+.certificado-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    margin-bottom: 0.8em;
+    border-bottom: 5px solid var(--cor-terciaria);
+}
+
+.certificado-lista {
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    gap: 1em;
+}
+
+.certificado-lista-item {
+    font-size: 1.5rem;
+    color: var(--cor-terciaria);
+}
+
+.certificado-lista-item-link {
+    color: var(--cor-links);
+}
 
 .titulo {
     font-size: 3rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
@@ -467,6 +495,7 @@ input:checked~.toggle {
     padding: 0.3em 0.3em;
     box-shadow: 0 0 15px var(--cor-terciaria);
 }
+
 
 .subtitulo {
     font-size: 2rem; /* REM - valor relativo ao conteúdo raíz, que seria a própria página html. Existe uma escala a qual o REM equivale a 16px (considerada pelos noavegadores).*/
@@ -511,30 +540,6 @@ input:checked~.toggle {
     transform: scale(1.1);
     border: 2px solid var(--cor-hover);
     box-shadow: 0 0 15px var(--cor-hover);
-}
-
-.botao-navegacao__clear {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid var(--cor-terciaria);
-    width: 2em;
-    text-align: center;
-    border-radius: 8px;
-    font-size: 3em;
-    font-weight: 600;
-    padding: 21.5px 0.25em; 
-    text-decoration: none;  
-    color: var(--cor-terciaria); 
-    font-family: var(--fonte-secundaria);  
-    transition: all 300ms;
-    box-shadow: 0 0 15px var(--cor-terciaria);
-    text-shadow: 0 0 15px var(--cor-terciaria);
-}
-
-.botao-navegacao__clear:hover { 
-    background-color: var(--cor-hover);
-    transform: scale(1.1);
 }
 
 .imagem {
@@ -611,6 +616,16 @@ input:checked~.toggle {
 /*Media Queries (consultas de mídia) são um recurso do CSS 3 que permite que a renderização do conteúdo se adapte a diferentes condições, como a resolução da tela. */
 /* Primeiro devemos escrever a condição da futura adpatação entre os parenteses, e depois colocar dentro de uma detreminada classe seletora, o que se deseja alterar */
 @media (max-width: 1220px) {
+
+    .titulo-inicial {
+        font-size: 2rem;
+        white-space: wrap; 
+    }
+    
+    .subtitulo-inicial {
+        font-size: 1.5rem;
+        white-space: wrap; 
+    }
 
     .container__div {
         width: auto;
@@ -690,18 +705,6 @@ input:checked~.toggle {
 }
 
 @media (max-width: 750px) {
-
-    .linha__vertical {
-        position: absolute;
-        top: 63em;
-        left: 50%;
-        height: 70%;
-        width: 2px;
-        transform: translate(50%);
-        background-color: var(--cor-terciaria);
-        opacity: 0.35;
-        z-index: -1;
-    }
 
     .apresentacao {
         display: flex; 
@@ -808,51 +811,30 @@ input:checked~.toggle {
         width: 60%;
     }
 
+    .modal{
+        width: 90%;
+        height: 85%;
+    }
+
     .modalVideo {
-        width: 18em; 
-        height: 9em;
+        width: 16em; 
+        height: 8em;
     }
 }
 
 
 #bio {
-    scroll-margin-top: 100px; /* Ajuste este valor conforme necessário */
+    scroll-margin-top: 120px; /* Ajuste este valor conforme necessário */
 }
 
 #projects {
-    scroll-margin-top: 130px; /* Ajuste este valor conforme necessário */
+    scroll-margin-top: 100px; /* Ajuste este valor conforme necessário */
 }
 
-/**/
+#certificates {
+    scroll-margin-top: 150px; /* Ajuste este valor conforme necessário */
+}
 
-
-/* Unidades de medida em CSS 
-
-Comprimentos Absolutos
-As unidades de comprimento absoluto são fixas e um comprimento expresso em qualquer uma delas aparecerá exatamente nesse tamanho.
-
-Unidades de comprimento absoluto não são recomendadas para uso na tela, porque os tamanhos das telas variam muito. No entanto, eles podem ser usados ​​se o meio de saída for conhecido, como no layout de impressão.
-
-Unit	Description
-cm	centimeters
-mm	millimeters
-in	inches (1in = 96px = 2.54cm)
-px *	pixels (1px = 1/96th of 1in)
-pt	points (1pt = 1/72 of 1in)
-pc	picas (1pc = 12 pt)
-
--------------------------------------------------------------------------------------------
-
-Comprimentos Relativos
-As unidades de comprimento relativo especificam um comprimento relativo a outra propriedade de comprimento. As unidades de comprimento relativo são melhor dimensionadas entre diferentes mídias de renderização.
-
-Unit	Description	
-em	Relative to the font-size of the element (2em means 2 times the size of the current font)	
-ex	Relative to the x-height of the current font (rarely used)	
-ch	Relative to width of the "0" (zero)	
-rem	Relative to font-size of the root element	
-vw	Relative to 1% of the width of the viewport*	
-vh	Relative to 1% of the height of the viewport*	
-vmin	Relative to 1% of viewport's* smaller dimension	
-vmax	Relative to 1% of viewport's* larger dimension	
-%	Relative to the parent element
+#contact {
+    scroll-margin-top: 150px; /* Ajuste este valor conforme necessário */
+}

@@ -1,5 +1,33 @@
+function getDeviceType() {
+    const ua = navigator.userAgent;
+    if (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
+        if (/iPhone|iPad|iPod/i.test(ua)) {
+            return 'Apple mobile device';
+        } else if (/Android/i.test(ua)) {
+            return 'Android device';
+        } else if (/BlackBerry/i.test(ua)) {
+            return 'BlackBerry device';
+        } else if (/IEMobile/i.test(ua)) {
+            return 'Windows mobile device';
+        } else if (/Opera Mini/i.test(ua)) {
+            return 'Opera Mini device';
+        } else {
+            return 'Other mobile device';
+        }
+    }
+    return 'Desktop';
+}
+
+const deviceType = getDeviceType();
+console.log('Device Type:', deviceType);
+
+if (deviceType !== 'Desktop') {
+    document.body.classList.add('hide-cursor');
+}
+
 
 // Mostrador original
+/*
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         console.log(entry)
@@ -13,56 +41,25 @@ const observer = new IntersectionObserver((entries) => {
 
 const hiddenElements = document.querySelectorAll('.hidden');
 hiddenElements.forEach((el) => observer.observe(el));
-
-
-// Mostrador com efeito de digitação repetição
-/*
-const observerDigitation = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        console.log(entry);
-        if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-            // Inicia o efeito de digitação quando o elemento se torna visível
-            typeWriterEffect(entry.target.id, entry.target.dataset.text, 25);
-        } else {
-            entry.target.classList.remove('show');
-        }
-    });
-});
-
-// Seleciona todos os elementos ocultos e adiciona o observador
-const hiddenElementsDigitation = document.querySelectorAll('.hiddenText');
-hiddenElementsDigitation.forEach((el) => {
-    // Salva o texto original em um atributo data
-    el.dataset.text = el.innerHTML;
-    observerDigitation.observe(el);
-});
 */
 
-
-// Mostrador com efeito de digitação
-const observerDigitationOnce = new IntersectionObserver((entries) => {
+// Mostrador apenas uma vez
+const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-        if (entry.isIntersecting && !entry.target.classList.contains('typed')) {
+        if (entry.isIntersecting) {
             entry.target.classList.add('show');
-            // Inicia o efeito de digitação quando o elemento se torna visível
-            typeWriterEffect(entry.target, entry.target.dataset.text, 20);
-            // Marca o elemento como já tendo sido digitado
-            entry.target.classList.add('typed');
+            // Desconectar o observer para garantir que o elemento nunca mais volte a ser oculto
+            observer.unobserve(entry.target);
         }
     });
 });
 
-const hiddenElementsDigitationOnce = document.querySelectorAll('.hiddenText');
-hiddenElementsDigitationOnce.forEach((el) => {
-    el.dataset.text = el.innerHTML;
-    observerDigitationOnce.observe(el);
-});
+const hiddenElements = document.querySelectorAll('.hidden');
+hiddenElements.forEach((el) => observer.observe(el));
 
 
-
-// Efeito de digitação 
-function typeWriterEffect(element, txt, speed) {
+// Efeito de digitação
+function typeWriterEffect(element, txt, speed, removeCursor) {
     let i = 0;
     let buffer = '';
 
@@ -72,11 +69,52 @@ function typeWriterEffect(element, txt, speed) {
             element.innerHTML = buffer + '<span class="cursor">&nbsp;</span>';
             i++;
             setTimeout(type, speed);
-        } 
+        } else if (i >= txt.length && removeCursor === "true") {
+            // Remover o cursor após a digitação
+            element.innerHTML = buffer;
+        }
     }
     element.innerHTML = '';
     type();
 }
+
+// Mostrador com efeito de digitação
+const observerDigitationOnce = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting && !entry.target.classList.contains('typed')) {
+            entry.target.classList.add('show');
+            // Inicia o efeito de digitação quando o elemento se torna visível
+            const speed = entry.target.dataset.speed ? parseInt(entry.target.dataset.speed, 10) : 20;
+            typeWriterEffect(entry.target, entry.target.dataset.text, speed, entry.target.dataset.removeCursor);
+            // Marca o elemento como já tendo sido digitado
+            entry.target.classList.add('typed');
+        }
+    });
+});
+
+const hiddenTitleElementsDigitationOnce = document.querySelectorAll('.hiddenTitle');
+hiddenTitleElementsDigitationOnce.forEach((el) => {
+    el.dataset.text = el.innerHTML;
+    el.dataset.speed = 80; // Defina a velocidade de escrita aqui, se necessário
+    el.dataset.removeCursor = "false";
+    observerDigitationOnce.observe(el);
+});
+
+const hiddenSubtitleElementsDigitationOnce = document.querySelectorAll('.hiddenSubtitle');
+hiddenSubtitleElementsDigitationOnce.forEach((el) => {
+    el.dataset.text = el.innerHTML;
+    el.dataset.speed = 125; // Defina a velocidade de escrita aqui, se necessário
+    el.dataset.removeCursor = "false";
+    observerDigitationOnce.observe(el);
+});
+
+const hiddenElementsDigitationOnce = document.querySelectorAll('.hiddenText');
+hiddenElementsDigitationOnce.forEach((el) => {
+    el.dataset.text = el.innerHTML;
+    el.dataset.speed = 20; // Defina a velocidade de escrita aqui, se necessário
+    el.dataset.removeCursor = "true";
+    observerDigitationOnce.observe(el);
+});
 
 
 
@@ -151,19 +189,6 @@ function toggleCursorSize() {
     isCursorEnlarged = !isCursorEnlarged;
 }
 
-// Modal 
-/*
-const openProject = () => {
-    window.open(lista[id].linkProjeto, '_blank');
-    modalButtonRepository.removeEventListener("click", openRepository);
-    
-}
-const openRepository = () => {
-    window.open(lista[id].linkRepositorio, '_blank');
-    modalButtonProject.removeEventListener("click",openProject);    
-}
-*/
-
 
 const openButtons = document.querySelectorAll(".projeto-botao[data-type='open-modal']");
 const closeButton = document.querySelector(".closeButton");
@@ -197,13 +222,13 @@ openButtons.forEach(button => {
 closeButton.addEventListener("click", () => {
     modal.classList.remove("open");
     sombra.classList.remove("open");
-    modalVideo.pause();
+    modalVideo.pauseVideo();
     modalVideo.currentTime = 0; // Reset video to start
 });
 
 sombra.addEventListener("click", () => {
     modal.classList.remove("open");
     sombra.classList.remove("open");
-    modalVideo.pause();
+    modalVideo.pauseVideo();
     modalVideo.currentTime = 0; // Reset video to start
 });

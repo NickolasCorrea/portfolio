@@ -7,17 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nickolas</title>
     <link rel="icon" type="image/png" href="./assets/faviconNick.ico">
-    <link rel="stylesheet" href="styles.css"> <!-- Linkando o CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+
 </head>
 
 <body onload="onload()">
-    <div class="inner-cursor"></div>
-    <div class="outer-cursor"></div>
+    <div class="custom-cursor">
+        <div class="inner-cursor"></div>
+        <div class="outer-cursor"></div>
+    </div>
 
     <header class="cabecalho">
         <div class="cabecalho__div">
             <img class="logo__principal" id="logoPrincipal" src="./assets/NickLogo.png" alt="Logo de Nickolas Corrêa">
-            <nav class="cabecalho__menu" >   <!-- Tag usada para navegar na página -->
+            <nav class="cabecalho__menu" >
                 <a class="cabecalho__menu__link" href="#home">
                     <ion-icon name="home"></ion-icon>
                     Inicio
@@ -39,7 +43,7 @@
                     Contato
                 </a>
             </nav>
-            <nav class="cabecalho__menu__mobile">   <!-- Tag usada para navegar na página -->
+            <nav class="cabecalho__menu__mobile">
                 <a class="cabecalho__menu__link" href="#home">
                     <label class="botao__mobile">
                         <ion-icon name="home" class="botao__mobile__icone"></ion-icon>
@@ -74,26 +78,24 @@
             </label>
         </div>
         <div class="separador"></div>
-    </header> <!-- Cabeçalho -->
+    </header>
 
-    <main class="apresentacao"> <!-- Conteúdo principal -->
+    <main class="apresentacao">
         <video autoplay muted loop class="video-background">
             <source src="./assets/backgroundNick.mp4" type="video/mp4">
         </video>
 
         <section class="apresentacao__inicial" id="home">
-            <h1 class="titulo__animacao">Olá! Sou <strong class="palavra-destaque">Nickolas Corrêa</strong>.</h1> <!-- <h1> é usado como título principal-->
-            <h2 class="subtitulo__animacao">Engenheiro da computação e desenvolvedor</h2>
+            <h1 class="titulo-inicial hiddenTitle">Olá! Sou <strong class="palavra-destaque">Nickolas Corrêa</strong></h1>
+            <h2 class="subtitulo-inicial hiddenSubtitle">Engenheiro da computação e desenvolvedor</h2>
         </section>
 
-        <div class="linha__vertical"></div>
-
-        <section class="container__vertical hidden" id="bio"> <!-- Cria uma seção para uma parte do conteúdo principal,e a classe filha tem "__" para indicar que é filha, além de ter um complemento "conteudo"-->
+        <section class="container__vertical hidden" id="bio">
             <div class="container__div">
                 <h1 class="titulo">Sobre mim</h1>
                 <div class="container__horizontal hidden">
-                <p class="conteudo__texto hiddenText" id="textoIntroducao">Seja bem-vindo ao meu <strong class="palavra-destaque">portfólio</strong>. </br></br> Me chamo <strong class="palavra-destaque">Nickolas Corrêa</strong>, tenho 21 anos e desde pequeno sempre fui apaixonado por computadores e tecnologia.</br></br>Atualmente, estou focado em aprimorar minhas habilidades em desenvolvimento de software para agregar valor ao negócio. Já tive a oportunidade de trabalhar no desenvolvimento de back-end e front-end de diversos projetos, e estou constantemente em busca de novos conhecimentos, aprendizados e desafios.</br></br>Vamos nos conhecer?</p>
-                    <div class="container__div">
+                    <p class="conteudo__texto hiddenText" id="textoIntroducao">Seja bem-vindo ao meu <strong class="palavra-destaque">portfólio</strong>. </br></br> Me chamo <strong class="palavra-destaque">Nickolas Corrêa</strong>, tenho 21 anos e desde pequeno sempre fui apaixonado por computadores e tecnologia.</br></br>Atualmente, estou focado em aprimorar minhas habilidades em desenvolvimento de software para agregar valor ao negócio. Já tive a oportunidade de trabalhar no desenvolvimento de back-end e front-end de diversos projetos, e estou constantemente em busca de novos conhecimentos, aprendizados e desafios.</br></br>Vamos nos conhecer?</p>
+                    <div class="container__vertical" style="margin: auto;">
                         <img class="imagem" src="./assets/NickolasCorrea.jpg" alt="Foto do Nickolas Corrêa">
                         <a class="botao-navegacao" href="#" target="_blank">
                             Baixar CV
@@ -102,16 +104,32 @@
                 </div>
             </div>
             <div class="container__div hidden"> 
+                <h2 class="subtitulo">Tecnologias conhecidas:</h2>
+                <p class="conteudo__texto">
+                    <i class="devicon-html5-plain-wordmark colored titulo-inicial"></i>
+                    <i class="devicon-css3-plain-wordmark colored titulo-inicial"></i>
+                    <i class="devicon-javascript-plain colored titulo-inicial"></i>
+                    <i class="devicon-php-plain colored titulo-inicial"></i>
+                    <i class="devicon-azuresqldatabase-plain colored titulo-inicial"></i>
+                    <i class="devicon-git-plain-wordmark colored titulo-inicial"></i>
+                    <i class="devicon-github-original-wordmark titulo-inicial"></i>
+                    <i class="devicon-cplusplus-plain colored titulo-inicial"></i>
+                    <i class="devicon-csharp-plain colored titulo-inicial"></i>
+                    <i class="devicon-python-plain colored titulo-inicial"></i>
+                    <i class="devicon-unity-plain colored titulo-inicial"></i>
+                </p>
+            </div>
+            <div class="container__div hidden"> 
                 <h2 class="subtitulo">Minha Jornada</h2>
                 <div class="container__horizontal">
-                    <p class="conteudo__texto hiddenText">Desde a infância, sempre fui fascinado por computadores e o universo digital. Minha trajetória no desenvolvimento de software começou um pouco antes de adentrar ao curso de engenharia da computação, onde eu comecei a praticar C++, linguagem essa que seria uma das primeiras a ver durante o curso. Ao longo dos anos, desenvolvi e participei de diversos projetos, adquirindo uma vasta experiência com várias tecnologias.</br></br>Estou constantemente em busca de novos conhecimentos e práticas que possam aprimorar minhas habilidades e agregar valor aos projetos que desenvolvo.</p>
+                    <p class="conteudo__texto hiddenText">Desde a infância, sempre fui fascinado por computadores e o universo digital. Minha trajetória no desenvolvimento de software começou um pouco antes de adentrar ao curso de engenharia da computação, onde eu comecei a praticar C++, linguagem essa que seria uma das primeiras a ver durante o curso. Ao longo dos anos, desenvolvi e participei de diversos projetos, adquirindo uma vasta experiência com várias tecnologias.</p>
                     <img class="imagem" src="./assets/HelloWorldCpp.png" alt="Foto do primeiro código C++ feito por Nickolas Corrêa">
                 </div>
-                
             </div>
             </br>
             <div class="container__div hidden"> 
-                <h2 class="subtitulo">Objetivos</h2>                <p class="conteudo__texto hiddenText">Meu objetivo é continuar crescendo como desenvolvedor e como engenheiro, contribuindo para projetos inovadores e que façam a diferença. Estou sempre à procura de oportunidades para aprender novas ferramentas e tecnologia, além de estar disposto a enfrentar desafios que me permitam evoluir profissionalmente.</p>
+                <h2 class="subtitulo">Objetivos</h2>
+                <p class="conteudo__texto hiddenText">Meu objetivo é continuar crescendo como desenvolvedor e como engenheiro, contribuindo para projetos inovadores e que façam a diferença. Estou sempre à procura de oportunidades para aprender novas ferramentas e tecnologia, além de estar disposto a enfrentar desafios que me permitam evoluir profissionalmente.</p>
             </div>
             </br>
             <div class="container__div hidden"> 
@@ -128,8 +146,8 @@
         <div class="modal">
             <div class="modalHeader">
                 <p id="modal-title" class="modalTitle">Projeto A</p>
-                <button class="closeButton">
-                    <img src="./assets/close.png" alt="Botão fechar seleção de projeto ou repositório" class="closeImg">
+                <button class="closeButton" >
+                    <ion-icon name="close"></ion-icon>
                 </button>
             </div>
             <div class="modalContent">
@@ -148,9 +166,9 @@
             </div>
         </div>
 
-        <section class="container__vertical hidden" id="projects">
-            <h1 class="titulo">Projetos</h1>         
+        <section class="container__vertical hidden" id="projects">       
             <div class="container__div-projeto">
+                <h1 class="titulo">Projetos</h1>  
                 <h2 class="subtitulo">Desenvolvimento de software</h2>
                 <ul class="lista">
                     <li class="projeto hidden">
@@ -163,7 +181,7 @@
                         <p class="projeto-titulo"><b class="palavra-destaque">Software de Rede Neural</b></p>
                         <img src="./assets/RedeNeuralPython.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
                         <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> Python<br><br><b class="palavra-destaque">Descrição:</b> Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline.</p>
-                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-video="https://drive.google.com/file/d/1ULLF-mrx8UU6jkAcLiCPNdHMGa3uwmv8/preview" data-repo="https://github.com/NickolasCorrea/neural-network-python" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                 </ul>
             </div>
@@ -173,20 +191,20 @@
                     <li class="projeto hidden">
                         <p class="projeto-titulo"><b class="palavra-destaque">Braço Robótico</b></p>
                         <img src="./assets/BraçoRobotico.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
-                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C++, Microcontrolador Arduino, Circuito eletrônico personalizado.<br><br><b class="palavra-destaque">Descrição:</b> Projeto desenvolvido com o propósito de pegar pequenos objetos e transportá-los para outras posições. O braço robótico possui modos de funcionamento manual e automático, podendo ser escolhido o modo de operação.</p>
-                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C++, Microcontrolador Arduino, Circuito eletrônico personalizado.<br><br><b class="palavra-destaque">Descrição:</b> Projeto desenvolvido com o propósito de pegar pequenos objetos e transportá-los para outras posições manualmente ou automáticamente.</p>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Braço Robótico" data-description="Projeto desenvolvido com o propósito de pegar pequenos objetos e transportá-los para outras posições. O braço robótico possui modos de funcionamento manual e automático, podendo ser escolhido o modo de operação. Sua estrutura externa foi feita utilizando MDF, enquanto sua PCB foi personalizada com vários componentes eletrônicos." data-video="https://drive.google.com/file/d/1ULLF-mrx8UU6jkAcLiCPNdHMGa3uwmv8/preview" data-repo="https://github.com/NickolasCorrea/neural-network-python" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                     <li class="projeto hidden">
                         <p class="projeto-titulo"><b class="palavra-destaque">Seguidor de Linha</b></p>
                         <img src="./assets/SeguidorDeLinha.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
-                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C++, Microcontrolador Arduino Nano, Circuito eletrônico personalizado.<br><br><b class="palavra-destaque">Descrição:</b> Desenvolvido como um projeto para uma corrida competitiva, que ocorreu durante o curso de Engenharia da Computação, o seguidor de linha possui 3 rodas, com tração nas duas traseiras, e 4 sensores para identificar o caminho a ser seguido.</p>
-                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> C++, Microcontrolador Arduino Nano, Circuito eletrônico personalizado.<br><br><b class="palavra-destaque">Descrição:</b> Desenvolvido como um projeto para uma corrida competitiva, que ocorreu durante o curso de Engenharia da Computação.</p>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Seguidor de Linha" data-description="Desenvolvido como um projeto para uma corrida competitiva, que ocorreu durante o curso de Engenharia da Computação. O seguidor de linha possui 3 rodas, com tração nas duas traseiras, e 4 sensores para identificar o caminho a ser seguido." data-video="https://drive.google.com/file/d/1ULLF-mrx8UU6jkAcLiCPNdHMGa3uwmv8/preview" data-repo="https://github.com/NickolasCorrea/neural-network-python" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                     <li class="projeto hidden">
                         <p class="projeto-titulo"><b class="palavra-destaque">Identificador de Ossos</b></p>
                         <img src="./assets/IdentificadorDeOssos.png" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
-                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> Python, Jupyter Notebook, TensorFlow, Raspbian OS, Raspberry.<br><br><b class="palavra-destaque">Descrição:</b> Identificador de ossos humanos com suporte para deficientes visuais, voltado para a área acadêmica. O treinamento da IA foi realizado utilizando TensorFlow, enquanto a identificação dos ossos é feita por meio de uma câmera, junto com o código em Python e o OpenCV.</p>
-                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
+                        <p class="projeto-texto"><b class="palavra-destaque">Tecnologias:</b> Python, Jupyter Notebook, TensorFlow, Raspbian OS, Raspberry.<br><br><b class="palavra-destaque">Descrição:</b> Identificador de ossos humanos com suporte para deficientes visuais, voltado para a área acadêmica.</p>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Identificador de Ossos" data-description="Identificador de ossos humanos com suporte para deficientes visuais, voltado para a área acadêmica. O treinamento da IA foi realizado utilizando TensorFlow, enquanto a identificação dos ossos é feita por meio de uma câmera, junto com o código em Python e o OpenCV." data-video="https://drive.google.com/file/d/1ULLF-mrx8UU6jkAcLiCPNdHMGa3uwmv8/preview" data-repo="https://github.com/NickolasCorrea/neural-network-python" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                 </ul>
             </div>
@@ -197,7 +215,7 @@
                         <p class="projeto-titulo"><b class="palavra-destaque">Serviços de Impressão 3D</b></p>
                         <img src="./assets/Deadpool3D.jpg" alt="Projeto ReciclaAcao, jogo 2D educativo, desenevolvido para crianças" class="projeto-imagem">
                         <p class="projeto-texto"><b class="palavra-destaque">Ferramentas:</b> Impressora 3D, Ultimaker Cura, Fusion 360.<br><br><b class="palavra-destaque">Descrição:</b> Impressões 3D personalizadas, algumas modeladas com o software Fusion 360, que vão desde itens decorativos até utilitários funcionais.</p>
-                        <button class="projeto-botao" data-type="open-modal" data-title="Software de Rede Neural" data-description="Projeto de redes neurais artificiais com dois modos de funcionamento: Perceptron e Adaline. Desenvolvido para fins educacionais, o projeto busca uma compreensão prática dos conceitos fundamentais das redes neurais, bem como suas limitações." data-repo="https://github.com/NickolasCorrea/EcoProject" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
+                        <button class="projeto-botao" data-type="open-modal" data-title="Serviços de Impressão 3D" data-description="Impressões 3D personalizadas, algumas modeladas com o software Fusion 360, que vão desde itens decorativos até utilitários funcionais." data-video="https://drive.google.com/file/d/1ULLF-mrx8UU6jkAcLiCPNdHMGa3uwmv8/preview" data-repo="https://github.com/NickolasCorrea/neural-network-python" data-download="https://drive.google.com/file/d/14NhJraxjx07pWzy3Na7PM-jFq5q8YrqE/view?usp=drive_link">Ver projeto</button>
                     </li>
                 </ul>
             </div>
@@ -205,16 +223,54 @@
 
         <section class="container__vertical hidden" id="certificates">
             <h1 class="titulo">Certificados</h1>
+            <ul class="lista">
+                <li class="certificado-container">
+                    <div class="certificado-header">
+                        <h2 id="modal-title" class="modalTitle">Alura</h2>
+                    </div>
+                    <ul class="certificado-lista">
+                        <li class="certificado-lista-item">
+                            <a class="certificado-lista-item-link" href="https://cursos.alura.com.br/degree/certificate/7cc44946-14a6-4057-8a76-a054727fc542?lang=pt_BR" target="_blank">A partir do zero: HTML e CSS para projetos web</a> 
+                        </li>
+                        <li class="certificado-lista-item">
+                            <a class="certificado-lista-item-link" href="https://cursos.alura.com.br/certificate/d839cb6b-2777-4b34-956b-f4a6150e29f8?lang=pt_BR" target="_blank">Git e Github</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="certificado-container">
+                    <div class="certificado-header">
+                        <h2 id="modal-title" class="modalTitle">SoloLearn</h2>
+                    </div>
+                    <ul class="certificado-lista">
+                        <li class="certificado-lista-item">
+                            <a class="certificado-lista-item-link" href="https://www.sololearn.com/certificates/CT-NXYP4RJN" target="_blank">PHP</a> 
+                        </li>
+                        <li class="certificado-lista-item">
+                            <a class="certificado-lista-item-link" href="linkdocertificado" target="_blank">SQL</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="certificado-container">
+                    <div class="certificado-header">
+                        <h2 id="modal-title" class="modalTitle">Udemy</h2>
+                    </div>
+                    <ul class="certificado-lista">
+                        <li class="certificado-lista-item">
+                            <a class="certificado-lista-item-link" href="https://www.udemy.com/certificate/UC-12e2ba76-ea6c-45b3-9714-97d67c39b6a8/" target="_blank">Complete C# Unity Game Developer 2D</a> 
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </section>
 
-        <section class="container__vertical hidden"  id="contact">
+        <section class="container__vertical hidden" id="contact">
             <h1 class="titulo">Contato e links</h1>
             <p class="conteudo__texto hiddenText">Email: nickolasscorrea@gmail.com</p>
             <a class="botao-navegacao" href="https://wa.me/5513982118181" target="_blank">
                 <ion-icon name="logo-whatsapp"></ion-icon>
                 WhatsApp
             </a>
-            <a class="botao-navegacao" href="https://www.instagram.com/nickolas.correa/" target="_blank">
+            <a class="botao-navegacao" href="https://www.linkedin.com/in/nickolas-corr%C3%AAa-37516231a/" target="_blank">
                 <ion-icon name="logo-linkedin"></ion-icon>
                 LinkedIn
             </a>
