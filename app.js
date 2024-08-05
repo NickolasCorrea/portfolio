@@ -222,13 +222,11 @@ openButtons.forEach(button => {
 closeButton.addEventListener("click", () => {
     modal.classList.remove("open");
     sombra.classList.remove("open");
-    modalVideo.pauseVideo();
-    modalVideo.currentTime = 0; // Reset video to start
+    modalVideo.src = '';
 });
 
 sombra.addEventListener("click", () => {
     modal.classList.remove("open");
     sombra.classList.remove("open");
-    modalVideo.pauseVideo();
-    modalVideo.currentTime = 0; // Reset video to start
+    modalVideo.src = '';
 });

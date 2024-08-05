@@ -55,7 +55,7 @@ body:not(.light-mode) {
     align-items: center;
     justify-content: center;
     gap: 25px;
-    margin: 6em 0;
+    margin: 5em 0;
 }
 
 .container__horizontal {
@@ -362,7 +362,7 @@ input:checked~.toggle {
     display: none;
     position: fixed;
     width: 75em;
-    height: 42em;
+    height: auto;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -413,7 +413,7 @@ input:checked~.toggle {
     border-radius: 15px;
 }
 
-.modalContent{
+.modalContent {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -664,7 +664,7 @@ input:checked~.toggle {
 
     .modal{
         width: 90%;
-        height: 75%;
+        height: auto;
     }
 
     .modalVideo {
@@ -729,7 +729,6 @@ input:checked~.toggle {
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        margin: auto;
     }
 
     .cabecalho__menu__mobile {
