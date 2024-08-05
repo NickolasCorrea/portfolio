@@ -190,6 +190,7 @@ function toggleCursorSize() {
 }
 
 
+// funcionamento do modal
 const openButtons = document.querySelectorAll(".projeto-botao[data-type='open-modal']");
 const closeButton = document.querySelector(".closeButton");
 const modal = document.querySelector(".modal");

@@ -482,6 +482,9 @@ input:checked~.toggle {
 
 .certificado-lista-item-link {
     color: var(--cor-links);
+    font-size: 1.6rem;
+    font-family: var(--fonte-secundaria);  
+    
 }
 
 .titulo {
@@ -617,8 +620,6 @@ input:checked~.toggle {
     display: none;
 }
 
-/*Media Queries (consultas de mídia) são um recurso do CSS 3 que permite que a renderização do conteúdo se adapte a diferentes condições, como a resolução da tela. */
-/* Primeiro devemos escrever a condição da futura adpatação entre os parenteses, e depois colocar dentro de uma detreminada classe seletora, o que se deseja alterar */
 @media (max-width: 1220px) {
 
     .titulo-inicial {
@@ -692,6 +693,10 @@ input:checked~.toggle {
         font-size: 1.2rem;
     }
 
+    .certificado-lista-item-link {
+        font-size: 1.3rem;
+    }
+
     .imagem {
         width: 15em;
     }
@@ -719,6 +724,23 @@ input:checked~.toggle {
         position: relative;
         padding: 1.5em;
     }
+
+    .titulo {
+        font-size: 1.5rem;
+    }
+    
+    .subtitulo {
+        font-size: 1.3rem; 
+    }
+
+    .conteudo__texto {
+        font-size: 1rem;
+    }
+
+    .certificado-lista-item-link {
+        font-size: 1.1rem;
+    }
+
         
     .container__horizontal {
         flex-direction: column;
