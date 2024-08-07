@@ -1,3 +1,4 @@
+// Verificação de dispositivo sendo utilizado
 function getDeviceType() {
     const ua = navigator.userAgent;
     if (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)) {
@@ -95,7 +96,7 @@ const observerDigitationOnce = new IntersectionObserver((entries) => {
 const hiddenTitleElementsDigitationOnce = document.querySelectorAll('.hiddenTitle');
 hiddenTitleElementsDigitationOnce.forEach((el) => {
     el.dataset.text = el.innerHTML;
-    el.dataset.speed = 80; // Defina a velocidade de escrita aqui, se necessário
+    el.dataset.speed = 50; // Defina a velocidade de escrita aqui, se necessário
     el.dataset.removeCursor = "false";
     observerDigitationOnce.observe(el);
 });
@@ -115,7 +116,6 @@ hiddenElementsDigitationOnce.forEach((el) => {
     el.dataset.removeCursor = "true";
     observerDigitationOnce.observe(el);
 });
-
 
 
 // Light mode e Dark mode
@@ -188,6 +188,24 @@ function toggleCursorSize() {
     }
     isCursorEnlarged = !isCursorEnlarged;
 }
+
+
+// Esconde o cursor personalizado ao ir com o mouse acima da scrollbar
+document.addEventListener('mousemove', function (e) {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarHeight = window.innerHeight - document.documentElement.clientHeight;
+    
+    const isVerticalScrollbar = e.clientX >= document.documentElement.clientWidth;
+    const isHorizontalScrollbar = e.clientY >= document.documentElement.clientHeight;
+
+    if (isVerticalScrollbar || isHorizontalScrollbar) {
+        document.body.classList.add('hide-cursor');
+        document.body.style.cursor = 'default'; 
+    } else {
+        document.body.classList.remove('hide-cursor');
+        document.body.style.cursor = 'none'; 
+    }
+});
 
 
 // funcionamento do modal
