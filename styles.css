@@ -649,7 +649,6 @@ input:checked~.toggle {
         align-items: center;
         justify-content: center;
         width: auto;
-        margin: 1.5em 0;
         gap: 1.75em;
     }
 
