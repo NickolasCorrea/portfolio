@@ -25,6 +25,24 @@ console.log('Device Type:', deviceType);
 if (deviceType !== 'Desktop') {
     document.body.classList.add('hide-cursor');
 }
+else {
+    // Esconde o cursor personalizado ao ir com o mouse acima da scrollbar
+    document.addEventListener('mousemove', function (e) {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarHeight = window.innerHeight - document.documentElement.clientHeight;
+    
+    const isVerticalScrollbar = e.clientX >= document.documentElement.clientWidth;
+    const isHorizontalScrollbar = e.clientY >= document.documentElement.clientHeight;
+
+    if (isVerticalScrollbar || isHorizontalScrollbar) {
+        document.body.classList.add('hide-cursor');
+        document.body.style.cursor = 'default'; 
+    } else {
+        document.body.classList.remove('hide-cursor');
+        document.body.style.cursor = 'none'; 
+    }
+});
+}
 
 
 // Mostrador original
@@ -188,24 +206,6 @@ function toggleCursorSize() {
     }
     isCursorEnlarged = !isCursorEnlarged;
 }
-
-
-// Esconde o cursor personalizado ao ir com o mouse acima da scrollbar
-document.addEventListener('mousemove', function (e) {
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    const scrollbarHeight = window.innerHeight - document.documentElement.clientHeight;
-    
-    const isVerticalScrollbar = e.clientX >= document.documentElement.clientWidth;
-    const isHorizontalScrollbar = e.clientY >= document.documentElement.clientHeight;
-
-    if (isVerticalScrollbar || isHorizontalScrollbar) {
-        document.body.classList.add('hide-cursor');
-        document.body.style.cursor = 'default'; 
-    } else {
-        document.body.classList.remove('hide-cursor');
-        document.body.style.cursor = 'none'; 
-    }
-});
 
 
 // funcionamento do modal
