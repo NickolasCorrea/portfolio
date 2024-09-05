@@ -114,7 +114,7 @@ const observerDigitationOnce = new IntersectionObserver((entries) => {
 const hiddenTitleElementsDigitationOnce = document.querySelectorAll('.hiddenTitle');
 hiddenTitleElementsDigitationOnce.forEach((el) => {
     el.dataset.text = el.innerHTML;
-    el.dataset.speed = 50; // Defina a velocidade de escrita aqui, se necessário
+    el.dataset.speed = 40; // Defina a velocidade de escrita aqui, se necessário
     el.dataset.removeCursor = "false";
     observerDigitationOnce.observe(el);
 });
@@ -122,7 +122,7 @@ hiddenTitleElementsDigitationOnce.forEach((el) => {
 const hiddenSubtitleElementsDigitationOnce = document.querySelectorAll('.hiddenSubtitle');
 hiddenSubtitleElementsDigitationOnce.forEach((el) => {
     el.dataset.text = el.innerHTML;
-    el.dataset.speed = 125; // Defina a velocidade de escrita aqui, se necessário
+    el.dataset.speed = 110; // Defina a velocidade de escrita aqui, se necessário
     el.dataset.removeCursor = "false";
     observerDigitationOnce.observe(el);
 });
