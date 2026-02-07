@@ -355,6 +355,55 @@
 
             .love-card {
                 padding: 2em;
+                width: 85%;
+            }
+        }
+
+        /* Notificação de Música */
+        .music-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: 2px solid var(--cor-romantica-primaria);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
+            z-index: 5000;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        .music-notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .music-notification ion-icon {
+            color: var(--cor-romantica-primaria);
+            font-size: 1.6rem;
+            animation: note-spin 2s linear infinite;
+        }
+
+        .music-notification-text {
+            font-family: var(--fonte-texto);
+            color: var(--cor-romantica-terciaria);
+            font-weight: 600;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        @keyframes note-spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
             }
         }
     </style>
@@ -578,6 +627,49 @@
             bgMusic.src = playlist[currentTrackIndex];
             bgMusic.play();
             localStorage.setItem('currentTrack', playlist[currentTrackIndex]);
+            showMusicPopup(playlist[currentTrackIndex]);
+        }
+
+        function showMusicPopup(trackSrc) {
+            const trackMap = {
+                "SOUVENIR": "SOUVENIR - BUMP OF CHICKEN",
+                "Ending 1": "Comedy - Gen Hoshino",
+                "Ending 2": "Shikisai - yama",
+                "Opening 3": "Kura Kura - Ado",
+                "Opening theme song animation": "Mixed Nuts - Official HIGE DANdism",
+                "For the Dancing and the Dreaming": "For the Dancing and the Dreaming",
+                "A Romantic Flight": "Romantic Flight - John Powell"
+            };
+
+            let trackName = "Nova Música";
+            const fileName = decodeURIComponent(trackSrc.split('/').pop());
+            for (const key in trackMap) {
+                if (fileName.includes(key)) {
+                    trackName = trackMap[key];
+                    break;
+                }
+            }
+
+            let notification = document.getElementById('musicNotification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'musicNotification';
+                notification.className = 'music-notification';
+                notification.innerHTML = `
+                    <ion-icon name="musical-notes"></ion-icon>
+                    <span class="music-notification-text" id="musicNotificationText"></span>
+                `;
+                document.body.appendChild(notification);
+            }
+
+            const textSpan = document.getElementById('musicNotificationText');
+            textSpan.textContent = `Tocando agora: ${trackName}`;
+
+            notification.classList.add('show');
+            if (window.musicPopupTimer) clearTimeout(window.musicPopupTimer);
+            window.musicPopupTimer = setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
         }
 
         bgMusic.onended = () => {
