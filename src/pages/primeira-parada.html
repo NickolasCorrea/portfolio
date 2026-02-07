@@ -181,9 +181,15 @@
         }
 
         @media (max-width: 768px) {
+            .romantic-container {
+                padding: 1em;
+                padding-top: 6em;
+            }
+
             .missao-amor-title {
-                font-size: 3.2rem;
-                margin-bottom: 0.8em;
+                font-size: 3rem;
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
             }
 
             .romantic-title {
@@ -256,10 +262,20 @@
             z-index: 1000;
         }
 
-        .music-button {
+        .music-button ion-icon {
+            font-size: 1.5rem;
+        }
+
+        .music-controls {
             position: absolute;
             top: 20px;
             right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .music-button {
             background-color: white;
             color: var(--cor-romantica-primaria);
             border: 2px solid var(--cor-romantica-primaria);
@@ -270,8 +286,19 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 1000;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        .music-button:hover {
+            transform: scale(1.1);
+            background-color: var(--cor-romantica-primaria);
+            color: white;
+        }
+
+        .music-button.active {
+            background-color: var(--cor-romantica-primaria);
+            color: white;
         }
 
         .music-button.muted {
@@ -464,6 +491,32 @@
             color: var(--cor-romantica-primaria);
             transform: scale(1.2);
         }
+
+        .download-modal {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            color: white;
+            font-size: 1.5rem;
+            background: var(--cor-romantica-primaria);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            z-index: 2001;
+        }
+
+        .download-modal:hover {
+            transform: scale(1.1);
+            background: var(--cor-romantica-terciaria);
+            color: white;
+        }
     </style>
 </head>
 
@@ -478,12 +531,23 @@
     <div id="imageModal" class="photo-modal" onclick="closeLightbox()">
         <span class="close-modal">&times;</span>
         <img class="modal-content" id="modalImg">
+        <a id="downloadBtn" class="download-modal" href="#" download onclick="event.stopPropagation()">
+            <ion-icon name="download"></ion-icon>
+        </a>
     </div>
 
     <main class="romantic-container">
-        <button id="musicToggle" class="music-button" onclick="toggleMusic()">
-            <ion-icon id="musicIcon" name="musical-notes"></ion-icon>
-        </button>
+        <div class="music-controls">
+            <button id="musicToggle" class="music-button" onclick="toggleMusic()" title="Silenciar/Ouvir">
+                <ion-icon id="musicIcon" name="musical-notes"></ion-icon>
+            </button>
+            <button id="nextMusic" class="music-button" onclick="nextTrack()" title="Próxima Música">
+                <ion-icon name="play-forward"></ion-icon>
+            </button>
+            <button id="repeatToggle" class="music-button" onclick="toggleRepeat()" title="Repetir Música">
+                <ion-icon name="repeat"></ion-icon>
+            </button>
+        </div>
 
         <a href="ashley.html" class="back-button">
             <ion-icon name="arrow-back"></ion-icon>
@@ -760,17 +824,39 @@
 
         // Sincronização de Música
         const bgMusic = document.getElementById('bgMusic');
+        const playlist = [
+            "../../assets/song/BUMP OF CHICKEN「SOUVENIR」 - BUMP OF CHICKEN (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY ED _ Ending 1「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY ED _ Ending 2「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY OP _ Opening 3「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/『SPY×FAMILY』オープニング主題歌アニメ映像／“SPY × FAMILY” Opening theme song animation - TOHO animation チャンネル (youtube).mp3",
+            "../../assets/song/For the Dancing and the Dreaming with Lyrics - Fabled Lyrics (youtube).mp3",
+            "../../assets/song/A Romantic Flight - John Powell (youtube).mp3"
+        ];
+        let currentTrackIndex = playlist.indexOf(bgMusic.querySelector('source').src) || 0;
 
         function syncMusic() {
             const savedTime = localStorage.getItem('musicTime');
             const musicMuted = localStorage.getItem('musicMuted') === 'true';
+            const savedTrack = localStorage.getItem('currentTrack');
+            const isRepeat = localStorage.getItem('musicRepeat') === 'true';
+
+            if (savedTrack && playlist.includes(savedTrack)) {
+                currentTrackIndex = playlist.indexOf(savedTrack);
+                bgMusic.src = playlist[currentTrackIndex];
+            }
 
             if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
             bgMusic.muted = musicMuted;
+            bgMusic.loop = isRepeat;
 
             if (musicMuted) {
                 document.getElementById('musicIcon').setAttribute('name', 'volume-mute');
                 document.getElementById('musicToggle').classList.add('muted');
+            }
+
+            if (isRepeat) {
+                document.getElementById('repeatToggle').classList.add('active');
             }
 
             bgMusic.play().catch(() => {
@@ -795,9 +881,35 @@
             }
         }
 
-        // Salvar tempo antes de sair
+        function toggleRepeat() {
+            const repeatBtn = document.getElementById('repeatToggle');
+            const isRepeat = !bgMusic.loop;
+            bgMusic.loop = isRepeat;
+            localStorage.setItem('musicRepeat', isRepeat);
+
+            if (isRepeat) {
+                repeatBtn.classList.add('active');
+            } else {
+                repeatBtn.classList.remove('active');
+            }
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            bgMusic.src = playlist[currentTrackIndex];
+            bgMusic.play();
+            localStorage.setItem('currentTrack', playlist[currentTrackIndex]);
+        }
+
+        bgMusic.onended = () => {
+            if (!bgMusic.loop) {
+                nextTrack();
+            }
+        };
+
         window.addEventListener('beforeunload', () => {
             localStorage.setItem('musicTime', bgMusic.currentTime);
+            localStorage.setItem('currentTrack', playlist[currentTrackIndex]);
         });
 
         document.addEventListener('click', () => {
@@ -813,9 +925,11 @@
         function openLightbox(src) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImg');
+            const downloadBtn = document.getElementById('downloadBtn');
             modal.style.display = "flex";
             setTimeout(() => modal.classList.add('show'), 10);
             modalImg.src = src;
+            downloadBtn.href = src;
         }
 
         function closeLightbox() {

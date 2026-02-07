@@ -34,7 +34,7 @@
             background-color: var(--cor-romantica-fundo);
             color: var(--cor-romantica-terciaria);
             overflow-x: hidden;
-            cursor: default;
+            cursor: none;
         }
 
         .romantic-container {
@@ -176,9 +176,15 @@
         }
 
         @media (max-width: 768px) {
+            .romantic-container {
+                padding: 1em;
+                padding-top: 6em;
+            }
+
             .missao-amor-title {
-                font-size: 3.2rem;
-                margin-bottom: 0.8em;
+                font-size: 3rem;
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
             }
 
             .romantic-title {
@@ -261,10 +267,27 @@
         }
 
         /* Botão de Música */
-        .music-button {
+        .music-button.muted {
+            background-color: #fce4ec;
+            color: #888;
+            border-color: #888;
+            opacity: 0.8;
+        }
+
+        .music-button ion-icon {
+            font-size: 1.5rem;
+        }
+
+        .music-controls {
             position: absolute;
             top: 20px;
             right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .music-button {
             background-color: white;
             color: var(--cor-romantica-primaria);
             border: 2px solid var(--cor-romantica-primaria);
@@ -275,7 +298,6 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 1000;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
         }
@@ -286,19 +308,25 @@
             color: white;
         }
 
-        .music-button.muted {
-            background-color: #fce4ec;
-            color: #888;
-            border-color: #888;
-            opacity: 0.8;
+        .music-button.active {
+            background-color: var(--cor-romantica-primaria);
+            color: white;
         }
 
         @media (max-width: 768px) {
+            .music-controls {
+                top: 10px;
+                right: 10px;
+                gap: 5px;
+            }
+
             .music-button {
                 width: 40px;
                 height: 40px;
-                top: 15px;
-                right: 15px;
+                /* top: 15px; */
+                /* Removed as it's now controlled by .music-controls top */
+                /* right: 15px; */
+                /* Removed as it's now controlled by .music-controls right */
             }
         }
 
@@ -340,9 +368,17 @@
     <div class="heart-bg" id="heartContainer"></div>
 
     <main class="romantic-container">
-        <button id="musicToggle" class="music-button" onclick="toggleMusic()">
-            <ion-icon id="musicIcon" name="musical-notes"></ion-icon>
-        </button>
+        <div class="music-controls">
+            <button id="musicToggle" class="music-button" onclick="toggleMusic()" title="Silenciar/Ouvir">
+                <ion-icon id="musicIcon" name="musical-notes"></ion-icon>
+            </button>
+            <button id="nextMusic" class="music-button" onclick="nextTrack()" title="Próxima Música">
+                <ion-icon name="play-forward"></ion-icon>
+            </button>
+            <button id="repeatToggle" class="music-button" onclick="toggleRepeat()" title="Repetir Música">
+                <ion-icon name="repeat"></ion-icon>
+            </button>
+        </div>
 
 
         <h2 class="missao-amor-title">Missão Amor</h2>
@@ -467,18 +503,41 @@
 
         // Controle de Música Local com Sincronização
         const bgMusic = document.getElementById('bgMusic');
+        const playlist = [
+            "../../assets/song/BUMP OF CHICKEN「SOUVENIR」 - BUMP OF CHICKEN (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY ED _ Ending 1「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY ED _ Ending 2「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY OP _ Opening 3「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/『SPY×FAMILY』オープニング主題歌アニメ映像／“SPY × FAMILY” Opening theme song animation - TOHO animation チャンネル (youtube).mp3",
+            "../../assets/song/For the Dancing and the Dreaming with Lyrics - Fabled Lyrics (youtube).mp3",
+            "../../assets/song/A Romantic Flight - John Powell (youtube).mp3"
+        ];
+        let currentTrackIndex = playlist.indexOf(bgMusic.querySelector('source').src) || 0;
         let isMuted = localStorage.getItem('musicMuted') === 'true';
 
         function syncMusic() {
             const savedTime = localStorage.getItem('musicTime');
+            const savedTrack = localStorage.getItem('currentTrack');
+            const isRepeat = localStorage.getItem('musicRepeat') === 'true';
+
+            if (savedTrack && playlist.includes(savedTrack)) {
+                currentTrackIndex = playlist.indexOf(savedTrack);
+                bgMusic.src = playlist[currentTrackIndex];
+            }
+
             if (savedTime) {
                 bgMusic.currentTime = parseFloat(savedTime);
             }
             bgMusic.muted = isMuted;
+            bgMusic.loop = isRepeat;
 
             if (isMuted) {
                 document.getElementById('musicIcon').setAttribute('name', 'volume-mute');
                 document.getElementById('musicToggle').classList.add('muted');
+            }
+
+            if (isRepeat) {
+                document.getElementById('repeatToggle').classList.add('active');
             }
         }
 
@@ -501,9 +560,35 @@
             localStorage.setItem('musicMuted', isMuted);
         }
 
-        // Salvar tempo continuamente ou antes de sair
+        function toggleRepeat() {
+            const repeatBtn = document.getElementById('repeatToggle');
+            const isRepeat = !bgMusic.loop;
+            bgMusic.loop = isRepeat;
+            localStorage.setItem('musicRepeat', isRepeat);
+
+            if (isRepeat) {
+                repeatBtn.classList.add('active');
+            } else {
+                repeatBtn.classList.remove('active');
+            }
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            bgMusic.src = playlist[currentTrackIndex];
+            bgMusic.play();
+            localStorage.setItem('currentTrack', playlist[currentTrackIndex]);
+        }
+
+        bgMusic.onended = () => {
+            if (!bgMusic.loop) {
+                nextTrack();
+            }
+        };
+
         window.addEventListener('beforeunload', () => {
             localStorage.setItem('musicTime', bgMusic.currentTime);
+            localStorage.setItem('currentTrack', playlist[currentTrackIndex]);
         });
 
         // Tentar tocar no primeiro clique (Browsers bloqueiam som automático)

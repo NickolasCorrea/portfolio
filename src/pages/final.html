@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="../../styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         :root {
             --cor-romantica-primaria: #ff4d6d;
             --cor-romantica-secundaria: #ffccd5;
@@ -82,6 +86,17 @@
             }
         }
 
+        .layout-horizontal {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+            margin: 2em auto 0;
+            z-index: 2;
+        }
+
         .love-card {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(15px);
@@ -132,10 +147,20 @@
             }
         }
 
-        .music-button {
+        .music-button ion-icon {
+            font-size: 1.5rem;
+        }
+
+        .music-controls {
             position: absolute;
             top: 20px;
             right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .music-button {
             background-color: white;
             color: var(--cor-romantica-primaria);
             border: 2px solid var(--cor-romantica-primaria);
@@ -146,7 +171,19 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        .music-button:hover {
+            transform: scale(1.1);
+            background-color: var(--cor-romantica-primaria);
+            color: white;
+        }
+
+        .music-button.active {
+            background-color: var(--cor-romantica-primaria);
+            color: white;
         }
 
         .music-button.muted {
@@ -168,6 +205,272 @@
             gap: 5px;
             z-index: 1000;
         }
+
+        /* Esconde o footer mobile no desktop */
+        .mobile-dragons-footer {
+            display: none;
+        }
+
+        /* Responsividade para Celular */
+        @media (max-width: 768px) {
+            .romantic-container {
+                padding: 1em;
+                padding-top: 6em;
+            }
+
+            .love-card {
+                padding: 2.5em 1.5em;
+                border-radius: 20px;
+            }
+
+            .romantic-title {
+                font-size: 2.2rem;
+                margin-top: 0.5em;
+            }
+
+            .romantic-text {
+                font-size: 1.1rem;
+                line-height: 1.5;
+                margin-bottom: 1.5em;
+            }
+
+            /* Ajuste para o parágrafo de destaque com estilo inline */
+            p.romantic-text[style*="font-size: 1.8rem"] {
+                font-size: 1.25rem !important;
+                margin-top: 0.5em !important;
+            }
+
+            .final-message {
+                font-size: 2.8rem;
+                margin-top: 0.5em;
+            }
+
+            .camera-section {
+                margin-top: 2em !important;
+            }
+
+            .camera-container {
+                width: 100% !important;
+                max-width: 280px;
+                height: 210px !important;
+            }
+
+            .camera-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .camera-controls .love-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            #savedMemorySection {
+                margin-top: 3em !important;
+            }
+
+            #savedPhotoDisp {
+                width: 220px !important;
+            }
+
+            .back-button {
+                top: 15px;
+                left: 15px;
+                font-size: 0.9rem;
+            }
+
+            .music-controls {
+                top: 10px;
+                right: 10px;
+                gap: 5px;
+            }
+
+            .music-button {
+                width: 40px;
+                height: 40px;
+            }
+
+            .music-button ion-icon {
+                font-size: 1.2rem;
+            }
+
+            .layout-horizontal {
+                flex-direction: column;
+                min-height: auto;
+                gap: 30px;
+                margin: 1.5em auto 0;
+            }
+
+            /* Esconde os dragões absolutos das laterais no mobile */
+            .dragon-img.desktop-dragon {
+                display: none;
+            }
+
+            /* Container para os dragões no mobile (fora do card) */
+            .mobile-dragons-footer {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                margin-top: 1em;
+                /* Reduzido para ficar mais próximo da caixa */
+                width: 100%;
+                z-index: 5;
+            }
+
+            .dragon-mini {
+                width: 120px;
+                height: auto;
+                filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.3));
+            }
+
+            .dragon-mini.toothless {
+                width: 145px;
+                /* Banguela levemente maior para compensar a proporção */
+                transform: translateY(10px);
+                /* Desloca o Banguela levemente para baixo no mobile */
+            }
+
+            .hearts-mini {
+                width: 80px;
+                height: auto;
+                animation: heartbeat 1.5s infinite ease-in-out;
+            }
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .dragon-img {
+            position: absolute;
+            z-index: 1;
+            width: 550px;
+            /* Aumentado o tamanho base de 400px para 550px */
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));
+            transition: all 0.5s ease;
+            bottom: -50px;
+        }
+
+        .light-fury {
+            left: -300px;
+            /* Aproximado de -400px para -280px */
+            bottom: -100px;
+            /* Ajustada a posição vertical */
+        }
+
+        .toothless {
+            right: -300px;
+            /* Aproximado de -400px para -280px */
+            width: 620px;
+            /* Aumentado proporcionalmente (Banguela é mais largo) */
+            bottom: -150px;
+            /* Posiciona o Banguela ainda mais para baixo para equilíbrio */
+        }
+
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Modal Lightbox */
+        .photo-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border: 10px solid white;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--cor-romantica-primaria);
+            transform: scale(1.2);
+        }
+
+        .download-modal {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            color: white;
+            font-size: 1.5rem;
+            background: var(--cor-romantica-primaria);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            z-index: 2001;
+        }
+
+        .download-modal:hover {
+            transform: scale(1.1);
+            background: var(--cor-romantica-terciaria);
+            color: white;
+        }
     </style>
 </head>
 
@@ -178,71 +481,105 @@
     </div>
     <div class="heart-bg" id="heartContainer"></div>
 
+    <!-- Modal para Fotos -->
+    <div id="imageModal" class="photo-modal" onclick="closeLightbox()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <a id="downloadBtn" class="download-modal" href="#" download onclick="event.stopPropagation()">
+            <ion-icon name="download"></ion-icon>
+        </a>
+    </div>
+
     <main class="romantic-container">
-        <button id="musicToggle" class="music-button" onclick="toggleMusic()">
-            <ion-icon id="musicIcon" name="musical-notes"></ion-icon>
-        </button>
+        <div class="music-controls">
+            <button id="musicToggle" class="music-button" onclick="toggleMusic()" title="Silenciar/Ouvir">
+                <ion-icon id="musicIcon" name="musical-notes"></ion-icon>
+            </button>
+            <button id="nextMusic" class="music-button" onclick="nextTrack()" title="Próxima Música">
+                <ion-icon name="play-forward"></ion-icon>
+            </button>
+            <button id="repeatToggle" class="music-button" onclick="toggleRepeat()" title="Repetir Música">
+                <ion-icon name="repeat"></ion-icon>
+            </button>
+        </div>
 
         <a href="primeira-parada.html" class="back-button">
             <ion-icon name="arrow-back"></ion-icon>
             Voltar
         </a>
 
-        <div class="love-card" id="mainCard">
-            <h1 class="romantic-title">O Destino de Tudo</h1>
-            <p class="romantic-text">
-                Nossa jornada até aqui foi apenas o começo de algo eterno.
-                Cada parada, cada foto e cada palavra foi para te lembrar que meu mundo é melhor porque você está nele.
-                <br><br>
-            <p class="romantic-text"
-                style="font-size: 1.8rem; font-weight: 600; color: var(--cor-romantica-terciaria); margin-top: 1em;">
-                Eu vejo um futuro inteiro ao seu lado, construindo cada sonho que imaginamos,
-                porque eu te amo mais do que as palavras podem expressar. ❤️
-            </p>
+        <div class="layout-horizontal">
+            <!-- Arrastado para as laterais no Desktop -->
+            <img src="../../assets/ashImages/furiaLuz.png" alt="Fúria da Luz"
+                class="dragon-img light-fury desktop-dragon">
 
-            <!-- Seção de Foto -->
-            <div class="camera-section" style="margin-top: 3em;">
-                <h3 style="font-family: var(--fonte-texto); margin-bottom: 1em;">Eternize este momento...</h3>
-                <div class="camera-container"
-                    style="position: relative; width: 320px; height: 240px; margin: 0 auto; border: 5px solid white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
-                    <video id="webcam" autoplay playsinline
-                        style="width: 100%; height: 100%; object-fit: cover;"></video>
-                    <canvas id="photoCanvas"
-                        style="display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></canvas>
+            <div class="love-card" id="mainCard">
+                <h1 class="romantic-title">O Destino de Tudo</h1>
+                <p class="romantic-text">
+                    Nossa jornada até aqui foi apenas o começo de algo eterno.
+                    Cada parada, cada foto e cada palavra foi para te lembrar que meu mundo é melhor porque você está
+                    nele.
+                    <br><br>
+                <p class="romantic-text"
+                    style="font-size: 1.8rem; font-weight: 600; color: var(--cor-romantica-terciaria); margin-top: 1em;">
+                    Eu vejo um futuro inteiro ao seu lado, construindo cada sonho que imaginamos,
+                    porque eu te amo mais do que as palavras podem expressar. ❤️
+                </p>
+
+                <!-- Seção de Foto -->
+                <div class="camera-section" style="margin-top: 3em;">
+                    <h3 style="font-family: var(--fonte-texto); margin-bottom: 1em;">Eternize este momento...</h3>
+                    <div class="camera-container"
+                        style="position: relative; width: 320px; height: 240px; margin: 0 auto; border: 5px solid white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
+                        <video id="webcam" autoplay playsinline
+                            style="width: 100%; height: 100%; object-fit: cover;"></video>
+                        <canvas id="photoCanvas"
+                            style="display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></canvas>
+                    </div>
+                    <div class="camera-controls"
+                        style="margin-top: 1.5em; display: flex; gap: 10px; justify-content: center;">
+                        <button id="startCamera" class="love-button" style="padding: 10px 20px; font-size: 1rem;">
+                            <ion-icon name="camera"></ion-icon> Abrir Câmera
+                        </button>
+                        <button id="takePhoto" class="love-button"
+                            style="padding: 10px 20px; font-size: 1rem; display: none;">
+                            <ion-icon name="aperture"></ion-icon> Tirar Foto
+                        </button>
+                        <button id="retake" class="love-button"
+                            style="padding: 10px 20px; font-size: 1rem; display: none; background: #888;">
+                            <ion-icon name="refresh"></ion-icon> Tentar Novamente
+                        </button>
+                        <a id="downloadLink" class="love-button"
+                            style="padding: 10px 20px; font-size: 1rem; display: none; text-decoration: none;">
+                            <ion-icon name="download"></ion-icon> Salvar Foto
+                        </a>
+                    </div>
                 </div>
-                <div class="camera-controls"
-                    style="margin-top: 1.5em; display: flex; gap: 10px; justify-content: center;">
-                    <button id="startCamera" class="love-button" style="padding: 10px 20px; font-size: 1rem;">
-                        <ion-icon name="camera"></ion-icon> Abrir Câmera
-                    </button>
-                    <button id="takePhoto" class="love-button"
-                        style="padding: 10px 20px; font-size: 1rem; display: none;">
-                        <ion-icon name="aperture"></ion-icon> Tirar Foto
-                    </button>
-                    <button id="retake" class="love-button"
-                        style="padding: 10px 20px; font-size: 1rem; display: none; background: #888;">
-                        <ion-icon name="refresh"></ion-icon> Tentar Novamente
-                    </button>
-                    <a id="downloadLink" class="love-button"
-                        style="padding: 10px 20px; font-size: 1rem; display: none; text-decoration: none;">
-                        <ion-icon name="download"></ion-icon> Salvar Foto
-                    </a>
+
+                <div id="savedMemorySection" style="margin-top: 4em; display: none;">
+                    <h3
+                        style="font-family: var(--fonte-texto); margin-bottom: 1em; color: var(--cor-romantica-terciaria);">
+                        Nossa Memória Guardada ❤️</h3>
+                    <div id="memoryMural" style="display: flex; justify-content: center;">
+                        <img id="savedPhotoDisp" onclick="openLightbox(this.src)"
+                            style="width: 280px; height: auto; border: 10px solid white; border-bottom: 40px solid white; transform: rotate(-2deg); box-shadow: 0 10px 25px rgba(0,0,0,0.2); background: white; cursor: pointer;">
+                    </div>
+                    <button onclick="clearMemory()"
+                        style="margin-top: 1.5em; background: none; border: none; color: #888; cursor: pointer; text-decoration: underline; font-size: 0.8rem;">Apagar
+                        esta memória</button>
                 </div>
+
+                <h2 class="final-message">Eu Te Amo Infinitamente! ❤️</h2>
             </div>
 
-            <div id="savedMemorySection" style="margin-top: 4em; display: none;">
-                <h3 style="font-family: var(--fonte-texto); margin-bottom: 1em; color: var(--cor-romantica-terciaria);">
-                    Nossa Memória Guardada ❤️</h3>
-                <div id="memoryMural" style="display: flex; justify-content: center;">
-                    <img id="savedPhotoDisp"
-                        style="width: 280px; height: auto; border: 10px solid white; border-bottom: 40px solid white; transform: rotate(-2deg); box-shadow: 0 10px 25px rgba(0,0,0,0.2); background: white;">
-                </div>
-                <button onclick="clearMemory()"
-                    style="margin-top: 1.5em; background: none; border: none; color: #888; cursor: pointer; text-decoration: underline; font-size: 0.8rem;">Apagar
-                    esta memória</button>
-            </div>
+            <img src="../../assets/ashImages/banguela.png" alt="Banguela" class="dragon-img toothless desktop-dragon">
 
-            <h2 class="final-message">Eu Te Amo Infinitamente! ❤️</h2>
+            <!-- Rodapé exclusivo para Mobile (Agora fora do card, logo abaixo dele) -->
+            <div class="mobile-dragons-footer">
+                <img src="../../assets/ashImages/furiaLuz.png" alt="Fúria da Luz" class="dragon-mini">
+                <img src="../../assets/ashImages/corações.png" alt="Corações" class="hearts-mini">
+                <img src="../../assets/ashImages/banguela.png" alt="Banguela" class="dragon-mini toothless">
+            </div>
         </div>
 
         <audio id="bgMusic" loop>
@@ -329,17 +666,39 @@
         createHearts();
 
         const bgMusic = document.getElementById('bgMusic');
+        const playlist = [
+            "../../assets/song/BUMP OF CHICKEN「SOUVENIR」 - BUMP OF CHICKEN (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY ED _ Ending 1「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY ED _ Ending 2「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/「Creditless」SPY x FAMILY OP _ Opening 3「UHD 60FPS」 - TriaxFx (youtube).mp3",
+            "../../assets/song/『SPY×FAMILY』オープニング主題歌アニメ映像／“SPY × FAMILY” Opening theme song animation - TOHO animation チャンネル (youtube).mp3",
+            "../../assets/song/For the Dancing and the Dreaming with Lyrics - Fabled Lyrics (youtube).mp3",
+            "../../assets/song/A Romantic Flight - John Powell (youtube).mp3"
+        ];
+        let currentTrackIndex = playlist.indexOf(bgMusic.querySelector('source').src) || 0;
 
         function syncMusic() {
             const savedTime = localStorage.getItem('musicTime');
             const musicMuted = localStorage.getItem('musicMuted') === 'true';
+            const savedTrack = localStorage.getItem('currentTrack');
+            const isRepeat = localStorage.getItem('musicRepeat') === 'true';
+
+            if (savedTrack && playlist.includes(savedTrack)) {
+                currentTrackIndex = playlist.indexOf(savedTrack);
+                bgMusic.src = playlist[currentTrackIndex];
+            }
 
             if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
             bgMusic.muted = musicMuted;
+            bgMusic.loop = isRepeat;
 
             if (musicMuted) {
                 document.getElementById('musicIcon').setAttribute('name', 'volume-mute');
                 document.getElementById('musicToggle').classList.add('muted');
+            }
+
+            if (isRepeat) {
+                document.getElementById('repeatToggle').classList.add('active');
             }
 
             bgMusic.play().catch(() => { });
@@ -362,8 +721,35 @@
             }
         }
 
+        function toggleRepeat() {
+            const repeatBtn = document.getElementById('repeatToggle');
+            const isRepeat = !bgMusic.loop;
+            bgMusic.loop = isRepeat;
+            localStorage.setItem('musicRepeat', isRepeat);
+
+            if (isRepeat) {
+                repeatBtn.classList.add('active');
+            } else {
+                repeatBtn.classList.remove('active');
+            }
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            bgMusic.src = playlist[currentTrackIndex];
+            bgMusic.play();
+            localStorage.setItem('currentTrack', playlist[currentTrackIndex]);
+        }
+
+        bgMusic.onended = () => {
+            if (!bgMusic.loop) {
+                nextTrack();
+            }
+        };
+
         window.addEventListener('beforeunload', () => {
             localStorage.setItem('musicTime', bgMusic.currentTime);
+            localStorage.setItem('currentTrack', playlist[currentTrackIndex]);
         });
 
         document.addEventListener('click', () => {
@@ -389,6 +775,30 @@
                 document.getElementById('savedMemorySection').style.display = 'none';
             }
         }
+
+        // Funções do Lightbox
+        function openLightbox(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            const downloadBtn = document.getElementById('downloadBtn');
+            modal.style.display = "flex";
+            setTimeout(() => modal.classList.add('show'), 10);
+            modalImg.src = src;
+            downloadBtn.href = src;
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+        }
+
+        // Fechar com a tecla Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeLightbox();
+        });
     </script>
 </body>
 
