@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ashley - Com Amor</title>
+    <link rel="icon" type="image/png" href="../../assets/faviconNick.ico">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-romantica-primaria: #ff4d6d;
+            --cor-romantica-secundaria: #ffccd5;
+            --cor-romantica-terciaria: #c9184a;
+            --cor-romantica-fundo: #fff0f3;
+            --fonte-romantica: 'Dancing Script', cursive;
+            --fonte-texto: 'Montserrat', sans-serif;
+        }
+
+        /* Personalização da scrollbar para esta página */
+        ::-webkit-scrollbar-track {
+            background-color: var(--cor-romantica-fundo);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--cor-romantica-primaria);
+            box-shadow: 0 0 8px var(--cor-romantica-primaria);
+        }
+
+        body.romantic-mode {
+            background-color: var(--cor-romantica-fundo);
+            color: var(--cor-romantica-terciaria);
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        .romantic-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2em;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: var(--cor-romantica-primaria);
+            opacity: 0.6;
+            font-size: 1.5rem;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .layout-horizontal {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+            min-height: 700px;
+            margin: -2em auto 0;
+        }
+
+        .love-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--cor-romantica-primaria);
+            border-radius: 30px;
+            padding: 3em;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .romantic-title {
+            font-family: var(--fonte-romantica);
+            font-size: 3.2rem;
+            margin-bottom: 0.5em;
+            color: var(--cor-romantica-terciaria);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .missao-amor-title {
+            font-family: var(--fonte-romantica);
+            font-size: 5.5rem;
+            margin-bottom: 0;
+            color: var(--cor-romantica-terciaria);
+            text-shadow: 0 0 25px rgba(255, 77, 109, 0.6);
+        }
+
+        .character-img {
+            position: absolute;
+            z-index: 1;
+            width: 750px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));
+            transition: all 0.5s ease;
+            bottom: -50px;
+        }
+
+        .loid-img {
+            left: -400px;
+        }
+
+        .yor-img {
+            right: -400px;
+        }
+
+        .cursor {
+            background-color: var(--cor-romantica-terciaria) !important;
+        }
+
+        @media (max-width: 1400px) {
+            .loid-img {
+                left: -300px;
+            }
+
+            .yor-img {
+                right: -300px;
+            }
+
+            .character-img {
+                width: 650px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .loid-img {
+                left: -150px;
+            }
+
+            .yor-img {
+                right: -150px;
+            }
+
+            .character-img {
+                width: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .missao-amor-title {
+                font-size: 3.2rem;
+                margin-bottom: 0.8em;
+            }
+
+            .romantic-title {
+                font-size: 2.2rem;
+            }
+
+            .layout-horizontal {
+                flex-direction: column;
+                min-height: auto;
+                gap: 30px;
+                margin: 1.5em auto 0;
+            }
+
+            .character-img {
+                position: static;
+                width: 320px;
+                opacity: 1;
+                filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.4));
+            }
+
+            .love-card {
+                order: 1;
+                max-width: 95%;
+                padding: 1.5em;
+            }
+
+            .loid-img {
+                order: 2;
+            }
+
+            .yor-img {
+                order: 3;
+            }
+        }
+
+        .romantic-text {
+            font-family: var(--fonte-texto);
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 1.5em;
+            color: #4a4a4a;
+        }
+
+        .love-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1em 2em;
+            background-color: var(--cor-romantica-primaria);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: var(--fonte-romantica);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        .love-button:hover {
+            background-color: var(--cor-romantica-terciaria);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--cor-romantica-primaria);
+            text-decoration: none;
+            font-family: var(--fonte-texto);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        /* Botão de Música */
+        .music-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            color: var(--cor-romantica-primaria);
+            border: 2px solid var(--cor-romantica-primaria);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        .music-button:hover {
+            transform: scale(1.1);
+            background-color: var(--cor-romantica-primaria);
+            color: white;
+        }
+
+        .music-button.muted {
+            background-color: #fce4ec;
+            color: #888;
+            border-color: #888;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .music-button {
+                width: 40px;
+                height: 40px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .layout-horizontal {
+                flex-direction: column;
+            }
+
+            .character-img {
+                width: 200px;
+            }
+
+            .missao-amor-title {
+                font-size: 4.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .romantic-title {
+                font-size: 2.5rem;
+            }
+
+            .romantic-text {
+                font-size: 1.1rem;
+            }
+
+            .love-card {
+                padding: 2em;
+            }
+        }
+    </style>
+</head>
+
+<body class="romantic-mode">
+    <div class="custom-cursor">
+        <div class="inner-cursor"></div>
+        <div class="outer-cursor"></div>
+    </div>
+    <div class="heart-bg" id="heartContainer"></div>
+
+    <main class="romantic-container">
+        <button id="musicToggle" class="music-button" onclick="toggleMusic()">
+            <ion-icon id="musicIcon" name="musical-notes"></ion-icon>
+        </button>
+
+
+        <h2 class="missao-amor-title">Missão Amor</h2>
+
+        <audio id="bgMusic" loop>
+            <source src="../../assets/song/BUMP OF CHICKEN「SOUVENIR」 - BUMP OF CHICKEN (youtube).mp3" type="audio/mpeg">
+            Seu navegador não suporta o elemento de áudio.
+        </audio>
+
+        <div class="layout-horizontal">
+            <img src="../../assets/ashImages/loid_forger_full_body_1770444062652-removebg-preview.png" alt="Loid Forger"
+                class="character-img loid-img">
+
+            <div class="love-card hidden" id="mainCard">
+                <h1 class="romantic-title hiddenTitle">Para minha amada, <br><span class="palavra-destaque"
+                        style="color: var(--cor-romantica-primaria); text-shadow: none;">Ashley</span></h1>
+                <p class="romantic-text hiddenText">
+                    Oi, meu amor. Eu queria criar algo especial para te mostrar o quanto você é importante para mim.
+                    Este
+                    arquivo, agora parte do meu mundo de códigos, é uma pequena prova do amor imenso que sinto por você.
+                    <br><br>
+                    Que a "missão amor" comece!
+                    <br><br>
+                    Eu te amo infinitamente! ❤️
+                </p>
+                <div class="container__horizontal">
+                    <a href="#" class="love-button" onclick="celebrate()">
+                        <ion-icon name="heart"></ion-icon>
+                        Clique aqui para começar!
+                    </a>
+                </div>
+            </div>
+
+            <img src="../../assets/ashImages/yor_forger_full_body_1770444077207-removebg-preview.png" alt="Yor Forger"
+                class="character-img yor-img">
+        </div>
+    </main>
+
+    <script src="../../app.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        // Função para criar corações flutuantes
+        function createHearts() {
+            const container = document.getElementById('heartContainer');
+            const heartIcons = ['heart', 'heart-outline', 'heart-circle'];
+
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    heart.style.animationDelay = (Math.random() * 2) + 's';
+
+                    const icon = document.createElement('ion-icon');
+                    icon.setAttribute('name', heartIcons[Math.floor(Math.random() * heartIcons.length)]);
+                    heart.appendChild(icon);
+
+                    container.appendChild(heart);
+
+                    // Remove o coração após a animação
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 7000);
+                }, i * 300);
+            }
+        }
+
+        // Criar corações periodicamente
+        setInterval(createHearts, 3000);
+        createHearts();
+
+        // Efeito de celebração e redirecionamento
+        function celebrate() {
+            // Salvar estado da música antes de ir para a próxima página
+            localStorage.setItem('musicTime', bgMusic.currentTime);
+            localStorage.setItem('musicMuted', bgMusic.muted);
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const spark = document.createElement('div');
+                    spark.className = 'floating-heart';
+                    spark.style.left = '50vw';
+                    spark.style.top = '50vh';
+                    spark.style.color = i % 2 === 0 ? '#ff4d6d' : '#ffccd5';
+                    spark.style.animation = `explode${i} 1s forwards`;
+
+                    const icon = document.createElement('ion-icon');
+                    icon.setAttribute('name', 'heart');
+                    spark.appendChild(icon);
+
+                    document.body.appendChild(spark);
+
+                    const angle = (i / 50) * Math.PI * 2;
+                    const velocity = Math.random() * 300 + 200;
+                    const dx = Math.cos(angle) * velocity;
+                    const dy = Math.sin(angle) * velocity;
+
+                    const style = document.createElement('style');
+                    style.innerHTML = `
+                        @keyframes explode${i} {
+                            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+                            100% { transform: translate(${dx}px, ${dy}px) scale(0); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+
+                    setTimeout(() => {
+                        spark.remove();
+                        style.remove();
+                    }, 1000);
+                }, i * 20);
+            }
+
+            // Pequeno delay para a animação aparecer antes de mudar de página
+            setTimeout(() => {
+                window.location.href = "primeira-parada.html";
+            }, 1000);
+        }
+
+        // Controle de Música Local com Sincronização
+        const bgMusic = document.getElementById('bgMusic');
+        let isMuted = localStorage.getItem('musicMuted') === 'true';
+
+        function syncMusic() {
+            const savedTime = localStorage.getItem('musicTime');
+            if (savedTime) {
+                bgMusic.currentTime = parseFloat(savedTime);
+            }
+            bgMusic.muted = isMuted;
+
+            if (isMuted) {
+                document.getElementById('musicIcon').setAttribute('name', 'volume-mute');
+                document.getElementById('musicToggle').classList.add('muted');
+            }
+        }
+
+        function toggleMusic() {
+            const musicIcon = document.getElementById('musicIcon');
+            const musicBtn = document.getElementById('musicToggle');
+
+            if (bgMusic.paused || bgMusic.muted) {
+                bgMusic.muted = false;
+                bgMusic.play().catch(e => console.log("Erro ao tocar:", e));
+                musicIcon.setAttribute('name', 'musical-notes');
+                musicBtn.classList.remove('muted');
+                isMuted = false;
+            } else {
+                bgMusic.muted = true;
+                musicIcon.setAttribute('name', 'volume-mute');
+                musicBtn.classList.add('muted');
+                isMuted = true;
+            }
+            localStorage.setItem('musicMuted', isMuted);
+        }
+
+        // Salvar tempo continuamente ou antes de sair
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('musicTime', bgMusic.currentTime);
+        });
+
+        // Tentar tocar no primeiro clique (Browsers bloqueiam som automático)
+        document.addEventListener('click', function () {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(e => console.log("Autoplay bloqueado:", e));
+                // Se não estiver mutado no botão, garante o som
+                const musicBtn = document.getElementById('musicToggle');
+                if (!musicBtn.classList.contains('muted')) {
+                    bgMusic.muted = false;
+                }
+            }
+        }, { once: true });
+
+        // Garante que o card apareça mesmo se o observer do app.js falhar
+        document.addEventListener('DOMContentLoaded', () => {
+            syncMusic();
+            setTimeout(() => {
+                document.getElementById('mainCard').classList.add('show');
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

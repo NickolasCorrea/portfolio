@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão Amor - Primeira Parada</title>
+    <link rel="icon" type="image/png" href="../../assets/faviconNick.ico">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-romantica-primaria: #ff4d6d;
+            --cor-romantica-secundaria: #ffccd5;
+            --cor-romantica-terciaria: #c9184a;
+            --cor-romantica-fundo: #fff0f3;
+            --fonte-romantica: 'Dancing Script', cursive;
+            --fonte-texto: 'Montserrat', sans-serif;
+        }
+
+        /* Personalização da scrollbar para esta página */
+        ::-webkit-scrollbar-track {
+            background-color: var(--cor-romantica-fundo);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--cor-romantica-primaria);
+            box-shadow: 0 0 8px var(--cor-romantica-primaria);
+        }
+
+        body.romantic-mode {
+            background-color: var(--cor-romantica-fundo);
+            color: var(--cor-romantica-terciaria);
+            overflow-x: hidden;
+            cursor: none;
+            /* Esconde o padrão para usar o personalizado */
+        }
+
+        .romantic-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2em;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: var(--cor-romantica-primaria);
+            opacity: 0.6;
+            font-size: 1.5rem;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .layout-horizontal {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+            min-height: 700px;
+            margin: 2em auto 0;
+        }
+
+        .love-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--cor-romantica-primaria);
+            border-radius: 30px;
+            padding: 3em;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .romantic-title {
+            font-family: var(--fonte-romantica);
+            font-size: 3.2rem;
+            margin-bottom: 0.5em;
+            color: var(--cor-romantica-terciaria);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .missao-amor-title {
+            font-family: var(--fonte-romantica);
+            font-size: 5.5rem;
+            margin-bottom: 0;
+            color: var(--cor-romantica-terciaria);
+            text-shadow: 0 0 25px rgba(255, 77, 109, 0.6);
+        }
+
+        .character-img {
+            position: absolute;
+            z-index: 1;
+            width: 750px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));
+            transition: all 0.5s ease;
+            bottom: -50px;
+        }
+
+        .loid-img {
+            left: -400px;
+        }
+
+        .yor-img {
+            right: -400px;
+        }
+
+        .cursor {
+            background-color: var(--cor-romantica-terciaria) !important;
+        }
+
+        @media (max-width: 1400px) {
+            .loid-img {
+                left: -300px;
+            }
+
+            .yor-img {
+                right: -300px;
+            }
+
+            .character-img {
+                width: 650px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .loid-img {
+                left: -150px;
+            }
+
+            .yor-img {
+                right: -150px;
+            }
+
+            .character-img {
+                width: 500px;
+            }
+
+            .missao-amor-title {
+                font-size: 4.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .missao-amor-title {
+                font-size: 3.2rem;
+                margin-bottom: 0.8em;
+            }
+
+            .romantic-title {
+                font-size: 2.2rem;
+            }
+
+            .layout-horizontal {
+                flex-direction: column;
+                min-height: auto;
+                gap: 30px;
+                margin: 1.5em auto 0;
+            }
+
+            .character-img {
+                position: static;
+                width: 320px;
+                opacity: 1;
+                filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.4));
+            }
+
+            .love-card {
+                order: 1;
+                max-width: 95%;
+                padding: 1.5em;
+            }
+
+            .loid-img {
+                order: 2;
+            }
+
+            .yor-img {
+                order: 3;
+            }
+        }
+
+        .romantic-text {
+            font-family: var(--fonte-texto);
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 1.5em;
+            color: #4a4a4a;
+        }
+
+        .love-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1em 2em;
+            background-color: var(--cor-romantica-primaria);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: var(--fonte-romantica);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--cor-romantica-primaria);
+            text-decoration: none;
+            font-family: var(--fonte-texto);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            z-index: 1000;
+        }
+
+        .music-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            color: var(--cor-romantica-primaria);
+            border: 2px solid var(--cor-romantica-primaria);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .music-button.muted {
+            background-color: #fce4ec;
+            color: #888;
+            border-color: #888;
+        }
+
+        /* Galeria de Fotos */
+        .photo-gallery {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 2em;
+            flex-wrap: wrap;
+        }
+
+        .romantic-photo {
+            width: 180px;
+            height: 240px;
+            object-fit: cover;
+            border: 8px solid white;
+            border-bottom: 30px solid white;
+            border-radius: 5px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .romantic-photo:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 15px 30px rgba(255, 77, 109, 0.3);
+        }
+
+        .photo-1 {
+            transform: rotate(-3deg);
+        }
+
+        .photo-2 {
+            transform: rotate(3deg);
+        }
+
+        .photo-3 {
+            transform: rotate(-2deg);
+        }
+
+        .photo-4 {
+            transform: rotate(4deg);
+        }
+
+        .photo-5 {
+            transform: rotate(-4deg);
+        }
+
+        .photo-6 {
+            transform: rotate(2deg);
+        }
+
+        .photo-7 {
+            transform: rotate(-3deg);
+        }
+
+        .photo-8 {
+            transform: rotate(5deg);
+        }
+
+        .photo-9 {
+            transform: rotate(-5deg);
+        }
+
+        .photo-10 {
+            transform: rotate(2deg);
+        }
+
+        .photo-11 {
+            transform: rotate(-4deg);
+        }
+
+        .photo-12 {
+            transform: rotate(3deg);
+        }
+
+        .photo-13 {
+            transform: rotate(-2deg);
+        }
+
+        .photo-14 {
+            transform: rotate(4deg);
+        }
+
+        .photo-15 {
+            transform: rotate(-3deg);
+        }
+
+        .photo-16 {
+            transform: rotate(2deg);
+        }
+
+        .photo-17 {
+            transform: rotate(-5deg);
+        }
+
+        .photo-18 {
+            transform: rotate(3deg);
+        }
+
+        .photo-19 {
+            transform: rotate(-2deg);
+        }
+
+        .photo-20 {
+            transform: rotate(3deg);
+        }
+
+        .photo-21 {
+            transform: rotate(-4deg);
+        }
+
+        .photo-22 {
+            transform: rotate(2deg);
+        }
+
+        .photo-23 {
+            transform: rotate(-3deg);
+        }
+
+        .photo-24 {
+            transform: rotate(4deg);
+        }
+
+        .photo-25 {
+            transform: rotate(-2deg);
+        }
+
+        @media (max-width: 768px) {
+            .romantic-photo {
+                width: 140px;
+                height: 190px;
+            }
+        }
+
+        /* Modal Lightbox */
+        .photo-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border: 10px solid white;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--cor-romantica-primaria);
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body class="romantic-mode">
+    <div class="custom-cursor">
+        <div class="inner-cursor"></div>
+        <div class="outer-cursor"></div>
+    </div>
+    <div class="heart-bg" id="heartContainer"></div>
+
+    <!-- Modal para Fotos -->
+    <div id="imageModal" class="photo-modal" onclick="closeLightbox()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+
+    <main class="romantic-container">
+        <button id="musicToggle" class="music-button" onclick="toggleMusic()">
+            <ion-icon id="musicIcon" name="musical-notes"></ion-icon>
+        </button>
+
+        <a href="ashley.html" class="back-button">
+            <ion-icon name="arrow-back"></ion-icon>
+            Voltar
+        </a>
+
+        <h2 class="missao-amor-title">Primeira Parada</h2>
+
+        <audio id="bgMusic" loop>
+            <source src="../../assets/song/BUMP OF CHICKEN「SOUVENIR」 - BUMP OF CHICKEN (youtube).mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="layout-horizontal">
+            <img src="../../assets/ashImages/loid_forger_full_body_1770444062652-removebg-preview.png" alt="Loid Forger"
+                class="character-img loid-img">
+
+            <div class="love-card hidden" id="mainCard">
+                <h1 class="romantic-title hiddenTitle">Nossa história...</h1>
+                <p class="romantic-text hiddenText">
+                    Você lembra de como tudo começou? <br>
+                    Parece que foi ontem que nossos caminhos se cruzaram pela primeira vez.
+                    Desde aquele momento, meu mundo ganhou cores que eu nem sabia que existiam.
+                    <br><br>
+                    Cada risada, cada conversa e cada momento ao seu lado se tornou um tesouro que guardo com todo
+                    carinho.
+                    Você é a melhor parte dos meus dias.
+                </p>
+                <div class="photo-gallery">
+                    <img src="../../assets/fotos/1.jpeg" alt="Nossa lembrança 1" class="romantic-photo photo-1"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/2.jpeg" alt="Nossa lembrança 2" class="romantic-photo photo-2"
+                        onclick="openLightbox(this.src)">
+                </div>
+            </div>
+
+            <img src="../../assets/ashImages/yor_forger_full_body_1770444077207-removebg-preview.png" alt="Yor Forger"
+                class="character-img yor-img">
+        </div>
+
+        <!-- Segunda Parada/Seção -->
+        <h2 class="missao-amor-title" style="margin-top: 4em;">Nossa Conexão</h2>
+
+        <div class="layout-horizontal" style="margin-top: 2em;">
+            <img src="../../assets/ashImages/loid-roses.png" alt="Loid Forger Roses" class="character-img loid-img"
+                style="width: 48%; left: -200px; filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+
+            <div class="love-card hidden show" id="card2">
+                <h1 class="romantic-title">O Fortalecimento dos Nossos Laços</h1>
+                <p class="romantic-text">
+                    A cada pequeno gesto, a cada detalhe compartilhado, fomos construindo algo único.
+                    Nossa conexão se tornou nossa força, transformando dias comuns em capítulos inesquecíveis da nossa
+                    história.
+                    <br><br>
+                    Você é quem completa meus pensamentos e traz paz para os meus dias mais agitados.
+                </p>
+                <div class="photo-gallery">
+                    <img src="../../assets/fotos/3.jpeg" alt="Nossa lembrança 3" class="romantic-photo photo-3"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/4.jpeg" alt="Nossa lembrança 4" class="romantic-photo photo-4"
+                        onclick="openLightbox(this.src)">
+                </div>
+            </div>
+
+            <img src="../../assets/ashImages/yor-roses.png" alt="Yor Forger Roses" class="character-img yor-img"
+                style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+        </div>
+
+        <!-- Terceira Parada/Seção -->
+        <h2 class="missao-amor-title" style="margin-top: 4em;">Nossas Aventuras</h2>
+
+        <div class="layout-horizontal" style="margin-top: 2em;">
+            <img src="../../assets/ashImages/loid-action.png" alt="Loid Forger Action" class="character-img loid-img"
+                style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+
+            <div class="love-card hidden show" id="card3">
+                <h1 class="romantic-title">Colecionando Momentos</h1>
+                <p class="romantic-text">
+                    Cada aventura ao seu lado é uma página colorida no livro da minha vida.
+                    De grandes viagens a pequenos instantes de silêncio, tudo se torna especial porque tenho você como
+                    minha melhor companhia.
+                    <br><br>
+                    Sou grato por cada segundo que passamos construindo nosso futuro, passo a passo, coração com
+                    coração.
+                </p>
+                <div class="photo-gallery">
+                    <img src="../../assets/fotos/5.jpeg" alt="Nossa lembrança 6" class="romantic-photo photo-6"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/6.jpeg" alt="Nossa lembrança 7" class="romantic-photo photo-7"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/7.jpeg" alt="Nossa lembrança 8" class="romantic-photo photo-8"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/8.jpeg" alt="Nossa lembrança 9" class="romantic-photo photo-9"
+                        onclick="openLightbox(this.src)">
+                </div>
+            </div>
+
+            <img src="../../assets/ashImages/yor-action.png" alt="Yor Forger Action" class="character-img yor-img"
+                style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+        </div>
+
+        <!-- Quarta Parada/Seção -->
+        <h2 class="missao-amor-title" style="margin-top: 4em;">Nossa Cumplicidade</h2>
+
+        <div class="layout-horizontal" style="margin-top: 2em;">
+            <img src="../../assets/ashImages/loid-gift.png" alt="Loid Forger Gift" class="character-img loid-img"
+                style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+
+            <div class="love-card hidden show" id="card4">
+                <h1 class="romantic-title">Sempre Juntos</h1>
+                <p class="romantic-text">
+                    A cada desafio superado e a cada sonho alcançado, nossa parceria se torna mais profunda.
+                    É na simplicidade do dia a dia que nossa cumplicidade brilha mais forte, provando que juntos somos
+                    imparáveis.
+                    <br><br>
+                    Você é a minha âncora e o meu porto seguro, o motivo do meu sorriso mais sincero.
+                </p>
+                <div class="photo-gallery">
+                    <img src="../../assets/fotos/9.jpeg" alt="Nossa lembrança 9" class="romantic-photo photo-10"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/10.jpeg" alt="Nossa lembrança 10" class="romantic-photo photo-11"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/11.jpeg" alt="Nossa lembrança 11" class="romantic-photo photo-12"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/12.jpeg" alt="Nossa lembrança 12" class="romantic-photo photo-13"
+                        onclick="openLightbox(this.src)">
+                </div>
+            </div>
+
+            <img src="../../assets/ashImages/yor-gift.png" alt="Yor Forger Gift" class="character-img yor-img"
+                style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+        </div>
+
+        <!-- Quinta Parada/Seção -->
+        <h2 class="missao-amor-title" style="margin-top: 4em;">Mundo Cosplay</h2>
+
+        <div class="layout-horizontal" style="margin-top: 2em;">
+            <img src="../../assets/ashImages/loid_forger_full_body_1770444062652-removebg-preview.png" alt="Loid Forger"
+                class="character-img loid-img" style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+
+            <div class="love-card hidden show" id="card5">
+                <h1 class="romantic-title">Nossa Arte e Paixão</h1>
+                <p class="romantic-text">
+                    Ver seu brilho quando você fala sobre cosplays é algo que me encanta.
+                    Estou adorando aprender mais sobre esse mundo ao seu lado, descobrindo cada detalhe e cada
+                    personagem que você ama.
+                    <br><br>
+                    Quero continuar aprendendo e, quem sabe, criarmos nossas próprias transformações juntos. Você é
+                    minha personagem favorita em qualquer universo!
+                </p>
+                <div class="photo-gallery">
+                    <img src="../../assets/fotos/13.jpeg" alt="Cosplay 1" class="romantic-photo photo-14"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/14.jpeg" alt="Cosplay 2" class="romantic-photo photo-15"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/15.jpeg" alt="Cosplay 3" class="romantic-photo photo-16"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/16.jpeg" alt="Cosplay 4" class="romantic-photo photo-17"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/17.jpeg" alt="Cosplay 5" class="romantic-photo photo-18"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/18.jpeg" alt="Cosplay 6" class="romantic-photo photo-19"
+                        onclick="openLightbox(this.src)">
+                </div>
+            </div>
+
+            <img src="../../assets/ashImages/yor_forger_full_body_1770444077207-removebg-preview.png" alt="Yor Forger"
+                class="character-img yor-img" style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+        </div>
+
+        <!-- Sexta Parada/Seção -->
+        <h2 class="missao-amor-title" style="margin-top: 4em;">Nossos Sonhos</h2>
+
+        <div class="layout-horizontal" style="margin-top: 2em;">
+            <img src="../../assets/ashImages/loid-roses.png" alt="Loid Forger Roses" class="character-img loid-img"
+                style="width: 49%; left: -200px; filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+
+            <div class="love-card hidden show" id="card6">
+                <h1 class="romantic-title">Onde o Coração Habita</h1>
+                <p class="romantic-text">
+                    Nossos sonhos são a bússola que nos guia. Cada plano que traçamos e cada desejo compartilhado
+                    nos aproxima de uma vida inteira de felicidade. Mal posso esperar para realizar cada um deles com
+                    você.
+                </p>
+                <div class="photo-gallery">
+                    <img src="../../assets/fotos/19.jpeg" alt="Lembrança 19" class="romantic-photo photo-20"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/20.jpeg" alt="Lembrança 20" class="romantic-photo photo-21"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/21.jpeg" alt="Lembrança 21" class="romantic-photo photo-22"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/22.jpeg" alt="Lembrança 22" class="romantic-photo photo-23"
+                        onclick="openLightbox(this.src)">
+                </div>
+            </div>
+
+            <img src="../../assets/ashImages/yor-roses.png" alt="Yor Forger Roses" class="character-img yor-img"
+                style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+        </div>
+
+        <!-- Sétima Parada/Seção -->
+        <h2 class="missao-amor-title" style="margin-top: 4em;">Nosso Futuro</h2>
+
+        <div class="layout-horizontal" style="margin-top: 2em;">
+            <img src="../../assets/ashImages/loid_forger_full_body_1770444062652-removebg-preview.png" alt="Loid Forger"
+                class="character-img loid-img" style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+
+            <div class="love-card hidden show" id="card7">
+                <h1 class="romantic-title">Para Sempre Estarei Aqui</h1>
+                <p class="romantic-text">
+                    O futuro é uma tela em branco que estamos pintando juntos. Com amor, paciência e a alegria de ter
+                    você,
+                    sei que o nosso 'felizes para sempre' já começou.
+                </p>
+                <div class="photo-gallery">
+                    <img src="../../assets/fotos/23.jpeg" alt="Lembrança 23" class="romantic-photo photo-24"
+                        onclick="openLightbox(this.src)">
+                    <img src="../../assets/fotos/24.jpeg" alt="Lembrança 24" class="romantic-photo photo-25"
+                        onclick="openLightbox(this.src)">
+                </div>
+            </div>
+
+            <img src="../../assets/ashImages/yor_forger_full_body_1770444077207-removebg-preview.png" alt="Yor Forger"
+                class="character-img yor-img" style="filter: drop-shadow(0 0 30px rgba(255, 77, 109, 0.4));">
+        </div>
+
+        <!-- Oitava Parada/Finalização -->
+        <h2 class="missao-amor-title" style="margin-top: 4em;">O Próximo Passo</h2>
+
+        <div class="layout-horizontal" style="margin-top: 2em; min-height: 400px; padding-bottom: 5em;">
+            <div class="love-card hidden show" style="max-width: 800px;">
+                <h1 class="romantic-title">Chegamos ao fim?</h1>
+                <p class="romantic-text">
+                    Nossa história tem muitas paradas, mas o destino final é sempre o mesmo: nós dois.
+                    Clique no botão abaixo para ver a mensagem final que preparei para você.
+                </p>
+                <div style="display: flex; justify-content: center;">
+                    <a href="javascript:void(0)" class="love-button" onclick="celebrateFinal()">
+                        <ion-icon name="heart"></ion-icon>
+                        Ver meu destino final...
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../app.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script>
+        function createHearts() {
+            const container = document.getElementById('heartContainer');
+            const heartIcons = ['heart', 'heart-outline', 'heart-circle'];
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    const icon = document.createElement('ion-icon');
+                    icon.setAttribute('name', heartIcons[Math.floor(Math.random() * heartIcons.length)]);
+                    heart.appendChild(icon);
+                    container.appendChild(heart);
+                    setTimeout(() => heart.remove(), 7000);
+                }, i * 300);
+            }
+        }
+        setInterval(createHearts, 3000);
+        createHearts();
+
+        function celebrate() {
+            alert("Em breve teremos mais surpresas! ❤️");
+        }
+
+        // Sincronização de Música
+        const bgMusic = document.getElementById('bgMusic');
+
+        function syncMusic() {
+            const savedTime = localStorage.getItem('musicTime');
+            const musicMuted = localStorage.getItem('musicMuted') === 'true';
+
+            if (savedTime) bgMusic.currentTime = parseFloat(savedTime);
+            bgMusic.muted = musicMuted;
+
+            if (musicMuted) {
+                document.getElementById('musicIcon').setAttribute('name', 'volume-mute');
+                document.getElementById('musicToggle').classList.add('muted');
+            }
+
+            bgMusic.play().catch(() => {
+                console.log("Autoplay bloqueado, aguardando clique.");
+            });
+        }
+
+        function toggleMusic() {
+            const musicIcon = document.getElementById('musicIcon');
+            const musicBtn = document.getElementById('musicToggle');
+            if (bgMusic.muted) {
+                bgMusic.muted = false;
+                bgMusic.play();
+                musicIcon.setAttribute('name', 'musical-notes');
+                musicBtn.classList.remove('muted');
+                localStorage.setItem('musicMuted', 'false');
+            } else {
+                bgMusic.muted = true;
+                musicIcon.setAttribute('name', 'volume-mute');
+                musicBtn.classList.add('muted');
+                localStorage.setItem('musicMuted', 'true');
+            }
+        }
+
+        // Salvar tempo antes de sair
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('musicTime', bgMusic.currentTime);
+        });
+
+        document.addEventListener('click', () => {
+            if (bgMusic.paused) bgMusic.play();
+        }, { once: true });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            syncMusic();
+            setTimeout(() => document.getElementById('mainCard').classList.add('show'), 500);
+        });
+
+        // Funções do Lightbox
+        function openLightbox(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            modal.style.display = "flex";
+            setTimeout(() => modal.classList.add('show'), 10);
+            modalImg.src = src;
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+        }
+
+        // Fechar com a tecla Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") closeLightbox();
+        });
+
+        // Função especial de celebração para o final
+        function celebrateFinal() {
+            localStorage.setItem('musicTime', bgMusic.currentTime);
+            localStorage.setItem('musicMuted', bgMusic.muted);
+
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const spark = document.createElement('div');
+                    spark.className = 'floating-heart';
+                    spark.style.left = '50vw';
+                    spark.style.top = '50vh';
+                    spark.style.color = i % 2 === 0 ? '#ff4d6d' : '#ffccd5';
+                    spark.style.animation = `explodeFinal${i} 1.2s forwards`;
+
+                    const icon = document.createElement('ion-icon');
+                    icon.setAttribute('name', 'heart');
+                    spark.appendChild(icon);
+
+                    document.body.appendChild(spark);
+
+                    const angle = (i / 60) * Math.PI * 2;
+                    const velocity = Math.random() * 400 + 200;
+                    const dx = Math.cos(angle) * velocity;
+                    const dy = Math.sin(angle) * velocity;
+
+                    const style = document.createElement('style');
+                    style.innerHTML = `
+                        @keyframes explodeFinal${i} {
+                            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+                            100% { transform: translate(${dx}px, ${dy}px) scale(0) rotate(360deg); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+
+                    setTimeout(() => {
+                        spark.remove();
+                        style.remove();
+                    }, 1200);
+                }, i * 15);
+            }
+
+            setTimeout(() => {
+                window.location.href = "final.html";
+            }, 1200);
+        }
+    </script>
+</body>
+
+</html>

@@ -28,20 +28,20 @@ if (deviceType !== 'Desktop') {
 else {
     // Esconde o cursor personalizado ao ir com o mouse acima da scrollbar
     document.addEventListener('mousemove', function (e) {
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    const scrollbarHeight = window.innerHeight - document.documentElement.clientHeight;
-    
-    const isVerticalScrollbar = e.clientX >= document.documentElement.clientWidth;
-    const isHorizontalScrollbar = e.clientY >= document.documentElement.clientHeight;
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        const scrollbarHeight = window.innerHeight - document.documentElement.clientHeight;
 
-    if (isVerticalScrollbar || isHorizontalScrollbar) {
-        document.body.classList.add('hide-cursor');
-        document.body.style.cursor = 'default'; 
-    } else {
-        document.body.classList.remove('hide-cursor');
-        document.body.style.cursor = 'none'; 
-    }
-});
+        const isVerticalScrollbar = e.clientX >= document.documentElement.clientWidth;
+        const isHorizontalScrollbar = e.clientY >= document.documentElement.clientHeight;
+
+        if (isVerticalScrollbar || isHorizontalScrollbar) {
+            document.body.classList.add('hide-cursor');
+            document.body.style.cursor = 'default';
+        } else {
+            document.body.classList.remove('hide-cursor');
+            document.body.style.cursor = 'none';
+        }
+    });
 }
 
 
@@ -146,10 +146,12 @@ function toggleLightMode() {
     element.classList.toggle('light-mode', isNowLightmode);
 
     const logo = document.getElementById('logoPrincipal');
-    if (isNowLightmode) {
-        logo.src = './assets/NickLogoLight.png'; // Altere para o caminho da logo do modo claro
-    } else {
-        logo.src = './assets/NickLogo.png'; // Altere para o caminho da logo do modo escuro
+    if (logo) {
+        if (isNowLightmode) {
+            logo.src = './assets/NickLogoLight.png';
+        } else {
+            logo.src = './assets/NickLogo.png';
+        }
     }
     console.log('Light mode:', isNowLightmode);
 }
@@ -159,13 +161,16 @@ function onload() {
     document.body.classList.toggle('light-mode', isLightmode);
 
     const logo = document.getElementById('logoPrincipal');
-    if (isLightmode) {
-        logo.src = './assets/NickLogoLight.png';; // Altere para o caminho da logo do modo claro
-    } else {
-        logo.src = './assets/NickLogo.png'; // Altere para o caminho da logo do modo escuro
+    if (logo) {
+        if (isLightmode) {
+            logo.src = './assets/NickLogoLight.png';
+        } else {
+            logo.src = './assets/NickLogo.png';
+        }
     }
 
-    document.getElementById('toggleDarkModeBtn').checked = isLightmode;
+    const toggleBtn = document.getElementById('toggleDarkModeBtn');
+    if (toggleBtn) toggleBtn.checked = isLightmode;
     console.log('Light mode:', isLightmode);
 }
 
@@ -181,6 +186,7 @@ document.addEventListener('mouseup', shrinkCursor);
 document.addEventListener('dblclick', toggleCursorSize);
 
 function moveCursor(e) {
+    if (!innerCursor || !outerCursor) return;
     let x = e.clientX;
     let y = e.clientY;
 
@@ -227,37 +233,45 @@ openButtons.forEach(button => {
         const linkRepositorio = button.getAttribute("data-repo");
         const linkDownload = button.getAttribute("data-download");
 
-        modalTitle.textContent = title;
-        modalDescription.textContent = description;
-        modalVideo.src = video;
-        botaoRepositorio.href = linkRepositorio;
-        botaoDownload.href = linkDownload;
+        if (modalTitle) modalTitle.textContent = title;
+        if (modalDescription) modalDescription.textContent = description;
+        if (modalVideo) modalVideo.src = video;
+        if (botaoRepositorio) botaoRepositorio.href = linkRepositorio;
+        if (botaoDownload) botaoDownload.href = linkDownload;
 
-        if (!linkRepositorio) {
-            botaoRepositorio.classList.add('hide');
-        } else {
-            botaoRepositorio.classList.remove('hide');
+        if (botaoRepositorio) {
+            if (!linkRepositorio) {
+                botaoRepositorio.classList.add('hide');
+            } else {
+                botaoRepositorio.classList.remove('hide');
+            }
         }
 
-        if (!linkDownload) {
-            botaoDownload.classList.add('hide');
-        } else {
-            botaoDownload.classList.remove('hide');
+        if (botaoDownload) {
+            if (!linkDownload) {
+                botaoDownload.classList.add('hide');
+            } else {
+                botaoDownload.classList.remove('hide');
+            }
         }
 
-        modal.classList.add("open");
-        sombra.classList.add("open");
+        if (modal) modal.classList.add("open");
+        if (sombra) sombra.classList.add("open");
     });
 });
 
-closeButton.addEventListener("click", () => {
-    modal.classList.remove("open");
-    sombra.classList.remove("open");
-    modalVideo.src = '';
-});
+if (closeButton) {
+    closeButton.addEventListener("click", () => {
+        if (modal) modal.classList.remove("open");
+        if (sombra) sombra.classList.remove("open");
+        if (modalVideo) modalVideo.src = '';
+    });
+}
 
-sombra.addEventListener("click", () => {
-    modal.classList.remove("open");
-    sombra.classList.remove("open");
-    modalVideo.src = '';
-});
+if (sombra) {
+    sombra.addEventListener("click", () => {
+        if (modal) modal.classList.remove("open");
+        if (sombra) sombra.classList.remove("open");
+        if (modalVideo) modalVideo.src = '';
+    });
+}
