@@ -403,12 +403,13 @@
             transform: translateX(-50%) translateY(150px);
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 50px;
             border: 2px solid var(--cor-romantica-primaria);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            max-width: 85%;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
             z-index: 5000;
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -429,8 +430,10 @@
             font-family: var(--fonte-texto);
             color: var(--cor-romantica-terciaria);
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         @keyframes note-spin {
@@ -793,13 +796,13 @@
 
         function showMusicPopup(trackSrc) {
             const trackMap = {
-                "SOUVENIR": "SOUVENIR - BUMP OF CHICKEN",
-                "Ending 1": "Comedy - Gen Hoshino",
-                "Ending 2": "Shikisai - yama",
-                "Opening 3": "Kura Kura - Ado",
-                "Opening theme song animation": "Mixed Nuts - Official HIGE DANdism",
-                "For the Dancing and the Dreaming": "For the Dancing and the Dreaming",
-                "A Romantic Flight": "Romantic Flight - John Powell"
+                "SOUVENIR": "SOUVENIR",
+                "Ending 1": "Comedy",
+                "Ending 2": "Shikisai",
+                "Opening 3": "Kura Kura",
+                "Opening theme song animation": "Mixed Nuts",
+                "For the Dancing and the Dreaming": "Dancing & Dreaming",
+                "A Romantic Flight": "Romantic Flight"
             };
 
             let trackName = "Nova Música";

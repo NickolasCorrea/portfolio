@@ -526,12 +526,13 @@
             transform: translateX(-50%) translateY(150px);
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 50px;
             border: 2px solid var(--cor-romantica-primaria);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            max-width: 85%;
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
             z-index: 5000;
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -552,8 +553,10 @@
             font-family: var(--fonte-texto);
             color: var(--cor-romantica-terciaria);
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         @keyframes note-spin {
@@ -616,7 +619,7 @@
                 <h1 class="romantic-title hiddenTitle">Nossa história...</h1>
                 <p class="romantic-text hiddenText">
                     Você lembra de como tudo começou? <br>
-                    Parece que foi ontem que nossos caminhos se cruzaram pela primeira vez.
+                    Parece que foi ontem que nossos caminhos se cruzaram pela primeira vez e fomos ao cinema assistir Minecraft.
                     Desde aquele momento, meu mundo ganhou cores que eu nem sabia que existiam.
                     <br><br>
                     Cada risada, cada conversa e cada momento ao seu lado se tornou um tesouro que guardo com todo
@@ -646,7 +649,7 @@
                 <h1 class="romantic-title">O Fortalecimento dos Nossos Laços</h1>
                 <p class="romantic-text">
                     A cada pequeno gesto, a cada detalhe compartilhado, fomos construindo algo único.
-                    Nossa conexão se tornou nossa força, transformando dias comuns em capítulos inesquecíveis da nossa
+                    Nossa conexão se tornou nossa força, mesmo que houvesse diferenças, transformando dias comuns em capítulos inesquecíveis da nossa
                     história.
                     <br><br>
                     Você é quem completa meus pensamentos e traz paz para os meus dias mais agitados.
@@ -674,8 +677,7 @@
                 <h1 class="romantic-title">Colecionando Momentos</h1>
                 <p class="romantic-text">
                     Cada aventura ao seu lado é uma página colorida no livro da minha vida.
-                    De grandes viagens a pequenos instantes de silêncio, tudo se torna especial porque tenho você como
-                    minha melhor companhia.
+                    Desde encontros a pequenos instantes de silêncio, tudo se torna especial porque você é a melhor companhia.
                     <br><br>
                     Sou grato por cada segundo que passamos construindo nosso futuro, passo a passo, coração com
                     coração.
@@ -706,9 +708,7 @@
             <div class="love-card hidden show" id="card4">
                 <h1 class="romantic-title">Sempre Juntos</h1>
                 <p class="romantic-text">
-                    A cada desafio superado e a cada sonho alcançado, nossa parceria se torna mais profunda.
-                    É na simplicidade do dia a dia que nossa cumplicidade brilha mais forte, provando que juntos somos
-                    imparáveis.
+                    Sei que durante o relacionamento houveram dificuldades e diferenças, mas queria poder mostrar hoje que desejo melhorar, para ser aquilo que você merce de melhor.
                     <br><br>
                     Você é a minha âncora e o meu porto seguro, o motivo do meu sorriso mais sincero.
                 </p>
@@ -743,7 +743,7 @@
                     personagem que você ama.
                     <br><br>
                     Quero continuar aprendendo e, quem sabe, criarmos nossas próprias transformações juntos. Você é
-                    minha personagem favorita em qualquer universo!
+                    minha personagem favorita em qualquer universo, Ashley!
                 </p>
                 <div class="photo-gallery">
                     <img src="../../assets/fotos/13.jpeg" alt="Cosplay 1" class="romantic-photo photo-14"
@@ -805,9 +805,9 @@
             <div class="love-card hidden show" id="card7">
                 <h1 class="romantic-title">Para Sempre Estarei Aqui</h1>
                 <p class="romantic-text">
-                    O futuro é uma tela em branco que estamos pintando juntos. Com amor, paciência e a alegria de ter
-                    você,
-                    sei que o nosso 'felizes para sempre' já começou.
+                    O futuro é uma tela em branco que estamos pintando juntos. E apesar do que aconteceu da última vez em que nos vimos, saiba que com amor, paciência e a alegria, podemos
+                    construir algo ainda melhor.
+                    Saiba que gosto muito de você, e quero continuar aprendendo e crescendo ao seu lado.
                 </p>
                 <div class="photo-gallery">
                     <img src="../../assets/fotos/23.jpeg" alt="Lembrança 23" class="romantic-photo photo-24"
@@ -952,13 +952,13 @@
 
         function showMusicPopup(trackSrc) {
             const trackMap = {
-                "SOUVENIR": "SOUVENIR - BUMP OF CHICKEN",
-                "Ending 1": "Comedy - Gen Hoshino",
-                "Ending 2": "Shikisai - yama",
-                "Opening 3": "Kura Kura - Ado",
-                "Opening theme song animation": "Mixed Nuts - Official HIGE DANdism",
-                "For the Dancing and the Dreaming": "For the Dancing and the Dreaming",
-                "A Romantic Flight": "Romantic Flight - John Powell"
+                "SOUVENIR": "SOUVENIR",
+                "Ending 1": "Comedy",
+                "Ending 2": "Shikisai",
+                "Opening 3": "Kura Kura",
+                "Opening theme song animation": "Mixed Nuts",
+                "For the Dancing and the Dreaming": "Dancing & Dreaming",
+                "A Romantic Flight": "Romantic Flight"
             };
 
             let trackName = "Nova Música";
