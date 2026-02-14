@@ -523,6 +523,29 @@
             background: var(--cor-romantica-terciaria);
             color: white;
         }
+
+        .love-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1em 2em;
+            background-color: var(--cor-romantica-primaria);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: var(--fonte-texto);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .love-button:hover {
+            transform: scale(1.1);
+            background-color: var(--cor-romantica-terciaria);
+            box-shadow: 0 10px 25px rgba(201, 24, 74, 0.5);
+        }
     </style>
 </head>
 
@@ -584,7 +607,7 @@
                     <div class="camera-container"
                         style="position: relative; width: 320px; height: 240px; margin: 0 auto; border: 5px solid white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">
                         <video id="webcam" autoplay playsinline
-                            style="width: 100%; height: 100%; object-fit: cover;"></video>
+                            style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
                         <canvas id="photoCanvas"
                             style="display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></canvas>
                     </div>
@@ -619,6 +642,14 @@
                     <button onclick="clearMemory()"
                         style="margin-top: 1.5em; background: none; border: none; color: #888; cursor: pointer; text-decoration: underline; font-size: 0.8rem;">Apagar
                         esta memória</button>
+                </div>
+
+                <div id="nextMissionSection" style="margin-top: 3em; display: none; justify-content: center;">
+                    <a href="missao-amor-2.html" class="love-button"
+                        style="background: var(--cor-romantica-terciaria); color: white;">
+                        <ion-icon name="heart-half"></ion-icon>
+                        Continuar para Missão Amor: Parte 2
+                    </a>
                 </div>
 
                 <h2 class="final-message">Eu Te Amo Infinitamente! ❤️</h2>
@@ -667,7 +698,15 @@
             const context = canvas.getContext('2d');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
+
+            // Inverter o contexto para a foto sair igual ao preview espelhado
+            context.translate(canvas.width, 0);
+            context.scale(-1, 1);
+
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Resetar transform para a moldura não sair invertida (opcional, mas bom)
+            context.setTransform(1, 0, 0, 1, 0, 0);
 
             // Adicionar moldura romântica simples no canvas
             context.strokeStyle = "#ff4d6d";
@@ -860,6 +899,7 @@
             const savedPhoto = localStorage.getItem('savedLovePhoto');
             if (savedPhoto) {
                 document.getElementById('savedMemorySection').style.display = 'block';
+                document.getElementById('nextMissionSection').style.display = 'flex';
                 document.getElementById('savedPhotoDisp').src = savedPhoto;
             }
         }
@@ -868,6 +908,7 @@
             if (confirm("Deseja apagar esta foto salva?")) {
                 localStorage.removeItem('savedLovePhoto');
                 document.getElementById('savedMemorySection').style.display = 'none';
+                document.getElementById('nextMissionSection').style.display = 'none';
             }
         }
 

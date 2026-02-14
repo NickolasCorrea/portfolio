@@ -197,14 +197,17 @@ function moveCursor(e) {
 }
 
 function growCursor() {
+    if (document.body.classList.contains('no-cursor-fx')) return;
     innerCursor.classList.add('grow');
 }
 
 function shrinkCursor() {
+    if (document.body.classList.contains('no-cursor-fx')) return;
     innerCursor.classList.remove('grow');
 }
 
 function toggleCursorSize() {
+    if (document.body.classList.contains('no-cursor-fx')) return;
     if (isCursorEnlarged) {
         innerCursor.classList.remove('enlarged');
     } else {

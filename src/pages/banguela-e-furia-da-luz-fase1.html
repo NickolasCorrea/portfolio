@@ -1,0 +1,2994 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Planície Verde - Banguela & Fúria da Luz</title>
+    <link rel="icon" type="image/png" href="../../assets/faviconNick.ico">
+    <link rel="stylesheet" href="../../styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cor-romantica-primaria: #ff4d6d;
+            --cor-romantica-secundaria: #ffccd5;
+            --cor-romantica-terciaria: #c9184a;
+            --cor-fundo-grama: #2d5a27;
+            --cor-rio: #4da6ff;
+            --fonte-romantica: 'Dancing Script', cursive;
+            --fonte-texto: 'Montserrat', sans-serif;
+            --cor-tiro: #ff8c00;
+            --cor-inimigo: #444;
+            --cor-boss: #ff0055;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--cor-fundo-grama);
+            font-family: var(--fonte-texto);
+            cursor: none;
+            touch-action: none;
+            user-select: none;
+        }
+
+        #gameCanvas {
+            display: block;
+        }
+
+        .ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: auto;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 50;
+        }
+
+        .life-container {
+            position: relative;
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .heart-icon {
+            color: var(--cor-romantica-primaria);
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .heart-icon.lost {
+            color: rgba(255, 255, 255, 0.2);
+            transform: scale(0.8);
+            filter: none;
+        }
+
+        .status-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .meter {
+            color: white;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meter.boss-alert {
+            border-color: var(--cor-boss);
+            color: var(--cor-boss);
+            font-weight: bold;
+            animation: pulse-red 0.5s infinite alternate;
+        }
+
+        @keyframes pulse-red {
+            from {
+                box-shadow: 0 0 5px var(--cor-boss);
+            }
+
+            to {
+                box-shadow: 0 0 20px var(--cor-boss);
+            }
+        }
+
+        .difficulty-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #00d4ff;
+            padding: 20px 40px;
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: bold;
+            border: 3px solid #00d4ff;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+            z-index: 3000;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translate(-50%, -50%) scale(0.5);
+        }
+
+        .difficulty-popup.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #bossHealthContainer {
+            position: absolute;
+            top: 150px;
+            width: 300px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            display: none;
+            overflow: hidden;
+            border: 1px solid white;
+        }
+
+        #bossHealthBar {
+            width: 100%;
+            height: 100%;
+            background: var(--cor-boss);
+            transition: width 0.3s ease;
+        }
+
+        .victory-screen {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3em;
+            border-radius: 30px;
+            box-shadow: 0 0 50px rgba(255, 77, 109, 0.8);
+            border: 4px solid var(--cor-romantica-primaria);
+            text-align: center;
+            z-index: 100;
+            opacity: 0;
+            display: none;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 500px;
+            pointer-events: auto;
+        }
+
+        .victory-screen.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+            margin: 20px 0;
+            background: rgba(255, 77, 109, 0.05);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 77, 109, 0.2);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: var(--cor-romantica-terciaria);
+            font-size: 1.2rem;
+        }
+
+        .new-record-badge {
+            background: #ffd700;
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: none;
+            animation: pulse-gold 1s infinite;
+        }
+
+        @keyframes pulse-gold {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            }
+        }
+
+        .victory-title {
+            font-family: var(--fonte-romantica);
+            font-size: 4rem;
+            color: var(--cor-romantica-terciaria);
+            margin-bottom: 0.5em;
+        }
+
+        .love-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1em 2em;
+            background-color: var(--cor-romantica-primaria);
+            color: white;
+            border-radius: 50px;
+            font-family: var(--fonte-romantica);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .love-button:hover {
+            transform: scale(1.1);
+            background-color: var(--cor-romantica-terciaria);
+        }
+
+        #instructionHint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            10% {
+                transform: translate(-1px, -2px) rotate(-1deg);
+            }
+
+            20% {
+                transform: translate(-3px, 0px) rotate(1deg);
+            }
+
+            30% {
+                transform: translate(3px, 2px) rotate(0deg);
+            }
+
+            40% {
+                transform: translate(1px, -1px) rotate(1deg);
+            }
+
+            50% {
+                transform: translate(-1px, 2px) rotate(-1deg);
+            }
+
+            60% {
+                transform: translate(-3px, 1px) rotate(0deg);
+            }
+
+            70% {
+                transform: translate(3px, 1px) rotate(-1deg);
+            }
+
+            80% {
+                transform: translate(-1px, -1px) rotate(1deg);
+            }
+
+            90% {
+                transform: translate(1px, 2px) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(1px, -2px) rotate(-1deg);
+            }
+        }
+
+        .game-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        #pauseOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            pointer-events: auto;
+        }
+
+        .pause-text {
+            font-family: var(--fonte-romantica);
+            font-size: 5rem;
+            color: white;
+            text-shadow: 0 0 20px var(--cor-romantica-primaria);
+        }
+
+        #mobileShootBtn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 77, 109, 0.4);
+            border: 4px solid var(--cor-romantica-primaria);
+            color: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 100;
+            pointer-events: auto;
+            backdrop-filter: blur(5px);
+            font-family: var(--fonte-texto);
+            font-weight: bold;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #mobileShootBtn:active {
+            transform: scale(0.9);
+            background: var(--cor-romantica-primaria);
+        }
+    </style>
+</head>
+
+<body class="romantic-mode no-cursor-fx">
+    <div class="custom-cursor">
+        <div class="inner-cursor"></div>
+        <div class="outer-cursor"></div>
+    </div>
+
+
+
+    <div class="ui-overlay">
+        <div class="life-container" id="lifeContainer">
+            <div id="shieldContainer"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; gap: 8px; pointer-events: none; align-items: center;">
+            </div>
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+        </div>
+        <!-- Inventory Bar -->
+        <div id="inventoryContainer" style="margin-top: 5px; margin-bottom: 10px; display: flex; gap: 5px;">
+            <!-- Slots generated by JS -->
+        </div>
+
+        <div class="status-container">
+            <div class="meter" id="distanceText">Distância: 0m | Bosses: 0</div>
+        </div>
+        <div id="bossHealthContainer" style="position:static; margin-top:15px; width:200px;">
+            <div id="bossHealthBar"></div>
+        </div>
+    </div>
+
+    <div class="game-controls">
+        <button class="control-btn" id="pauseBtn" title="Pausar">
+            <ion-icon name="pause"></ion-icon>
+        </button>
+        <button class="control-btn" id="inventoryBtn" title="Inventário">
+            <ion-icon name="information-circle"></ion-icon>
+        </button>
+    </div>
+
+    <div id="pauseOverlay">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <div class="pause-text" style="margin-bottom: 10px;">Pausado</div>
+
+            <button class="love-button" onclick="togglePause()" style="width: 250px; justify-content: center;">
+                <ion-icon name="play-outline"></ion-icon>
+                Continuar
+            </button>
+
+            <button class="love-button" id="autoFireBtn"
+                style="width: 250px; justify-content: center; background: rgba(0,0,0,0.4); border: 2px solid var(--cor-romantica-secundaria);">
+                <ion-icon name="flash-outline"></ion-icon>
+                Auto-Fire: OFF
+            </button>
+
+            <button class="love-button" id="showInventoryBtn"
+                style="width: 250px; justify-content: center; background: rgba(0,0,0,0.4); border: 2px solid var(--cor-romantica-secundaria);">
+                <ion-icon name="eye-outline"></ion-icon>
+                Inventário: OFF
+            </button>
+
+            <button class="love-button" id="muteBtn"
+                style="width: 250px; justify-content: center; background: rgba(0,0,0,0.4); border: 2px solid var(--cor-romantica-secundaria);">
+                <ion-icon name="volume-high-outline"></ion-icon>
+                Som: ON
+            </button>
+
+            <button class="love-button" onclick="location.reload()"
+                style="width: 250px; justify-content: center; background: rgba(0,0,0,0.1); border: 2px solid #aaa;">
+                <ion-icon name="refresh-outline"></ion-icon>
+                Tentar de Novo
+            </button>
+
+            <a href="selecao-fases.html" class="love-button"
+                style="width: 250px; justify-content: center; background: var(--cor-romantica-terciaria); text-decoration: none;">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                Voltar ao Menu
+            </a>
+        </div>
+    </div>
+
+    <div id="inventoryOverlay"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; flex-direction: column;">
+        <h2 style="color: white; font-family: 'Poppins', sans-serif; margin-bottom: 20px;">Gerenciar Inventário</h2>
+        <p style="color: #ddd; margin-bottom: 15px;">Clique em um item para descartá-lo</p>
+        <div id="inventoryGrid"
+            style="display: flex; flex-wrap: wrap; gap: 10px; max-width: 400px; justify-content: center; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+            <!-- Items injected by JS -->
+        </div>
+
+        <!-- Cheat Panel -->
+        <div
+            style="margin-top: 25px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
+            <p
+                style="color: #00d4ff; font-weight: bold; font-family: 'Poppins', sans-serif; font-size: 0.9rem; letter-spacing: 1px;">
+                PAINEL DE CHEATS (TESTES)</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <button class="love-button" onclick="cheatAddHeart()"
+                    style="padding: 8px 15px; font-size: 0.9rem; background: #ff4d6d;">
+                    <ion-icon name="heart"></ion-icon> Vida Full
+                </button>
+                <button class="love-button" onclick="cheatAddShield()"
+                    style="padding: 8px 15px; font-size: 0.9rem; background: #00bfff;">
+                    <ion-icon name="shield-checkmark"></ion-icon> +Escudo
+                </button>
+                <button class="love-button" onclick="cheatAddItem('speed_boost')"
+                    style="padding: 8px 15px; font-size: 0.9rem; background: #9b59b6;">
+                    <ion-icon name="flash"></ion-icon> +Veloc
+                </button>
+                <button class="love-button" onclick="cheatAddItem('fireball')"
+                    style="padding: 8px 15px; font-size: 0.9rem; background: #e67e22;">
+                    <ion-icon name="timer-outline"></ion-icon> +Caden
+                </button>
+                <button class="love-button" onclick="cheatAddItem('damage_boost')"
+                    style="padding: 8px 15px; font-size: 0.9rem; background: #2980b9;">
+                    <ion-icon name="flame"></ion-icon> +Dano
+                </button>
+                <button class="love-button" onclick="cheatAddPartner()"
+                    style="padding: 8px 15px; font-size: 0.9rem; background: #ffccd5; color: #333;">
+                    <ion-icon name="heart"></ion-icon> +Parceiro
+                </button>
+                <button class="love-button" onclick="cheatAddDistance()"
+                    style="padding: 8px 15px; font-size: 0.9rem; background: #34a853; color: #fff;">
+                    <ion-icon name="speedometer"></ion-icon> +10km
+                </button>
+            </div>
+        </div>
+        <button class="love-button" onclick="toggleInventory()"
+            style="margin-top: 20px; width: 200px; justify-content: center;">
+            <ion-icon name="close-circle-outline"></ion-icon>
+            Fechar
+        </button>
+    </div>
+
+    <button id="mobileShootBtn">FOGO!</button>
+
+    <div id="instructionHint">Voe baixo e desvie da floresta!</div>
+    <canvas id="gameCanvas"></canvas>
+
+    <div class="victory-screen" id="victoryScreen">
+        <div id="winRecordBadge" class="new-record-badge">✨ NOVO RECORDE! ✨</div>
+        <h2 class="victory-title" style="margin-bottom: 0.2em;">Voo Concluído!</h2>
+        <p id="winMessage" style="font-size: 1.6rem; color: #333; margin-bottom: 0.2em; font-weight: 600;"></p>
+        <p
+            style="font-family: var(--fonte-romantica); font-size: 2.2rem; color: var(--cor-romantica-primaria); margin-bottom: 0.5em;">
+            Mas nosso amor nunca cansa! ❤️</p>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span>Pontuação Final</span>
+                <span id="winScore" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span>Distância</span>
+                <span id="winDist" class="stat-value">0m</span>
+            </div>
+            <div class="stat-item">
+                <span>Bosses Derrotados</span>
+                <span id="winBosses" class="stat-value">0</span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; width: 100%;">
+            <button class="love-button" onclick="location.reload()" style="flex: 1; justify-content: center;">
+                <ion-icon name="refresh-outline"></ion-icon> Voar de Novo
+            </button>
+            <a href="selecao-fases.html" class="love-button"
+                style="flex: 1; justify-content: center; background: var(--cor-romantica-terciaria);">
+                <ion-icon name="arrow-forward-outline"></ion-icon> Continuar
+            </a>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div class="victory-screen" id="gameOverScreen" style="border-color: #555;">
+        <div id="lossRecordBadge" class="new-record-badge">✨ NOVO RECORDE! ✨</div>
+        <h2 class="victory-title" style="color: #333; margin-bottom: 0.2em;">Voo Concluído</h2>
+        <p id="lossMessage" style="font-size: 1.6rem; color: #333; margin-bottom: 0.2em; font-weight: 600;"></p>
+        <p
+            style="font-family: var(--fonte-romantica); font-size: 2.2rem; color: var(--cor-romantica-primaria); margin-bottom: 0.5em;">
+            Mas nosso amor nunca cansa! ❤️</p>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span>Pontuação Final</span>
+                <span id="lossScore" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span>Distância</span>
+                <span id="lossDist" class="stat-value">0m</span>
+            </div>
+            <div class="stat-item">
+                <span>Bosses Derrotados</span>
+                <span id="lossBosses" class="stat-value">0</span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; width: 100%;">
+            <button class="love-button" onclick="location.reload()" style="flex: 1; justify-content: center;">
+                <ion-icon name="refresh-outline"></ion-icon> Tentar de Novo
+            </button>
+            <a href="selecao-fases.html" class="love-button"
+                style="flex: 1; justify-content: center; background: #555;">
+                <ion-icon name="arrow-back-outline"></ion-icon> Voltar
+            </a>
+        </div>
+    </div>
+
+    <audio id="bgMusic"></audio>
+
+    <div id="difficultyPopup" class="difficulty-popup">Dificuldade: Nível 1</div>
+
+    <script src="../../app.js" defer></script>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const bossHealthBar = document.getElementById('bossHealthBar');
+        const bossHealthContainer = document.getElementById('bossHealthContainer');
+        const distanceText = document.getElementById('distanceText');
+        const bossCountText = document.getElementById('bossCountText');
+        const lifeContainer = document.getElementById('lifeContainer');
+
+        let gameActive = true;
+        let isPaused = false;
+        let distance = 0;
+        let bossesDefeated = 0;
+        let killPoints = 0;
+        let targetX = window.innerWidth / 2;
+        let frameCount = 0;
+        let nextBossSpawnDistance = 10000 + Math.random() * 20000; // Início entre 10k e 30k
+
+        // Aliados
+        const lightFuryAlly = { active: false, x: 0, y: 0, shootTimer: 0, currentFrame: 1, frameTimer: 0, shakes: 0 };
+        let lastPartnerSpawnDistance = 0; // Rastreia a última vez que o parceiro foi spawnado
+
+        // Check Character Selection
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedCharacter = urlParams.get('character') || 'banguela'; // Default to Banguela
+        const isBanguela = selectedCharacter === 'banguela';
+        const playerPrefix = isBanguela ? 'NightFury' : 'LightFury';
+        const goalPrefix = isBanguela ? 'LightFury' : 'NightFury';
+        const allyPrefix = goalPrefix; // Parceiro é sempre o oposto do jogador
+        const allyColor = isBanguela ? '#ffccd5' : '#ff8c00'; // Rosa para Light Fury, Laranja para Banguela
+        const bulletColor = isBanguela ? '#ff8c00' : '#d8bfd8'; // Orange vs Light Purple
+
+        const player = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight - 200,
+            width: 180,
+            height: 180,
+            shakes: 0,
+            currentFrame: 1,
+            frameTimer: 0,
+            isAttacking: 0,
+            hp: 5,
+            shields: 0,
+            inventory: [], // Array to store powerups
+            invincibility: 0,
+            baseMovementFactor: 0.1,
+            movementFactor: 0.1,
+            currentDamage: 1,
+            currentBulletColor: isBanguela ? '#ff8c00' : '#d8bfd8'
+        };
+
+        // Shooting Control
+        let isShooting = false;
+        let shootTimer = 0;
+        let shootCooldown = 45; // Slower base speed
+        let rapidFireTimer = 0; // Timer for rapid fire powerup
+        let autoFire = localStorage.getItem('autoFire') !== 'false'; // Padrão: ON
+        let showInventory = localStorage.getItem('showInventory') === 'true'; // Padrão: OFF
+        const goal = { x: 0, y: -200, width: 180, height: 180, show: false, following: false, victoryTimer: 0, currentFrame: 1, frameTimer: 0 };
+        const cage = { hp: 10, broken: false };
+
+        const bullets = [];
+        const enemyBullets = [];
+        const enemies = [];
+        const boss = { active: false, x: 0, y: -200, hp: 0, maxHp: 0, phase: 0, shootTimer: 0 };
+        const obstacles = [];
+        const grassPatches = [];
+        const trees = [];
+        const particles = [];
+        const rivers = [];
+        const pebbles = []; // Pequenas pedrinhas decorativas
+        const powerups = [];
+        const clouds = []; // Nuvens flutuantes
+
+        // Loading Images
+        const playerImages = [];
+        for (let i = 1; i <= 5; i++) {
+            const img = new Image();
+            img.src = `../../assets/gameImages/${playerPrefix}${i}.png`;
+            playerImages.push(img);
+        }
+        const playerAttackImg = new Image();
+        playerAttackImg.src = `../../assets/gameImages/${playerPrefix}AttackBasic.png`;
+
+        const goalImages = [];
+        for (let i = 1; i <= 5; i++) {
+            const img = new Image();
+            img.src = `../../assets/gameImages/${goalPrefix}${i}.png`;
+            goalImages.push(img);
+        }
+
+        function initBackground() {
+            for (let i = 0; i < 40; i++) {
+                grassPatches.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    width: Math.random() * 20 + 10,
+                    height: Math.random() * 5 + 2,
+                    speed: 3.5 // Sincronizado com o cenário
+                });
+            }
+            // Adiciona algumas pedrinhas iniciais
+            for (let i = 0; i < 15; i++) {
+                pebbles.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    size: Math.random() * 4 + 2,
+                    color: Math.random() > 0.5 ? "#7f8c8d" : "#95a5a6",
+                    speed: 3.5
+                });
+
+            }
+
+            // Inicializar Nuvens
+            for (let i = 0; i < 8; i++) {
+                const isVertical = Math.random() > 0.4; // 60% de chance de ser nuvem de velocidade (vertical)
+                clouds.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    width: 150 + Math.random() * 250,
+                    height: 80 + Math.random() * 120,
+                    speed: isVertical ? (4 + Math.random() * 5) : (0.3 + Math.random() * 0.8), // Verticais são rápidas
+                    opacity: isVertical ? (0.05 + Math.random() * 0.15) : (0.1 + Math.random() * 0.2), // Verticais mais sutis
+                    layer: 'front',
+                    movementType: isVertical ? 'vertical' : 'horizontal'
+                });
+            }
+        }
+
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; player.y = canvas.height - 200; });
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        initBackground();
+
+        // Hide instruction hint after 5 seconds
+        setTimeout(() => {
+            const hint = document.getElementById('instructionHint');
+            if (hint) hint.style.display = 'none';
+        }, 5000);
+
+        window.addEventListener('mousemove', (e) => { if (!isPaused) targetX = e.clientX; });
+
+        // Mouse Holding
+        window.addEventListener('mousedown', () => { if (gameActive && !isPaused) isShooting = true; });
+        window.addEventListener('mouseup', () => { isShooting = false; });
+
+        // Touch Holding
+        window.addEventListener('touchstart', (e) => {
+            if (gameActive && !isPaused) {
+                targetX = e.touches[0].clientX;
+                isShooting = true;
+            }
+        });
+        window.addEventListener('touchend', () => { isShooting = false; });
+        window.addEventListener('touchmove', (e) => { if (gameActive && !isPaused) { targetX = e.touches[0].clientX; e.preventDefault(); } }, { passive: false });
+
+        // Spacebar Shooting & Test Keys
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && gameActive && !isPaused) isShooting = true;
+
+            // Test Keys (1-9 and 0) to change difficulty level
+            if (['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].includes(e.key)) {
+                bossesDefeated = e.key === '0' ? 10 : parseInt(e.key);
+                showDifficultyPopup(`Dificuldade: Nível ${bossesDefeated}`);
+            }
+
+            // Powerup Test Keys (Z, X, C, V, B)
+            if (e.key.toLowerCase() === 'z') {
+                const maxHp = lightFuryAlly.active ? 7 : 5;
+                player.hp = maxHp;
+                updateHearts();
+                showDifficultyPopup("Vida Restaurada!");
+            }
+            if (e.key.toLowerCase() === 'x') {
+                const maxShields = lightFuryAlly.active ? 7 : 5;
+                player.shields = Math.min(player.shields + 1, maxShields);
+                updateShields();
+                showDifficultyPopup("Escudo Adicionado!");
+            }
+            if (e.key.toLowerCase() === 'c') {
+                if (player.inventory.length < 25) { player.inventory.push('speed_boost'); updateInventoryUI(); }
+                showDifficultyPopup("+ Velocidade");
+            }
+            if (e.key.toLowerCase() === 'v') {
+                if (player.inventory.length < 25) { player.inventory.push('fireball'); updateInventoryUI(); }
+                showDifficultyPopup("+ Cadência");
+            }
+            if (e.key.toLowerCase() === 'b') {
+                if (player.inventory.length < 25) { player.inventory.push('damage_boost'); updateInventoryUI(); }
+                showDifficultyPopup("+ Dano Azul");
+            }
+            if (e.key.toLowerCase() === 'm') {
+                distance += 10000;
+                showDifficultyPopup("+10.000m (Debug)");
+            }
+        });
+
+        function showDifficultyPopup(message) {
+            const popup = document.getElementById('difficultyPopup');
+            popup.textContent = message;
+            popup.classList.add('show');
+
+            if (window.diffTimeout) clearTimeout(window.diffTimeout);
+            window.diffTimeout = setTimeout(() => {
+                popup.classList.remove('show');
+            }, 1000);
+        }
+
+        function togglePause() {
+            if (isInventoryOpen) return; // Don't toggle pause if inventory is open
+            isPaused = !isPaused;
+            pauseOverlay.style.display = isPaused ? 'flex' : 'none';
+            pauseBtn.innerHTML = isPaused ? '<ion-icon name="play"></ion-icon>' : '<ion-icon name="pause"></ion-icon>';
+        }
+
+        let isInventoryOpen = false;
+        function toggleInventory() {
+            isInventoryOpen = !isInventoryOpen;
+            // Force pause when inventory is open, unless already paused manually
+            if (isInventoryOpen) {
+                if (!isPaused) {
+                    isPaused = true;
+                    // Dont show pause overlay, show inventory overlay
+                    inventoryOverlay.style.display = 'flex';
+                } else {
+                    // Already paused, just switch overlays
+                    pauseOverlay.style.display = 'none';
+                    inventoryOverlay.style.display = 'flex';
+                }
+                renderInventoryGrid();
+            } else {
+                // Closing inventory
+                inventoryOverlay.style.display = 'none';
+                // Resume logic: if it was manually paused before? simpler to just unpause for now
+                isPaused = false;
+                pauseBtn.innerHTML = '<ion-icon name="pause"></ion-icon>';
+            }
+        }
+
+        function renderInventoryGrid() {
+            inventoryGrid.innerHTML = '';
+            if (player.inventory.length === 0 && !lightFuryAlly.active) {
+                inventoryGrid.innerHTML = '<div style="color: #aaa; font-style: italic;">Inventário vazio</div>';
+                return;
+            }
+
+            player.inventory.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'inventory-item-interactive'; // Add CSS for hover
+                itemDiv.style.width = '40px';
+                itemDiv.style.height = '40px';
+                itemDiv.style.border = '2px solid rgba(255,255,255,0.3)';
+                itemDiv.style.borderRadius = '5px';
+                itemDiv.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                itemDiv.style.display = 'flex';
+                itemDiv.style.alignItems = 'center';
+                itemDiv.style.justifyContent = 'center';
+                itemDiv.style.cursor = 'pointer';
+                itemDiv.title = 'Clique para descartar';
+
+                itemDiv.onclick = () => discardItem(index);
+
+                if (item === 'speed_boost') {
+                    const icon = document.createElement('ion-icon');
+                    icon.name = 'flash';
+                    icon.style.color = '#ffff00';
+                    icon.style.fontSize = '24px';
+                    itemDiv.appendChild(icon);
+                    itemDiv.style.borderColor = '#ffff00';
+                } else if (item === 'fireball') {
+                    const icon = document.createElement('ion-icon');
+                    icon.name = 'timer-outline';
+                    icon.style.color = '#ff4d00';
+                    icon.style.fontSize = '24px';
+                    itemDiv.appendChild(icon);
+                    itemDiv.style.borderColor = '#ff4d00';
+                } else if (item === 'damage_boost') {
+                    const icon = document.createElement('ion-icon');
+                    icon.name = 'flame';
+                    icon.style.color = '#00d4ff'; // Blue Flame Icon
+                    icon.style.fontSize = '24px';
+                    itemDiv.appendChild(icon);
+                    itemDiv.style.borderColor = '#00d4ff';
+                }
+                // Add hover effect via JS for simplicity or add CSS style block
+                itemDiv.onmouseover = () => itemDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
+                itemDiv.onmouseout = () => itemDiv.style.backgroundColor = 'rgba(0,0,0,0.5)';
+
+                inventoryGrid.appendChild(itemDiv);
+            });
+
+            // Adicionar Parceiro se ativo
+            if (lightFuryAlly.active) {
+                const partnerName = isBanguela ? 'Fúria da Luz' : 'Banguela';
+                const partnerDiv = document.createElement('div');
+                partnerDiv.style.width = '40px';
+                partnerDiv.style.height = '40px';
+                partnerDiv.style.border = `2px solid ${allyColor}`;
+                partnerDiv.style.borderRadius = '5px';
+                partnerDiv.style.backgroundColor = isBanguela ? 'rgba(255, 204, 213, 0.2)' : 'rgba(255, 140, 0, 0.2)';
+                partnerDiv.style.display = 'flex';
+                partnerDiv.style.alignItems = 'center';
+                partnerDiv.style.justifyContent = 'center';
+                partnerDiv.style.position = 'relative';
+                partnerDiv.title = `Seu(Sua) Parceiro(a): ${partnerName}`;
+
+                const img = document.createElement('img');
+                img.src = `../../assets/gameImages/${allyPrefix}1.png`;
+                img.style.width = '80%';
+                img.style.height = '80%';
+                img.style.objectFit = 'contain';
+                partnerDiv.appendChild(img);
+
+                partnerDiv.onclick = discardPartner;
+                partnerDiv.style.cursor = 'pointer';
+                partnerDiv.onmouseover = () => partnerDiv.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
+                partnerDiv.onmouseout = () => partnerDiv.style.backgroundColor = isBanguela ? 'rgba(255, 204, 213, 0.2)' : 'rgba(255, 140, 0, 0.2)';
+
+                inventoryGrid.appendChild(partnerDiv);
+            }
+        }
+
+        function discardPartner() {
+            if (!lightFuryAlly.active) return;
+            lightFuryAlly.active = false;
+            createParticles(lightFuryAlly.x + 90, lightFuryAlly.y + 90, "#fff", 30);
+
+            // Reduzir limites para 5
+            player.hp = Math.min(player.hp, 5);
+            player.shields = Math.min(player.shields, 5);
+            updateHearts();
+            updateShields();
+
+            renderInventoryGrid();
+            updateInventoryUI();
+            showDifficultyPopup("Parceira dispensada. Limites reduzidos para 5.");
+        }
+
+        function discardItem(index) {
+            player.inventory.splice(index, 1);
+            renderInventoryGrid();
+            updateInventoryUI(); // Update main UI
+        }
+
+        // Cheat Panel Functions
+        function cheatAddHeart() {
+            const maxHp = lightFuryAlly.active ? 7 : 5;
+            player.hp = maxHp;
+            updateHearts();
+            showDifficultyPopup("Vida Restaurada!");
+        }
+
+        function cheatAddShield() {
+            const maxShields = lightFuryAlly.active ? 7 : 5;
+            player.shields = maxShields;
+            updateShields();
+            showDifficultyPopup("Escudos Ativados!");
+        }
+
+        function cheatAddPartner() {
+            if (lightFuryAlly.active) {
+                showDifficultyPopup("Parceira já está voando!");
+                return;
+            }
+            spawnFuryAlly();
+            showDifficultyPopup("Resgate Realizado!");
+            renderInventoryGrid();
+        }
+
+        function cheatAddItem(type) {
+            if (player.inventory.length < 25) {
+                player.inventory.push(type);
+                updateInventoryUI();
+                renderInventoryGrid(); // Refresh the grid while open
+                showDifficultyPopup(`Item adicionado: ${type}`);
+            }
+        }
+
+        function cheatAddDistance() {
+            distance += 10000;
+            showDifficultyPopup("+10.000m (Debug)");
+        }
+
+        function toggleMute() {
+            bgMusic.muted = !bgMusic.muted;
+            localStorage.setItem('musicMuted', bgMusic.muted);
+            updateMuteIcon();
+        }
+
+        function updateMuteIcon() {
+            const icon = bgMusic.muted ? 'volume-mute-outline' : 'volume-high-outline';
+            const text = bgMusic.muted ? 'Som: OFF' : 'Som: ON';
+            muteBtn.innerHTML = `<ion-icon name="${icon}"></ion-icon> ${text}`;
+        }
+
+        function toggleAutoFire() {
+            autoFire = !autoFire;
+            localStorage.setItem('autoFire', autoFire);
+            updateAutoFireBtn();
+        }
+
+        function updateAutoFireBtn() {
+            const icon = autoFire ? 'flash' : 'flash-off-outline';
+            const text = autoFire ? 'Auto-Fire: ON' : 'Auto-Fire: OFF';
+            const color = autoFire ? 'var(--cor-romantica-primaria)' : 'rgba(0,0,0,0.4)';
+            autoFireBtn.innerHTML = `<ion-icon name="${icon}"></ion-icon> ${text}`;
+            autoFireBtn.style.background = color;
+        }
+
+        function toggleShowInventory() {
+            showInventory = !showInventory;
+            localStorage.setItem('showInventory', showInventory);
+            updateShowInventoryBtn();
+            updateInventoryVisibility();
+        }
+
+        function updateShowInventoryBtn() {
+            const icon = showInventory ? 'eye-outline' : 'eye-off-outline';
+            const text = showInventory ? 'Inventário: ON' : 'Inventário: OFF';
+            const color = showInventory ? 'var(--cor-romantica-primaria)' : 'rgba(0,0,0,0.4)';
+            showInventoryBtn.innerHTML = `<ion-icon name="${icon}"></ion-icon> ${text}`;
+            showInventoryBtn.style.background = color;
+        }
+
+        function updateInventoryVisibility() {
+            const container = document.getElementById('inventoryContainer');
+            if (container) {
+                container.style.display = showInventory ? 'flex' : 'none';
+            }
+        }
+
+        // Shooting Logic Check
+        function checkShooting() {
+            // Auto Fire Logic: Shoot enemies, boss, destructible obstacles (balloons) AND flying cages
+            const destructiblePresent = obstacles.some(o => o.type === 'balloon' || o.type === 'cage');
+            const enemiesPresent = enemies.length > 0 || boss.active || destructiblePresent;
+
+            // If manual shooting (isShooting) OR (autoFire AND target present)
+            const shouldShoot = isShooting || (autoFire && enemiesPresent);
+
+            if (shouldShoot && shootTimer <= 0) {
+                shoot();
+                shootTimer = shootCooldown;
+            }
+            if (shootTimer > 0) shootTimer--;
+        }
+
+
+        function shoot() {
+            const bRadius = 8 + (player.currentDamage >= 11 ? 4 : 0);
+
+            // Tiro do Jogador
+            bullets.push({
+                x: player.x + player.width / 2 - 5,
+                y: player.y + 20,
+                speed: 12,
+                radius: bRadius,
+                color: player.currentBulletColor,
+                damage: player.currentDamage
+            });
+
+            // Tiro do Aliado (Sincronizado)
+            if (lightFuryAlly.active) {
+                bullets.push({
+                    x: lightFuryAlly.x + 90,
+                    y: lightFuryAlly.y + 20,
+                    speed: 12,
+                    radius: bRadius,
+                    color: allyColor, // Cor do parceiro (rosa para Light Fury, laranja para Banguela)
+                    damage: player.currentDamage
+                });
+            }
+
+            player.isAttacking = 15;
+        }
+
+        function enemyShoot(x, y, vx = 0, speed = 2.5, color = "red") {
+            const finalVx = vx || (Math.random() - 0.5) * 4;
+            enemyBullets.push({ x, y, vx: finalVx, speed: speed, radius: 10, color: color });
+        }
+
+        function createParticles(x, y, color, count = 10) {
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x, y,
+                    vx: (Math.random() - 0.5) * 5,
+                    vy: (Math.random() - 0.5) * 5,
+                    life: 1.0,
+                    color
+                });
+            }
+        }
+
+        function spawnBoss(hp) {
+            boss.active = true;
+            boss.maxHp = hp; boss.hp = hp; boss.x = canvas.width / 2 - 100; boss.y = -200;
+            const bosses = ['fire', 'ice', 'lightning'];
+            boss.type = bosses[Math.floor(Math.random() * bosses.length)];
+            bossHealthContainer.style.display = 'block';
+            distanceText.classList.add('boss-alert');
+        }
+
+        function takeDamage() {
+            if (player.invincibility > 0) return;
+
+            if (player.shields > 0) {
+                player.shields--;
+                player.invincibility = 60; // 1 second invincibility for shield break
+                updateShields();
+                createParticles(player.x + 90, player.y + 90, "#00bfff", 20); // Blue particles for shield break
+            } else {
+                player.hp--;
+                player.invincibility = 120; // 2 seconds a 60fps
+                player.shakes = 20;
+                updateHearts();
+                createParticles(player.x + 90, player.y + 90, "#ff0000", 20);
+            }
+
+            document.body.classList.add('shake');
+            setTimeout(() => document.body.classList.remove('shake'), 400);
+
+            if (player.hp <= 0) gameOver();
+
+            // Fúria da Luz sai se a vida cair abaixo de 3 corações
+            if (lightFuryAlly.active && player.hp < 3) {
+                lightFuryAlly.active = false;
+                createParticles(lightFuryAlly.x + 90, lightFuryAlly.y + 90, "#fff", 30);
+
+                // Reduzir limites para 5 quando ela sai
+                player.hp = Math.min(player.hp, 5);
+                player.shields = Math.min(player.shields, 5);
+                updateHearts();
+                updateShields();
+            }
+        }
+
+        function updateShields() {
+            const shieldContainer = document.getElementById('shieldContainer');
+            if (shieldContainer) {
+                shieldContainer.innerHTML = '';
+                for (let i = 0; i < player.shields; i++) {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.width = '2.2rem'; // Match heart icon size
+                    wrapper.style.height = '100%';
+                    wrapper.style.display = 'flex';
+                    wrapper.style.alignItems = 'center';
+                    wrapper.style.justifyContent = 'center';
+
+                    const shieldIcon = document.createElement('ion-icon');
+                    shieldIcon.name = 'shield';
+                    shieldIcon.style.color = '#00bfff';
+                    shieldIcon.style.fontSize = '1.2rem'; // Smaller than heart
+                    shieldIcon.style.filter = 'drop-shadow(0 0 5px #00bfff)';
+                    shieldIcon.style.zIndex = '10'; // Ensure on top
+
+                    wrapper.appendChild(shieldIcon);
+                    shieldContainer.appendChild(wrapper);
+                }
+            }
+        }
+
+        function updateHearts() {
+            const hearts = lifeContainer.querySelectorAll('.heart-icon');
+            const maxVisible = lightFuryAlly.active ? 7 : 5;
+
+            hearts.forEach((h, i) => {
+                // Mostrar/Esconder corações baseados no parceiro
+                if (i >= maxVisible) {
+                    h.style.display = 'none';
+                } else {
+                    h.style.display = 'block';
+                }
+
+                // Lógica de vida perdida
+                if (i >= player.hp) h.classList.add('lost');
+                else h.classList.remove('lost');
+            });
+        }
+
+        function updateInventoryUI() {
+            const container = document.getElementById('inventoryContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            // Create 25 slots
+            container.style.flexWrap = 'wrap';
+            container.style.width = '350px'; // Limit width to start wrapping
+
+            for (let i = 0; i < 25; i++) {
+                const slot = document.createElement('div');
+                slot.style.width = '15px'; // Smaller slots to fit more
+                slot.style.height = '15px';
+                slot.style.border = '1px solid rgba(255,255,255,0.5)';
+                slot.style.borderRadius = '3px';
+                slot.style.backgroundColor = 'rgba(0,0,0,0.3)';
+                slot.style.display = 'flex';
+                slot.style.alignItems = 'center';
+                slot.style.justifyContent = 'center';
+
+                if (i < player.inventory.length) {
+                    const item = player.inventory[i];
+                    if (item === 'speed_boost') {
+                        const icon = document.createElement('ion-icon');
+                        icon.name = 'flash';
+                        icon.style.color = '#ffff00';
+                        icon.style.fontSize = '12px';
+                        slot.appendChild(icon);
+                        slot.style.borderColor = '#ffff00';
+                    } else if (item === 'fireball') {
+                        const icon = document.createElement('ion-icon');
+                        icon.name = 'timer-outline';
+                        icon.style.color = '#ff4d00';
+                        icon.style.fontSize = '12px';
+                        slot.appendChild(icon);
+                        slot.style.borderColor = '#ff4d00';
+                    } else if (item === 'damage_boost') {
+                        const icon = document.createElement('ion-icon');
+                        icon.name = 'flame';
+                        icon.style.color = '#00d4ff';
+                        icon.style.fontSize = '12px';
+                        slot.appendChild(icon);
+                        slot.style.borderColor = '#00d4ff';
+                    }
+                } else if (i === player.inventory.length && lightFuryAlly.active) {
+                    // Mostrar ícone do parceiro no primeiro slot vazio
+                    const img = document.createElement('img');
+                    img.src = `../../assets/gameImages/${allyPrefix}1.png`;
+                    img.style.width = '12px';
+                    img.style.height = '12px';
+                    slot.appendChild(img);
+                    slot.style.borderColor = allyColor;
+                    slot.style.backgroundColor = isBanguela ? 'rgba(255, 204, 213, 0.2)' : 'rgba(255, 140, 0, 0.2)';
+                }
+
+                container.appendChild(slot);
+            }
+        }
+
+        function gameOver() {
+            gameActive = false;
+            const dragonName = isBanguela ? 'Banguela' : 'Fúria da Luz';
+            const totalScore = Math.floor(distance) + killPoints;
+            const finalDist = Math.floor(distance);
+
+            document.getElementById('lossMessage').textContent = `${dragonName} precisou descansar.`;
+            document.getElementById('lossScore').textContent = totalScore;
+            document.getElementById('lossDist').textContent = `${finalDist}m`;
+            document.getElementById('lossBosses').textContent = bossesDefeated;
+
+            if (saveHighScore(totalScore, finalDist, bossesDefeated)) {
+                document.getElementById('lossRecordBadge').style.display = 'block';
+            }
+
+            document.getElementById('gameOverScreen').classList.add('show');
+        }
+
+        function saveHighScore(score, dist, bosses) {
+            const currentHigh = parseInt(localStorage.getItem('dragonHighScore_fase2') || '0');
+            if (score > currentHigh) {
+                localStorage.setItem('dragonHighScore_fase2', score);
+                localStorage.setItem('dragonMaxDist_fase2', dist);
+                localStorage.setItem('dragonMaxBosses_fase2', bosses);
+                return true;
+            }
+            return false;
+        }
+
+        function update() {
+            if (!gameActive || isPaused) return;
+            frameCount++;
+
+            // Update Nuvens
+            clouds.forEach(c => {
+                if (c.movementType === 'vertical') {
+                    // Movimento Vertical (Simula velocidade de voo para frente)
+                    c.y += c.speed;
+                    if (c.y > window.innerHeight) {
+                        c.y = -c.height - 50; // Reseta lá em cima
+                        c.x = Math.random() * window.innerWidth;
+                        // Varia levemente a velocidade a cada ciclo para não ficar repetitivo
+                        c.speed = 4 + Math.random() * 5;
+                    }
+                } else {
+                    // Movimento Horizontal (Atmosfera calma)
+                    c.x -= c.speed;
+                    if (c.x + c.width < 0) {
+                        c.x = window.innerWidth;
+                        c.y = Math.random() * window.innerHeight * 0.6; // Mantém mais no topo/meio
+                    }
+                }
+            });
+
+
+            checkShooting();
+
+            // Handle Fireball (Shoot Speed) Stacks
+            const fireballCount = player.inventory.filter(i => i === 'fireball').length;
+            const effectiveFireStacks = Math.min(fireballCount, 5);
+            shootCooldown = 45 - (effectiveFireStacks * 2); // Level 5: 35 frames (Slowed down as requested)
+            if (effectiveFireStacks > 0) {
+                if (frameCount % Math.max(5, Math.floor(45 - effectiveFireStacks * 5)) === 0) createParticles(player.x + 90, player.y + 150, "#ff4d00", 3);
+            }
+
+            // Handle Damage Boost (Blue Fire) Stacks
+            const damageCount = player.inventory.filter(i => i === 'damage_boost').length;
+            const effectiveDamageStacks = Math.min(damageCount, 5);
+            player.currentDamage = 1 + (effectiveDamageStacks * 4); // Level 5 = 21 damage (Huge!)
+
+            // Color Interpolation (Orange -> Blue)
+            if (isBanguela) {
+                if (effectiveDamageStacks === 0) player.currentBulletColor = '#ff8c00'; // Orange
+                else if (effectiveDamageStacks === 1) player.currentBulletColor = '#ffaa44';
+                else if (effectiveDamageStacks === 2) player.currentBulletColor = '#ffed44'; // Yellowish
+                else if (effectiveDamageStacks === 3) player.currentBulletColor = '#44ffed'; // Cyan
+                else if (effectiveDamageStacks === 4) player.currentBulletColor = '#00d4ff'; // Bright Blue
+                else player.currentBulletColor = '#0044ff'; // Level 5: Deep Blue Alpha
+            }
+
+            // Handle Speed Boost (Flight Speed) Stacks
+            const speedCount = player.inventory.filter(i => i === 'speed_boost').length;
+            const effectiveSpeedStacks = Math.min(speedCount, 5);
+            player.movementFactor = player.baseMovementFactor + (effectiveSpeedStacks * 0.04); // Stacks up to 0.3 speed
+
+            if (player.invincibility > 0) player.invincibility--;
+
+            // Animation
+            player.frameTimer++;
+            let pThreshold = player.currentFrame === 1 ? 45 : 20;
+            if (player.frameTimer > pThreshold) { player.currentFrame = (player.currentFrame % 5) + 1; player.frameTimer = 0; }
+
+            if (goal.show) {
+                goal.frameTimer++;
+                let gThreshold = goal.currentFrame === 1 ? 45 : 20;
+                if (goal.frameTimer > gThreshold) { goal.currentFrame = (goal.currentFrame % 5) + 1; goal.frameTimer = 0; }
+            }
+
+            // Movement - using individual player speed
+            player.x += (targetX - player.x) * player.movementFactor;
+            if (player.x < 0) player.x = 0;
+            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+
+            // Background
+            grassPatches.forEach(g => {
+                g.y += g.speed;
+                if (g.y > canvas.height + 50) {
+                    g.y = -50;
+                    g.x = Math.random() * canvas.width;
+                }
+            });
+
+            pebbles.forEach(p => {
+                p.y += p.speed;
+                if (p.y > canvas.height + 50) {
+                    p.y = -50;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
+
+            // Rivers & Massive Forests
+            if (frameCount % 600 === 0 && rivers.length === 0) {
+                const spawnType = Math.random();
+
+                if (spawnType < 0.6) { // 60% Chance de Rio
+                    const type = Math.random() > 0.5 ? 'diagonal' : 'horizontal';
+                    const partial = Math.random() > 0.5; // 50% de chance de ter um gap
+
+                    let rWidth = 5000; // Largura imensa para nunca mostrar as pontas
+                    let rX = (canvas.width - rWidth) / 2; // Centraliza o "rio gigante"
+
+                    if (partial) {
+                        // Desloca o rio gigante para o lado para criar o corredor
+                        const shift = canvas.width * 0.45;
+                        rX += Math.random() > 0.5 ? shift : -shift;
+                    }
+
+                    rivers.push({
+                        y: -400,
+                        height: 180,
+                        speed: 3.5,
+                        type: type,
+                        angle: type === 'diagonal' ? (Math.random() > 0.5 ? 0.35 : -0.35) : 0,
+                        width: rWidth,
+                        xOffset: rX
+                    });
+                } else if (spawnType < 0.9) { // 30% Chance de "Vasta Floresta"
+                    // Preenche a tela com uma mancha densa de árvores pequenas
+                    const treeCount = 80 + Math.floor(Math.random() * 40);
+                    for (let i = 0; i < treeCount; i++) {
+                        const tx = Math.random() * (canvas.width - 80);
+                        const ty = -200 - Math.random() * 1000;
+                        // Verifica se está no rio antes de spawnar
+                        const inRiver = rivers.some(r => {
+                            const riverTop = r.y - 20; const riverBottom = r.y + r.height + 20;
+                            return ty > riverTop && ty < riverBottom;
+                        });
+                        if (!inRiver) {
+                            obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'tree' });
+                        }
+                    }
+                }
+            }
+            rivers.forEach((r, i) => {
+                r.y += r.speed;
+                if (r.y > canvas.height + 600) rivers.splice(i, 1);
+            });
+
+            // Distance & Boss Loop
+            if (!boss.active) {
+                distance += 2;
+                distance += 2;
+
+                // Spawn de Boss com intervalo variável (10k a 20k)
+                if (distance >= nextBossSpawnDistance) {
+                    // Boss HP: Escalonamento agressivo para o Endgame (Nível 8, 9, 10)
+                    let bossHp = 20 + (bossesDefeated * 15);
+                    if (bossesDefeated >= 8) {
+                        bossHp += (bossesDefeated - 7) * 60; // Salto enorme para o desafio final
+                    }
+                    spawnBoss(bossHp);
+
+                    // Define o próximo encontro entre +10k e +30k metros (Pacing mais variado)
+                    const gap = 10000 + Math.random() * 20000;
+                    nextBossSpawnDistance = distance + gap;
+                }
+
+                // Difficulty Scaling Logic (1 to 10)
+                const difficulty = Math.min(bossesDefeated, 10);
+
+                // Spawns regulares (Start only after 1st boss i.e. difficulty >= 1)
+                if (difficulty >= 1) {
+                    // inimigos comuns: Nivel 1: 600, Nivel 10: 420 (Muito mais espaçado para evitar lotação)
+                    const commonInterval = Math.floor(600 - ((difficulty - 1) * 20));
+                    if (frameCount % commonInterval === 0) {
+                        const margin = 40;
+                        const hpCommon = 1 + (difficulty * 2); // Nível 10 = 21 HP (1 tiro de Fogo Azul Máximo)
+                        enemies.push({ x: margin + Math.random() * (canvas.width - margin * 2 - 60), y: -100, hp: hpCommon, speedY: 2, type: 'common' });
+                    }
+
+                    // Elite Enemies: Only after difficulty 3
+                    if (difficulty >= 3) {
+                        // Elite Interval: Level 3: 1000, Level 10: 720 (Aumentado para estratégia)
+                        const eliteInterval = Math.floor(1000 - ((difficulty - 3) * 40));
+                        if (frameCount % eliteInterval === 0) {
+                            let spawnX = player.x + (player.width / 2) - 30;
+                            const margin = 60;
+                            spawnX = Math.max(margin, Math.min(canvas.width - margin - 60, spawnX));
+                            const hpElite = 6 + (difficulty * 3.6); // Nível 10 = 42 HP (2 tiros de Fogo Azul Máximo)
+                            enemies.push({ x: spawnX, y: -100, hp: hpElite, speedY: 1.5, type: 'elite', shootTimer: 0 });
+                        }
+                    }
+
+                    // Ghost Hunter: Only after difficulty 5 (New Enemy)
+                    if (difficulty >= 5) {
+                        // Ghost Interval: Level 5: 1500, Level 10: 1200 (Menos spam visual)
+                        const ghostInterval = Math.floor(1500 - ((difficulty - 5) * 60));
+                        if (frameCount % ghostInterval === 0) {
+                            const margin = 100;
+                            const spawnX = margin + Math.random() * (canvas.width - margin * 2 - 60);
+                            const hpGhost = 13 + (difficulty * 5); // Nível 10 = 63 HP (3 tiros de Fogo Azul Máximo)
+                            enemies.push({ x: spawnX, y: -100, hp: hpGhost, speedY: 1, type: 'ghost', phase: Math.random() * Math.PI * 2 });
+                        }
+                    }
+
+                    // Dragon Hunter Ace (Berserker): Only after difficulty 8
+                    if (difficulty >= 8) {
+                        // Ace Interval: Level 8: 2200, Level 10: 1800 (Raro e perigoso)
+                        const aceInterval = Math.floor(2200 - ((difficulty - 8) * 200));
+                        if (frameCount % aceInterval === 0) {
+                            const margin = 50;
+                            const spawnX = margin + Math.random() * (canvas.width - margin * 2 - 80);
+                            const hpAce = 3 + (difficulty * 6); // Nível 10 = 63 HP (3 tiros de Fogo Azul Máximo - Antes eram 4)
+                            enemies.push({ x: spawnX, y: -120, hp: hpAce, speedY: 3, type: 'berserker', phase: 0, targetX: player.x });
+                        }
+                    }
+                }
+
+                // Obstacle Scaling (Frequência reduzida para mais "respiro")
+                const forestInterval = Math.max(120, Math.floor(250 - (difficulty * 12)));
+                if (frameCount % forestInterval === 0) { // Frequência aumenta
+                    const margin = 60;
+                    const areaLivre = !rivers.some(r => r.y < 300 && r.y + r.height > -300);
+                    if (areaLivre) {
+                        // Spawna uma "Floresta"
+                        const centerX = margin + Math.random() * (canvas.width - margin * 2 - 150);
+
+                        // Decide se é uma mini floresta ou uma floresta densa
+                        const isDenseForest = Math.random() > 0.7; // 30% de chance de floresta densa
+                        const clusterSize = isDenseForest ? 8 + Math.floor(Math.random() * 6) : 4 + Math.floor(Math.random() * 4);
+                        const spawnRadius = isDenseForest ? 250 : 150;
+
+                        for (let j = 0; j < clusterSize; j++) {
+                            const tx = Math.max(margin, Math.min(canvas.width - margin - 80, centerX + (Math.random() - 0.5) * spawnRadius));
+                            const ty = -250 + (Math.random() - 0.5) * spawnRadius;
+
+                            const inRiver = rivers.some(r => {
+                                const riverTop = r.y - 20; const riverBottom = r.y + r.height + 20;
+                                return ty > riverTop && ty < riverBottom;
+                            });
+
+                            if (!inRiver) {
+                                obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'tree' });
+                            }
+                        }
+                    }
+                }
+
+                const bushInterval = Math.max(100, Math.floor(200 - (difficulty * 10)));
+                if (frameCount % bushInterval === 0) {
+                    const margin = 40;
+                    const tx = margin + Math.random() * (canvas.width - margin * 2 - 40);
+                    const ty = -80;
+                    const inRiver = rivers.some(r => {
+                        const riverTop = r.y - 20; const riverBottom = r.y + r.height + 20;
+                        return ty > riverTop && ty < riverBottom;
+                    });
+                    if (!inRiver) {
+                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'bush' });
+                    }
+                }
+                const balloonInterval = Math.max(300, Math.floor(600 - (difficulty * 25)));
+                if (frameCount % balloonInterval === 0) {
+                    const margin = 50;
+                    const areaLivre = !rivers.some(r => r.y < 150 && r.y + r.height > -150);
+                    if (areaLivre) {
+                        obstacles.push({ x: margin + Math.random() * (canvas.width - margin * 2 - 60), y: -120, speedY: 5.5, type: 'balloon' });
+                    }
+                }
+
+                // Novo: Gaiola Voadora (Powerup Chance)
+                const cageInterval = Math.max(600, Math.floor(1200 - (difficulty * 50)));
+                if (frameCount % cageInterval === 0) { // Raro, mas aumenta com dificuldade
+                    const margin = 80;
+                    const areaLivre = !rivers.some(r => r.y < 200 && r.y + r.height > -200);
+                    if (areaLivre) {
+                        // Gaiola normal é mais resistente (hp: 3) e mais lenta (speedY: 1.2)
+                        obstacles.push({ x: margin + Math.random() * (canvas.width - margin * 2 - 80), y: -150, speedY: 1.2, type: 'cage', hp: 3 });
+                    }
+                }
+
+                // EVENTO ESPECIAL: Resgate do Parceiro a cada 100.000m (se não estiver ativo)
+                const currentMilestone = Math.floor(distance / 100000);
+                const lastMilestone = Math.floor(lastPartnerSpawnDistance / 100000);
+
+                if (currentMilestone > lastMilestone && currentMilestone > 0 && !lightFuryAlly.active) {
+                    lastPartnerSpawnDistance = distance;
+                    const partnerName = isBanguela ? 'Fúria da Luz' : 'Banguela';
+
+                    // Spawna gaiola especial no centro da tela
+                    const cageX = canvas.width / 2 - 40;
+                    obstacles.push({
+                        x: cageX,
+                        y: -80,
+                        speedY: 1.5, // Velocidade moderada para dar tempo de resgatar
+                        type: 'cage_partner',
+                        hp: 4, // Exatamente 4 tiros para resgatar
+                        partnerFrame: 1,
+                        partnerFrameTimer: 0
+                    });
+
+                    showDifficultyPopup(`🎉 ${partnerName} encontrado(a)! Destrua a gaiola!`);
+                }
+
+                // Novo: Arvore Alta Colidível
+                if (frameCount % 320 === 0) {
+                    const margin = 60;
+                    const tx = margin + Math.random() * (canvas.width - margin * 2 - 80);
+                    const ty = -250;
+                    const inRiver = rivers.some(r => {
+                        const riverTop = r.y - 20; const riverBottom = r.y + r.height + 20;
+                        return ty > riverTop && ty < riverBottom;
+                    });
+                    if (!inRiver) {
+                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'tall_tree' });
+                    }
+                }
+
+                // Novo: Spawn de Rochas (Cenário)
+                if (frameCount % 180 === 0) {
+                    const margin = 50;
+                    const tx = margin + Math.random() * (canvas.width - margin * 2 - 50);
+                    const ty = -100;
+                    const inRiver = rivers.some(r => {
+                        const riverTop = r.y - 10; const riverBottom = r.y + r.height + 10;
+                        return ty > riverTop && ty < riverBottom;
+                    });
+                    if (!inRiver) {
+                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'rock' });
+                    }
+                }
+            }
+            const totalScore = Math.floor(distance) + killPoints;
+            distanceText.textContent = `Pontuação: ${totalScore}`;
+
+            // Boss
+            if (boss.active) {
+                if (boss.y < 220) boss.y += 2;
+                boss.x += Math.sin(frameCount * 0.05) * 5;
+                boss.shootTimer++;
+
+                let shootInterval = boss.type === 'lightning' ? 70 : 80;
+
+                if (boss.shootTimer > shootInterval) {
+                    if (boss.type === 'fire') {
+                        enemyShoot(boss.x + 110, boss.y + 120, (Math.random() - 0.5) * 6, 3, "red");
+                    } else if (boss.type === 'ice') {
+                        // Triple Spread
+                        enemyShoot(boss.x + 110, boss.y + 120, -2, 2.5, "#00ffff");
+                        enemyShoot(boss.x + 110, boss.y + 120, 0, 3, "#00ffff");
+                        enemyShoot(boss.x + 110, boss.y + 120, 2, 2.5, "#00ffff");
+                    } else if (boss.type === 'lightning') {
+                        // Fast Burst - Speed reduced from 5 to 4, Interval increased to 70
+                        enemyShoot(boss.x + 60, boss.y + 120, 0, 4, "#ffff00");
+                        enemyShoot(boss.x + 160, boss.y + 120, 0, 4, "#ffff00");
+                    }
+                    boss.shootTimer = 0;
+                }
+                bossHealthBar.style.width = `${(boss.hp / boss.maxHp) * 100}%`;
+            }
+
+            // 1. Position Updates (Mova as posições PRIMEIRO para garantir fluidez)
+            enemies.forEach(e => {
+                if (e.type === 'elite') {
+                    // Inicializa propriedades de patrulha e cooldown se não existirem
+                    if (e.vx === undefined) e.vx = (Math.random() > 0.5 ? 1 : -1) * (1.5 + Math.random() * 1.5);
+                    if (e.dodgeCooldown === undefined) e.dodgeCooldown = 0;
+
+                    // 1. Esquiva de Tiros Equilibarada
+                    let isDodging = false;
+                    if (e.dodgeCooldown > 0) {
+                        e.dodgeCooldown--;
+                    } else {
+                        for (let b of bullets) {
+                            const distY = e.y - b.y;
+                            const dx = (e.x + 30) - b.x;
+
+                            // Perigo: Tiro vindo de baixo, mais próximo
+                            if (distY < 0 && distY > -200 && Math.abs(dx) < 60) {
+                                e.x += dx >= 0 ? 8 : -8; // Salto menor
+                                isDodging = true;
+                                e.dodgeCooldown = 40; // ~0.6s de respiro para o jogador
+                                if (Math.random() < 0.2) e.vx *= -1;
+                                break;
+                            }
+                        }
+                    }
+
+                    // 2. Patrulha Lateral
+                    if (!isDodging) {
+                        e.x += e.vx;
+                        if (e.x < 40 || e.x > canvas.width - 100) {
+                            e.vx *= -1;
+                            e.x += e.vx;
+                        }
+                        if (Math.random() < 0.005) e.vx *= -1;
+                    }
+
+                    // 3. Posicionamento Vertical (Zona de Combate)
+                    const combatY = 350; // Mais próximo do Banguela (antes era 120)
+                    if (e.y < combatY) {
+                        e.y += e.speedY;
+                    } else {
+                        e.y += (combatY - e.y) * 0.02;
+                    }
+                } else if (e.type === 'ghost') {
+                    // Novo movimento: Zig-zag flutuante e perseguição lenta
+                    e.phase += 0.03;
+                    e.x += Math.sin(e.phase) * 5;
+
+                    // Segue levemente o jogador no eixo X
+                    const targetXBuffer = player.x + (player.width / 2) - 30;
+                    e.x += (targetXBuffer - e.x) * 0.01;
+
+                    if (e.y < 250) {
+                        e.y += e.speedY * 2;
+                    } else {
+                        // Flutua verticalmente com efeito de "levitação"
+                        e.y += Math.cos(e.phase * 0.5) * 2;
+                        // Desce bem devagar para invadir o campo do jogador
+                        e.y += 0.3;
+                    }
+                } else if (e.type === 'berserker') {
+                    // Movimento "Ace": Perseguição agressiva em V e alta velocidade
+                    const targetX = player.x + (player.width / 2) - 40;
+                    e.x += (targetX - e.x) * 0.05; // Perseguição horizontal rápida
+
+                    e.phase += 0.1;
+                    e.x += Math.cos(e.phase) * 6; // Oscilação frenética
+
+                    e.y += e.speedY; // Desce rápido
+                } else {
+                    e.y += e.speedY; // Inimigos comuns apenas descem
+                }
+            });
+
+            // Update Aliado (Fúria da Luz)
+            if (lightFuryAlly.active) {
+                // Posiciona ao lado do jogador (+ offset e delay suave)
+                const targetAllyX = player.x - 120; // Voa à esquerda do Banguela
+                const targetAllyY = player.y + 20;
+                lightFuryAlly.x += (targetAllyX - lightFuryAlly.x) * 0.1;
+                lightFuryAlly.y += (targetAllyY - lightFuryAlly.y) * 0.1;
+
+                // Animação do Aliado
+                lightFuryAlly.frameTimer++;
+                const fThreshold = lightFuryAlly.currentFrame === 1 ? 45 : 20;
+                if (lightFuryAlly.frameTimer > fThreshold) {
+                    lightFuryAlly.currentFrame = (lightFuryAlly.currentFrame % 5) + 1;
+                    lightFuryAlly.frameTimer = 0;
+                }
+            }
+
+            obstacles.forEach(o => o.y += o.speedY);
+
+            // Animar dragão dentro da gaiola especial
+            obstacles.forEach(o => {
+                if (o.type === 'cage_partner') {
+                    o.partnerFrameTimer++;
+                    const threshold = o.partnerFrame === 1 ? 45 : 20;
+                    if (o.partnerFrameTimer > threshold) {
+                        o.partnerFrame = (o.partnerFrame % 5) + 1;
+                        o.partnerFrameTimer = 0;
+                    }
+                }
+            });
+
+            // 2. Logic loops
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const b = bullets[i]; b.y -= b.speed;
+                if (frameCount % 2 === 0) particles.push({ x: b.x, y: b.y + b.radius, vx: (Math.random() - 0.5) * 2, vy: 2, life: 0.6, color: b.color });
+                if (boss.active && b.x > boss.x && b.x < boss.x + 200 && b.y > boss.y && b.y < boss.y + 150) {
+                    boss.hp -= b.damage || 1; createParticles(b.x, b.y, player.currentBulletColor); bullets.splice(i, 1);
+                    if (boss.hp <= 0) {
+                        boss.active = false;
+                        bossesDefeated++;
+                        killPoints += 1000; // Pontos do Boss
+                        bossHealthContainer.style.display = 'none';
+                        distanceText.classList.remove('boss-alert');
+                        // Explosão Massiva do Boss
+                        for (let k = 0; k < 5; k++) {
+                            setTimeout(() => {
+                                createParticles(boss.x + Math.random() * 200, boss.y + Math.random() * 150, "orange", 20);
+                                createParticles(boss.x + Math.random() * 200, boss.y + Math.random() * 150, "red", 20);
+                                createParticles(boss.x + Math.random() * 200, boss.y + Math.random() * 150, "yellow", 20);
+                            }, k * 100);
+                        }
+                        createParticles(boss.x + 100, boss.y + 75, "white", 100);
+                        // Boss drops Full Heal (Guaranteed)
+                        powerups.push({ x: boss.x + 100, y: boss.y + 75, width: 40, height: 40, speed: 3.5, type: 'full' });
+                    }
+                } else {
+                    enemies.forEach((e, idx) => {
+                        if (b.x > e.x && b.x < e.x + 60 && b.y > e.y && b.y < e.y + 60) {
+                            e.hp -= b.damage || 1; createParticles(b.x, b.y, player.currentBulletColor, 15); bullets.splice(i, 1);
+                            if (e.hp <= 0) {
+                                createParticles(e.x + 30, e.y + 30, "#555", 25);
+
+                                // Pontuação por tipo de inimigo
+                                if (e.type === 'common') killPoints += 100;
+                                else if (e.type === 'elite') killPoints += 200;
+                                else if (e.type === 'ghost') killPoints += 300;
+                                else if (e.type === 'berserker') killPoints += 400;
+
+                                enemies.splice(idx, 1);
+                                if (Math.random() < 0.15) { // Chance de drop de vida reduzida para 15%
+                                    powerups.push({ x: e.x, y: e.y, width: 30, height: 30, speed: 3.5, type: 'heart' });
+                                }
+                            }
+                        }
+                    });
+                    obstacles.forEach((o, idx) => {
+                        if (o.type === 'bush' || o.type === 'tree' || o.type === 'rock') return; // Cenário passa direto
+                        if (b.x > o.x && b.x < o.x + 80 && b.y > o.y && b.y < o.y + 120) { // Altura maior para tall_tree
+                            createParticles(b.x, b.y, "#ff8c00", 20); bullets.splice(i, 1);
+                            if (o.type === 'balloon') {
+                                createParticles(o.x + 40, o.y + 40, "#ff4d6d", 15);
+                                obstacles.splice(idx, 1);
+                            } else if (o.type === 'cage' || o.type === 'cage_partner') {
+                                // Lógica da Gaiola (tem HP)
+                                // Gaiola do parceiro sempre recebe 1 de dano por tiro (ignora damage boost)
+                                const damageToApply = o.type === 'cage_partner' ? 1 : (b.damage || 1);
+                                o.hp = (o.hp || 0) - damageToApply;
+                                createParticles(o.x + 40, o.y + 40, "#aaa", 10);
+                                if (o.hp <= 0) {
+                                    createParticles(o.x + 40, o.y + 40, "#ffd700", 30); // Explosão Dourada
+
+                                    if (o.type === 'cage_partner') {
+                                        // Resgate épico do Parceiro
+                                        spawnFuryAlly();
+                                    }
+
+                                    obstacles.splice(idx, 1);
+                                    // Drop Logic:
+                                    // Drop Logic:
+                                    // If HP < 5: 60% Heart, 20% Shield, 20% Rapid Fire
+                                    // If HP >= 5: 50% Shield, 50% Rapid Fire
+
+                                    let pType = 'heart';
+                                    const rand = Math.random();
+
+                                    if (player.hp >= 5) {
+                                        if (rand < 0.3) pType = 'shield';
+                                        else if (rand < 0.55) pType = 'speed_boost';
+                                        else if (rand < 0.8) pType = 'fireball';
+                                        else pType = 'damage_boost';
+                                    } else {
+                                        if (rand < 0.5) pType = 'heart';
+                                        else if (rand < 0.65) pType = 'shield';
+                                        else if (rand < 0.8) pType = 'speed_boost';
+                                        else if (rand < 0.9) pType = 'fireball';
+                                        else pType = 'damage_boost';
+                                    }
+
+                                    powerups.push({ x: o.x + 20, y: o.y + 20, width: 30, height: 30, speed: 3.5, type: pType });
+                                }
+                            } else if (o.type === 'tall_tree') {
+                                // Impacto visual, mas a árvore permanece intacta
+                                createParticles(b.x, b.y, "#163013", 15);
+                            }
+                        }
+                    });
+                }
+                if (b.y < -50) bullets.splice(i, 1);
+            }
+
+            for (let i = enemyBullets.length - 1; i >= 0; i--) {
+                const eb = enemyBullets[i]; eb.y += eb.speed; eb.x += eb.vx || 0;
+                if (frameCount % 4 === 0) particles.push({ x: eb.x, y: eb.y, vx: (Math.random() - 0.5) * 2, vy: -1, life: 0.5, color: eb.color });
+                const hx = player.x + 35, hy = player.y + 35, hw = 110, hh = 110;
+                if (eb.x > hx && eb.x < hx + hw && eb.y > hy && eb.y < hy + hh) {
+                    takeDamage();
+                    enemyBullets.splice(i, 1);
+                } else if (eb.y > canvas.height + 50) enemyBullets.splice(i, 1);
+            }
+
+            enemies.forEach((e, i) => {
+                if (e.type === 'elite') {
+                    e.shootTimer++;
+                    if (e.shootTimer > 240) { // Demoram bem mais para atirar (4 segundos a 60fps)
+                        enemyShoot(e.x + 30, e.y + 60); e.shootTimer = 0;
+                    }
+                }
+
+                // Player vs Enemy Collision
+                const hx = player.x + 35, hy = player.y + 35, hw = 110, hh = 110;
+                if (e.x < hx + hw && e.x + 60 > hx && e.y < hy + hh && e.y + 60 > hy) {
+                    takeDamage();
+                    createParticles(e.x + 30, e.y + 30, "#555", 25);
+                    enemies.splice(i, 1);
+                    return; // Avoid further processing of this enemy
+                }
+
+                if (e.y > canvas.height + 50) enemies.splice(i, 1);
+            });
+
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const o = obstacles[i];
+                if (o.type === 'bush' || o.type === 'tree' || o.type === 'rock') {
+                    if (o.y > canvas.height + 50) obstacles.splice(i, 1);
+                    continue; // Cenário não colide
+                }
+                const hx = player.x + 35, hy = player.y + 35, hw = 110, hh = 110;
+                const oHeight = o.type === 'tall_tree' ? 120 : (o.type === 'cage' ? 60 : 80);
+
+                // Colisão Jogador vs Obstáculo
+                if (o.x < hx + hw && o.x + 80 > hx && o.y < hy + hh && o.y + oHeight > hy) {
+                    if (!o.hit) {
+                        takeDamage();
+                        if (o.type === 'balloon') {
+                            createParticles(o.x + 40, o.y + 40, "#ff4d6d", 30);
+                            obstacles.splice(i, 1);
+                        } else if (o.type === 'cage') {
+                            // Colidir com gaiola quebra ela e machuca
+                            createParticles(o.x + 40, o.y + 40, "#aaa", 30);
+                            obstacles.splice(i, 1);
+                        } else if (o.type === 'tall_tree') {
+                            createParticles(o.x + 40, o.y + 60, "#163013", 30);
+                            o.hit = true;
+                        }
+                    }
+                } else if (o.y > canvas.height + 50) obstacles.splice(i, 1);
+            }
+
+            if (goal.show) {
+                if (!goal.following) { if (goal.y < canvas.height / 4) goal.y += 2; }
+                else {
+                    const tx = player.x + 90, ty = player.y - 40;
+                    goal.x += (tx - goal.x) * 0.08; goal.y += (ty - goal.y) * 0.08;
+                    goal.victoryTimer--; if (goal.victoryTimer <= 0) gameWin();
+                }
+            }
+            particles.forEach((p, i) => { p.x += p.vx; p.y += p.vy; p.life -= 0.01; if (p.life <= 0) particles.splice(i, 1); });
+
+            // Powerups Logic
+            for (let i = powerups.length - 1; i >= 0; i--) {
+                const p = powerups[i];
+                p.y += p.speed;
+
+                const hx = player.x + 35, hy = player.y + 35, hw = 110, hh = 110;
+
+                if (p.x > player.x && p.x < player.x + player.width && p.y > player.y && p.y < player.y + player.height) {
+                    const maxHp = lightFuryAlly.active ? 7 : 5;
+                    const maxShields = lightFuryAlly.active ? 7 : 5;
+
+                    if (p.type === 'shield') {
+                        player.shields = Math.min(player.shields + 1, maxShields);
+                        updateShields();
+                        createParticles(player.x + 90, player.y + 90, "#00bfff", 20); // Blue particles
+                    } else if (p.type === 'speed_boost' || p.type === 'fireball' || p.type === 'damage_boost') {
+                        if (player.inventory.length < 25) { // Max 25 slots
+                            player.inventory.push(p.type);
+                            updateInventoryUI();
+                            let pColor = p.type === 'speed_boost' ? "#ffff00" : (p.type === 'fireball' ? "#ff4d00" : "#00d4ff");
+                            createParticles(player.x + 90, player.y + 90, pColor, 30);
+                        } else {
+                            createParticles(player.x + 90, player.y + 90, "#ffffff", 10);
+                        }
+                    } else if (player.hp < maxHp) {
+                        if (p.type === 'full') {
+                            player.hp = maxHp;
+                            createParticles(p.x, p.y, "#ffd700", 30);
+                        } else {
+                            player.hp = Math.min(player.hp + 1, maxHp);
+                            createParticles(p.x, p.y, "#ff4d6d", 10);
+                        }
+                        updateHearts();
+                    }
+                    powerups.splice(i, 1);
+                    continue;
+                }
+
+                if (p.y > canvas.height + 50) powerups.splice(i, 1);
+            }
+        }
+
+        function isPointInRiver(px, py) {
+            for (let r of rivers) {
+                // Reverte a transformação do canvas para checar o ponto no retângulo local do rio
+                const dx = px - (r.xOffset + r.width / 2);
+                const dy = py - (r.y + r.height / 2);
+                const cos = Math.cos(-r.angle);
+                const sin = Math.sin(-r.angle);
+                const localX = dx * cos - dy * sin;
+                const localY = dx * sin + dy * cos;
+
+                // Checa se está dentro do rio + uma margem pequena para areia
+                if (localX > -r.width / 2 && localX < r.width / 2 &&
+                    localY > -r.height / 2 - 25 && localY < r.height / 2 + 25) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function draw() {
+            // Fundo Gramado Base
+            ctx.fillStyle = "#2d5a27";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 0. Nuvens removidas do fundo para ficarem apenas as embaçadas por cima
+
+
+            // 1. Grama e Pedrinhas Decorativas (Atrás de tudo)
+            pebbles.forEach(p => {
+                if (!isPointInRiver(p.x, p.y)) {
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p.x + p.size, p.y - p.size * 0.5);
+                    ctx.lineTo(p.x + p.size * 1.5, p.y + p.size * 0.5);
+                    ctx.lineTo(p.x, p.y + p.size);
+                    ctx.closePath();
+                    ctx.fill();
+                    // Pequeno brilho na pedrinha
+                    ctx.fillStyle = "rgba(255,255,255,0.15)";
+                    ctx.beginPath(); ctx.arc(p.x + p.size * 0.3, p.y + p.size * 0.2, p.size * 0.2, 0, Math.PI * 2); ctx.fill();
+                }
+            });
+
+            ctx.strokeStyle = "#3e7a37";
+            ctx.lineWidth = 2;
+            grassPatches.forEach(g => {
+                // Só desenha se não estiver sob a água/areia
+                if (!isPointInRiver(g.x, g.y)) {
+                    ctx.beginPath();
+                    ctx.moveTo(g.x, g.y);
+                    ctx.lineTo(g.x - 5, g.y - 10);
+                    ctx.moveTo(g.x, g.y);
+                    ctx.lineTo(g.x, g.y - 12);
+                    ctx.moveTo(g.x, g.y);
+                    ctx.lineTo(g.x + 5, g.y - 10);
+                    ctx.stroke();
+                }
+            });
+
+            // 2. Rios (Sobre a grama)
+            rivers.forEach(r => {
+                ctx.save();
+                ctx.translate(r.xOffset + r.width / 2, r.y + r.height / 2);
+                ctx.rotate(r.angle);
+
+                // Margens de Areia
+                ctx.fillStyle = "#c2b280"; // Cor de Areia Natural
+                const sandHeight = 20;
+                // Margem superior
+                ctx.fillRect(-r.width / 2, -r.height / 2 - sandHeight, r.width, sandHeight);
+                // Margem inferior
+                ctx.fillRect(-r.width / 2, r.height / 2, r.width, sandHeight);
+
+                // Textura na Areia (Pontinhos)
+                ctx.fillStyle = "rgba(0,0,0,0.1)";
+                for (let i = -r.width / 2; i < r.width / 2; i += 40) {
+                    ctx.beginPath();
+                    ctx.arc(i + Math.random() * 20, -r.height / 2 - 10, 2, 0, Math.PI * 2);
+                    ctx.arc(i + Math.random() * 20, r.height / 2 + 10, 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Corpo do Rio
+                ctx.fillStyle = "#4da6ff";
+                ctx.fillRect(-r.width / 2, -r.height / 2, r.width, r.height);
+
+                // Ondas / Brilho da água animado
+                ctx.strokeStyle = "rgba(255,255,255,0.4)";
+                ctx.lineWidth = 2;
+                ctx.setLineDash([]); // Remove o tracejado
+
+                const waveSpacing = 50;
+                const waveSpeed = frameCount * 0.05;
+
+                for (let row = -1; row <= 1; row += 2) {
+                    ctx.beginPath();
+                    const yBase = row * 35;
+                    for (let x = -r.width / 2; x < r.width / 2; x += 10) {
+                        const yWave = Math.sin(x * 0.02 + waveSpeed + row) * 8;
+                        if (x === -r.width / 2) ctx.moveTo(x, yBase + yWave);
+                        else ctx.lineTo(x, yBase + yWave);
+                    }
+                    ctx.stroke();
+                }
+
+                // Pequenas marolas/brilhos espalhados pelo corpo do rio
+                ctx.strokeStyle = "rgba(255,255,255,0.25)";
+                for (let i = 0; i < 5; i++) {
+                    const rowY = ((i - 2) * 25);
+                    ctx.beginPath();
+                    for (let x = -r.width / 2; x < r.width / 2; x += 50) {
+                        const xOffset = Math.sin(frameCount * 0.02 + i) * 20;
+                        const sparkleX = x + xOffset;
+                        const yWave = Math.sin(sparkleX * 0.05 + waveSpeed) * 3;
+                        ctx.moveTo(sparkleX, rowY + yWave);
+                        ctx.lineTo(sparkleX + 15, rowY + yWave);
+                    }
+                    ctx.stroke();
+                }
+
+                // Bordas de espuma/contato sutil
+                ctx.strokeStyle = "rgba(255,255,255,0.2)";
+                ctx.lineWidth = 4;
+                ctx.strokeRect(-r.width / 2, -r.height / 2, r.width, r.height);
+
+                ctx.restore();
+            });
+
+
+
+            // Obstáculos com Hierarquia de Camadas: Rochas < Vegetação < Árvores Altas < Balões
+            const sortedRocks = obstacles.filter(o => o.type === 'rock').sort((a, b) => a.y - b.y);
+            const sortedVegetation = obstacles.filter(o => o.type === 'tree' || o.type === 'bush').sort((a, b) => a.y - b.y);
+            const sortedTallTrees = obstacles.filter(o => o.type === 'tall_tree').sort((a, b) => a.y - b.y);
+            const sortedFlyers = obstacles.filter(o => o.type === 'balloon' || o.type === 'cage').sort((a, b) => a.y - b.y);
+
+            // 1. Desenha Rochas (Sempre na base do cenário)
+            sortedRocks.forEach(o => {
+                // Rochas Naturais (Cenário)
+                ctx.save();
+                ctx.translate(o.x + 20, o.y + 20);
+
+                // Sombra da rocha
+                ctx.fillStyle = "rgba(0,0,0,0.25)";
+                ctx.beginPath(); ctx.ellipse(0, 15, 20, 6, 0, 0, Math.PI * 2); ctx.fill();
+
+                // Formato angular
+                ctx.fillStyle = "#6b705c"; // Cinza Musgo
+                ctx.beginPath();
+                ctx.moveTo(-15, 10); ctx.lineTo(15, 12); ctx.lineTo(20, -5); ctx.lineTo(5, -15); ctx.lineTo(-10, -12);
+                ctx.closePath(); ctx.fill();
+
+                // Textura e faces
+                ctx.fillStyle = "#a5a58d"; // Face iluminada
+                ctx.beginPath();
+                ctx.moveTo(-10, -12); ctx.lineTo(5, -15); ctx.lineTo(0, 0); ctx.lineTo(-15, 10);
+                ctx.closePath(); ctx.fill();
+
+                ctx.fillStyle = "#3f4238"; // Sombra da face
+                ctx.beginPath();
+                ctx.moveTo(15, 12); ctx.lineTo(20, -5); ctx.lineTo(0, 0);
+                ctx.closePath(); ctx.fill();
+
+                ctx.restore();
+            });
+
+            // 2. Desenha Vegetação Comum (Árvores Pequenas e Arbustos)
+            sortedVegetation.forEach(o => {
+                if (o.type === 'tree') {
+                    // Tronco com textura
+                    ctx.fillStyle = "#3e2713";
+                    ctx.fillRect(o.x + 35, o.y + 60, 10, 20);
+
+                    // Folhagem em camadas (Pinheiro)
+                    // Camada de baixo
+                    ctx.fillStyle = "#163013";
+                    ctx.beginPath(); ctx.moveTo(o.x + 10, o.y + 65); ctx.lineTo(o.x + 40, o.y + 35); ctx.lineTo(o.x + 70, o.y + 65); ctx.fill();
+                    // Camada do meio
+                    ctx.fillStyle = "#1e3d1a";
+                    ctx.beginPath(); ctx.moveTo(o.x + 20, o.y + 45); ctx.lineTo(o.x + 40, o.y + 15); ctx.lineTo(o.x + 60, o.y + 45); ctx.fill();
+                    // Camada do topo
+                    ctx.fillStyle = "#3e7a37";
+                    ctx.beginPath(); ctx.moveTo(o.x + 28, o.y + 25); ctx.lineTo(o.x + 40, o.y); ctx.lineTo(o.x + 52, o.y + 25); ctx.fill();
+
+                    // Sombra na base
+                    ctx.fillStyle = "rgba(0,0,0,0.2)";
+                    ctx.beginPath(); ctx.ellipse(o.x + 40, o.y + 80, 20, 5, 0, 0, Math.PI * 2); ctx.fill();
+                } else if (o.type === 'bush') {
+                    // Arbustos Orgânicos e Fofos
+                    ctx.save();
+                    ctx.translate(o.x + 20, o.y + 20);
+
+                    // Sombra do arbusto
+                    ctx.fillStyle = "rgba(0,0,0,0.2)";
+                    ctx.beginPath(); ctx.ellipse(0, 15, 18, 5, 0, 0, Math.PI * 2); ctx.fill();
+
+                    // Folhagem composta por múltiplos círculos para textura "fluffy"
+                    const circles = [
+                        { x: -10, y: 8, r: 12, c: "#163013" },
+                        { x: 10, y: 8, r: 12, c: "#163013" },
+                        { x: -12, y: 0, r: 10, c: "#1e3d1a" },
+                        { x: 12, y: 0, r: 10, c: "#1e3d1a" },
+                        { x: 0, y: -5, r: 14, c: "#2d5a27" },
+                        { x: -5, y: -8, r: 8, c: "#3e7a37" },
+                        { x: 5, y: -8, r: 8, c: "#3e7a37" }
+                    ];
+
+                    circles.forEach(circ => {
+                        ctx.fillStyle = circ.c;
+                        ctx.beginPath();
+                        ctx.arc(circ.x, circ.y, circ.r, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+
+                    // Pequenos brilhos de luz
+                    ctx.fillStyle = "rgba(255,255,255,0.15)";
+                    ctx.beginPath(); ctx.arc(-6, -10, 4, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(4, -12, 3, 0, Math.PI * 2); ctx.fill();
+
+                    ctx.restore();
+                }
+            });
+
+            // 3. Desenha Árvores Altas (Sobrepõe rochas e vegetação comum)
+            sortedTallTrees.forEach(o => {
+                // Árvore Alta (Pinho Gigante) - Colidível
+                // Tronco Longo
+                ctx.fillStyle = "#2d1b0d";
+                ctx.fillRect(o.x + 32, o.y + 80, 16, 40);
+
+                ctx.strokeStyle = "#a3d977"; // Contorno Sugerido: Verde Claro para destaque
+                ctx.lineWidth = 1;
+
+                // Camada 4 (Base)
+                ctx.fillStyle = "#0c1a0a";
+                ctx.beginPath(); ctx.moveTo(o.x, o.y + 90); ctx.lineTo(o.x + 40, o.y + 50); ctx.lineTo(o.x + 80, o.y + 90); ctx.fill(); ctx.stroke();
+                // Camada 3
+                ctx.fillStyle = "#122610";
+                ctx.beginPath(); ctx.moveTo(o.x + 10, o.y + 65); ctx.lineTo(o.x + 40, o.y + 25); ctx.lineTo(o.x + 70, o.y + 65); ctx.fill(); ctx.stroke();
+                // Camada 2
+                ctx.fillStyle = "#183315";
+                ctx.beginPath(); ctx.moveTo(o.x + 20, o.y + 40); ctx.lineTo(o.x + 40, o.y + 5); ctx.lineTo(o.x + 60, o.y + 40); ctx.fill(); ctx.stroke();
+                // Camada 1 (Topo)
+                ctx.fillStyle = "#255021";
+                ctx.beginPath(); ctx.moveTo(o.x + 28, o.y + 15); ctx.lineTo(o.x + 40, o.y - 15); ctx.lineTo(o.x + 52, o.y + 15); ctx.fill(); ctx.stroke();
+
+                // Sombra Maior
+                ctx.fillStyle = "rgba(0,0,0,0.3)";
+                ctx.beginPath(); ctx.ellipse(o.x + 40, o.y + 120, 30, 8, 0, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // 2. Desenha Elementos Voadores (Balões) - No ar acima da floresta
+            sortedFlyers.forEach(o => {
+                if (o.type === 'balloon') {
+                    // Balão de Ar Quente Natural / Clássico
+                    ctx.save();
+                    ctx.translate(o.x + 40, o.y + 40);
+
+                    const sway = Math.sin(frameCount * 0.05 + o.x) * 10;
+                    const breathe = Math.sin(frameCount * 0.08) * 0.03 + 1;
+                    ctx.translate(sway, 0);
+                    ctx.scale(breathe, breathe);
+
+                    // 1. Cesto (Vime)
+                    ctx.fillStyle = "#6b4423";
+                    ctx.fillRect(-18, 30, 36, 20);
+                    // Textura do cesto
+                    ctx.strokeStyle = "#4a2a12";
+                    ctx.lineWidth = 1;
+                    for (let i = -18; i <= 18; i += 6) { ctx.beginPath(); ctx.moveTo(i, 30); ctx.lineTo(i, 50); ctx.stroke(); }
+                    for (let i = 30; i <= 50; i += 5) { ctx.beginPath(); ctx.moveTo(-18, i); ctx.lineTo(18, i); ctx.stroke(); }
+
+                    // 2. Cabo e Suporte
+                    ctx.strokeStyle = "#222";
+                    ctx.lineWidth = 1.2;
+                    ctx.beginPath();
+                    ctx.moveTo(-18, 30); ctx.lineTo(-22, 12);
+                    ctx.moveTo(18, 30); ctx.lineTo(22, 12);
+                    ctx.stroke();
+
+                    // 3. Queimador (Chama interna sutil)
+                    ctx.fillStyle = "#ff9d00";
+                    ctx.beginPath();
+                    ctx.moveTo(-4, 30); ctx.lineTo(0, 18 + Math.random() * 5); ctx.lineTo(4, 30);
+                    ctx.fill();
+
+                    // 4. Envelope (Cores Clássicas: Amarelo e Laranja/Vermelho)
+                    const balloonGradient = ctx.createRadialGradient(-10, -15, 5, 0, -10, 50);
+                    balloonGradient.addColorStop(0, "#ffd700"); // Amarelo brilhante
+                    balloonGradient.addColorStop(1, "#f5b000");
+
+                    ctx.fillStyle = balloonGradient;
+                    ctx.beginPath();
+                    ctx.ellipse(0, -10, 42, 52, 0, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Painéis / Gomos Clássicos
+                    ctx.save();
+                    ctx.clip();
+                    ctx.fillStyle = "#e63946"; // Vermelho natural
+                    for (let i = -1; i <= 1; i += 2) {
+                        ctx.beginPath();
+                        ctx.moveTo(i * 15, -65);
+                        ctx.bezierCurveTo(i * 45, -60, i * 45, 40, i * 15, 45);
+                        ctx.lineTo(i * 35, 45);
+                        ctx.bezierCurveTo(i * 65, 40, i * 65, -60, i * 35, -65);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+
+                    // 5. Linhas de Costura (Gomos)
+                    ctx.strokeStyle = "rgba(0,0,0,0.15)";
+                    ctx.lineWidth = 1;
+                    for (let i = -1; i <= 1; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(i * 15, -62);
+                        ctx.bezierCurveTo(i * 40, -40, i * 40, 20, i * 15, 42);
+                        ctx.stroke();
+                    }
+
+                    // 6. Brilho do Material (Tecido)
+                    ctx.fillStyle = "rgba(255,255,255,0.2)";
+                    ctx.beginPath();
+                    ctx.ellipse(-15, -25, 10, 15, Math.PI / 4, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.restore();
+                } else if (o.type === 'cage' || o.type === 'cage_partner') {
+                    // Gaiola Voadora com Balões DETALHADOS
+                    ctx.save();
+                    ctx.translate(o.x + 30, o.y + 30); // Center of 60x60
+
+                    // Oscilação suave
+                    const sway = Math.sin(frameCount * 0.03 + o.x) * 5;
+                    ctx.translate(sway, 0);
+
+                    // 1. Strings (Cordas)
+                    // Ponto de união (nó) logo acima da gaiola
+                    const knotY = -35;
+
+                    ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    // Cordas dos balões para o nó central
+                    ctx.moveTo(-20, -80); ctx.lineTo(0, knotY); // Balão Esq
+                    ctx.moveTo(20, -80); ctx.lineTo(0, knotY);  // Balão Dir
+                    ctx.moveTo(0, -90); ctx.lineTo(0, knotY);   // Balão Meio
+
+                    // Cordas do nó para os cantos da gaiola
+                    ctx.moveTo(0, knotY); ctx.lineTo(-25, -30);
+                    ctx.moveTo(0, knotY); ctx.lineTo(25, -30);
+                    ctx.stroke();
+
+                    // 2. Três Balões Vermelhos (Cluster)
+                    const balloons = [
+                        { x: -20, y: -80, r: 18, c: "#ff4d4d", s: "#ff8080" }, // Left
+                        { x: 20, y: -80, r: 18, c: "#ff4d4d", s: "#ff8080" },  // Right
+                        { x: 0, y: -95, r: 22, c: "#ff3333", s: "#ff6666" }    // Top Center (Main)
+                    ];
+
+                    balloons.forEach(b => {
+                        // Corpo do Balão
+                        ctx.fillStyle = b.c;
+                        ctx.beginPath();
+                        ctx.ellipse(b.x, b.y, b.r, b.r * 1.2, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Bico do balão (nó)
+                        ctx.fillStyle = b.c;
+                        ctx.beginPath();
+                        ctx.moveTo(b.x - 4, b.y + b.r * 1.1);
+                        ctx.lineTo(b.x + 4, b.y + b.r * 1.1);
+                        ctx.lineTo(b.x, b.y + b.r * 1.4);
+                        ctx.fill();
+
+                        // Reflexo/Brilho para volume 3D
+                        ctx.fillStyle = "rgba(255,255,255,0.4)";
+                        ctx.beginPath();
+                        ctx.ellipse(b.x - b.r * 0.4, b.y - b.r * 0.4, b.r * 0.25, b.r * 0.15, -Math.PI / 4, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+
+                    // 3. A Gaiola (Agora centralizada corretamente no Hitbox)
+                    // Hitbox é 60x60. O translate está no centro (30,30).
+                    // Logo desenhamos de -30 a 30.
+                    ctx.fillStyle = "#2a2a2a"; // Metal mais escuro
+                    ctx.fillRect(-30, -30, 60, 60);
+
+                    // Borda Metálica
+                    ctx.strokeStyle = "#666";
+                    ctx.lineWidth = 4;
+                    ctx.strokeRect(-30, -30, 60, 60);
+
+                    // Grades Verticais
+                    ctx.fillStyle = "#888";
+                    for (let i = -20; i <= 20; i += 10) {
+                        ctx.fillRect(i, -30, 3, 60);
+                    }
+                    // Grades Horizontais (novas)
+                    ctx.fillRect(-30, -10, 60, 3);
+                    ctx.fillRect(-30, 10, 60, 3);
+
+                    // Ícone de Item (?) dentro ou Dragão Parceiro
+                    if (o.type === 'cage_partner') {
+                        // Desenhar dragão parceiro animado dentro da gaiola
+                        const partnerImg = goalImages[o.partnerFrame - 1];
+                        ctx.save();
+                        ctx.globalAlpha = 0.9;
+                        // Desenha o dragão menor para caber na gaiola
+                        const dragonSize = 50;
+                        ctx.drawImage(partnerImg, -dragonSize / 2, -dragonSize / 2, dragonSize, dragonSize);
+
+                        // Brilho especial
+                        ctx.shadowBlur = 20;
+                        ctx.shadowColor = allyColor;
+                        ctx.restore();
+                    } else {
+                        // Ícone de Item (?) dentro
+                        ctx.fillStyle = "#ffd700";
+                        ctx.font = "bold 32px Arial";
+                        ctx.shadowColor = "black";
+                        ctx.shadowBlur = 4;
+                        ctx.fillText("?", -10, 12); // Centralizado visualmente
+                        ctx.shadowBlur = 0;
+                    }
+
+                    ctx.restore();
+                }
+            });
+
+            // Elementos de Gameplay (Tiros e Inimigos) - Desenha ACIMA das árvores/cenário
+            // Bullets
+            ctx.save();
+            bullets.forEach(b => {
+                ctx.shadowBlur = 20; ctx.shadowColor = "#ff4d00"; ctx.fillStyle = b.color;
+                ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
+                ctx.shadowBlur = 0; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(b.x, b.y, b.radius * 0.5, 0, Math.PI * 2); ctx.fill();
+            });
+            ctx.restore();
+
+            // Enemy Bullets
+            ctx.save();
+            enemyBullets.forEach(eb => {
+                ctx.shadowBlur = 15; ctx.shadowColor = eb.color; ctx.fillStyle = eb.color;
+                ctx.beginPath(); ctx.arc(eb.x, eb.y, eb.radius, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(eb.x, eb.y, eb.radius * 0.4, 0, Math.PI * 2); ctx.fill();
+            });
+            ctx.restore();
+
+            enemies.forEach(e => {
+                // Sombra do Inimigo
+                ctx.fillStyle = "rgba(0,0,0,0.3)";
+                ctx.beginPath();
+                ctx.ellipse(e.x + 30, e.y + 75, 25, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.save();
+                // Determina estilo baseado no tipo
+                let bodyColor, eyeColor, wingColor, hornColor, size = 60;
+                if (e.type === 'ghost') {
+                    bodyColor = "#408"; eyeColor = "#f0f"; wingColor = "#60a"; hornColor = "#80f";
+                    ctx.shadowBlur = 15; ctx.shadowColor = "#a0f";
+                    const pulse = Math.sin(frameCount * 0.1) * 5;
+                    size += pulse;
+                } else if (e.type === 'berserker') {
+                    bodyColor = "#111"; eyeColor = "red"; wingColor = "#222"; hornColor = "#ffb700"; size = 80;
+                    ctx.shadowBlur = 20; ctx.shadowColor = "#ffb700";
+                } else if (e.type === 'elite') {
+                    bodyColor = "#500"; eyeColor = "red"; wingColor = "#300"; hornColor = "#800";
+                } else {
+                    bodyColor = "#333"; eyeColor = "red"; wingColor = "#222"; hornColor = "#555";
+                }
+
+                // 1. Cauda do Dragão (Atrás do corpo)
+                ctx.fillStyle = bodyColor;
+                ctx.beginPath();
+                ctx.moveTo(e.x + size / 2, e.y + size * 0.8);
+                const tailSway = Math.sin(frameCount * 0.1) * 20;
+                ctx.quadraticCurveTo(e.x + size / 2 + tailSway, e.y + size + 40, e.x + size / 2 + tailSway * 1.5, e.y + size + 20);
+                ctx.lineWidth = 8; ctx.strokeStyle = bodyColor; ctx.stroke();
+                // Ponta da cauda
+                ctx.fillStyle = hornColor;
+                ctx.beginPath();
+                ctx.arc(e.x + size / 2 + tailSway * 1.5, e.y + size + 20, 5, 0, Math.PI * 2); ctx.fill();
+
+                // 2. Asas de Morcego (Mais curvas)
+                const flap = Math.sin(frameCount * 0.2) * 25;
+                ctx.fillStyle = wingColor;
+                for (let side = -1; side <= 1; side += 2) {
+                    if (side === 0) continue;
+                    ctx.beginPath();
+                    const startX = side === -1 ? e.x : e.x + size;
+                    ctx.moveTo(startX, e.y + size * 0.3);
+                    const tipX = startX + (side * 50);
+                    ctx.bezierCurveTo(tipX, e.y - 10 + flap, tipX, e.y + 40 + flap, tipX - (side * 10), e.y + 60 + flap);
+                    ctx.lineTo(startX, e.y + size * 0.6);
+                    ctx.closePath(); ctx.fill();
+                    // Ossos da asa (linhas finas)
+                    ctx.strokeStyle = "rgba(255,255,255,0.1)"; ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(startX, e.y + size * 0.3); ctx.lineTo(tipX, e.y + flap); ctx.stroke();
+                }
+
+                // 3. Chifres / Orelhas
+                ctx.fillStyle = hornColor;
+                ctx.beginPath();
+                ctx.moveTo(e.x + size * 0.2, e.y); ctx.lineTo(e.x + size * 0.1, e.y - 15); ctx.lineTo(e.x + size * 0.4, e.y + 5); ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(e.x + size * 0.8, e.y); ctx.lineTo(e.x + size * 0.9, e.y - 15); ctx.lineTo(e.x + size * 0.6, e.y + 5); ctx.fill();
+
+                // 4. Corpo
+                ctx.fillStyle = bodyColor;
+                if (e.type === 'berserker') {
+                    ctx.strokeStyle = "#ffb700"; ctx.lineWidth = 3;
+                    ctx.beginPath(); ctx.roundRect(e.x, e.y, size, size, 15); ctx.fill(); ctx.stroke();
+                } else {
+                    ctx.beginPath(); ctx.roundRect(e.x, e.y, size, size, 10); ctx.fill();
+                }
+
+                // Barriga (Escamas)
+                ctx.fillStyle = "rgba(255,255,255,0.05)";
+                ctx.fillRect(e.x + size * 0.25, e.y + size * 0.4, size * 0.5, size * 0.4);
+
+                // 5. Olhos com Pupilas Brilhantes
+                const eyeW = size * 0.2, eyeH = size * 0.22;
+                [e.x + size * 0.15, e.x + size * 0.65].forEach(ex => {
+                    ctx.fillStyle = eyeColor;
+                    if (e.type === 'berserker') {
+                        ctx.font = "bold 22px Arial";
+                        ctx.fillText("X", ex, e.y + 32);
+                    } else {
+                        ctx.fillRect(ex, e.y + size * 0.2, eyeW, eyeH);
+                        // Pupila
+                        ctx.fillStyle = "black";
+                        ctx.fillRect(ex + eyeW * 0.3, e.y + size * 0.2 + 2, eyeW * 0.4, eyeH - 4);
+                    }
+                });
+
+                // Boca / Focinho
+                ctx.fillStyle = "rgba(0,0,0,0.5)";
+                ctx.beginPath();
+                ctx.ellipse(e.x + size / 2, e.y + size * 0.75, size * 0.35, size * 0.12, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (e.type === 'elite' || e.type === 'berserker') {
+                    ctx.fillStyle = "orange";
+                    ctx.shadowBlur = 10; ctx.shadowColor = "yellow";
+                    ctx.beginPath(); ctx.arc(e.x + size / 2, e.y + size * 0.8, 5, 0, Math.PI * 2); ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+
+                if (e.type === 'berserker' && frameCount % 5 === 0) {
+                    createParticles(e.x + 40, e.y, "#ffb700", 2);
+                }
+                ctx.restore();
+            });
+
+            if (boss.active) {
+                const bw = 220, bh = 160;
+                let bThemeColor = boss.type === 'fire' ? "red" : (boss.type === 'ice' ? "#00ffff" : "#ffff00");
+                let bWingColor = boss.type === 'fire' ? "#400" : (boss.type === 'ice' ? "#004466" : "#444400");
+                let bBodyColor = boss.type === 'fire' ? "#111" : (boss.type === 'ice' ? "#e0f7ff" : "#1a1a1a");
+                let bEyeColor = boss.type === 'fire' ? "red" : (boss.type === 'ice' ? "#00d4ff" : "#ffff00");
+
+                // Sombra do Boss
+                ctx.fillStyle = "rgba(0,0,0,0.3)";
+                ctx.beginPath();
+                ctx.ellipse(boss.x + bw / 2, boss.y + bh + 30, 120, 35, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.save();
+                ctx.translate(boss.x, boss.y);
+
+                // 1. Asas Gigantes (Animação Alternada)
+                const bossFlap = Math.sin(frameCount * 0.1) * 40;
+                ctx.fillStyle = bWingColor;
+                ctx.beginPath();
+                ctx.moveTo(30, bh * 0.3);
+                ctx.bezierCurveTo(-150, -80 + bossFlap, -150, 150 + bossFlap, -20, bh * 0.8);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(bw - 30, bh * 0.3);
+                ctx.bezierCurveTo(bw + 150, -80 + bossFlap, bw + 150, 150 + bossFlap, bw + 20, bh * 0.8);
+                ctx.fill();
+
+                // 2. Cauda Massiva
+                ctx.fillStyle = bBodyColor;
+                ctx.beginPath();
+                const bTailSway = Math.sin(frameCount * 0.05) * 40;
+                ctx.moveTo(bw / 2, bh * 0.8);
+                ctx.quadraticCurveTo(bw / 2 + bTailSway, -80, bw / 2 + bTailSway * 1.5, -40);
+                ctx.lineWidth = 25; ctx.strokeStyle = bBodyColor; ctx.stroke();
+                // Ponta de Poder na Cauda
+                ctx.fillStyle = bThemeColor; ctx.shadowBlur = 20; ctx.shadowColor = bThemeColor;
+                ctx.beginPath(); ctx.arc(bw / 2 + bTailSway * 1.5, -40, 12, 0, Math.PI * 2); ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // 3. Corpo (Blindagem de Escamas)
+                ctx.fillStyle = bBodyColor;
+                ctx.shadowBlur = 30; ctx.shadowColor = bThemeColor;
+                ctx.beginPath();
+                ctx.roundRect(0, 0, bw, bh, 25);
+                ctx.fill();
+
+                // Detalhes de Escamas
+                ctx.strokeStyle = `rgba(${boss.type === 'fire' ? '255,0,0' : (boss.type === 'ice' ? '0,212,255' : '255,255,0')},0.2)`;
+                ctx.lineWidth = 2;
+                for (let r = 30; r < bh - 30; r += 30) {
+                    for (let c = 30; c < bw - 30; c += 40) {
+                        ctx.beginPath(); ctx.arc(c, r, 10, 0, Math.PI); ctx.stroke();
+                    }
+                }
+
+                // 4. Cabeça e Chifres
+                ctx.fillStyle = boss.type === 'fire' ? "#800" : (boss.type === 'ice' ? "#88ccff" : "#888800");
+                ctx.beginPath(); ctx.moveTo(bw / 2 - 15, 0); ctx.lineTo(bw / 2, -50); ctx.lineTo(bw / 2 + 15, 0); ctx.fill();
+                ctx.beginPath(); ctx.moveTo(20, 20); ctx.lineTo(0, -30); ctx.lineTo(40, 10); ctx.fill();
+                ctx.beginPath(); ctx.moveTo(bw - 20, 20); ctx.lineTo(bw, -30); ctx.lineTo(bw - 40, 10); ctx.fill();
+
+                // 5. Olhos
+                ctx.fillStyle = bEyeColor;
+                ctx.shadowBlur = 15;
+                ctx.beginPath(); ctx.ellipse(60, 60, 25, 12, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(bw - 60, 60, 25, 12, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = "white";
+                ctx.beginPath(); ctx.arc(60, 60, 5, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(bw - 60, 60, 5, 0, Math.PI * 2); ctx.fill();
+
+                // 6. Focinho e Núcleo
+                ctx.fillStyle = "rgba(0,0,0,0.6)";
+                ctx.beginPath(); ctx.ellipse(bw / 2, bh * 0.75, 70, 25, 0, 0, Math.PI * 2); ctx.fill();
+                const corePulse = 10 + Math.sin(frameCount * 0.2) * 5;
+                ctx.fillStyle = bThemeColor;
+                ctx.shadowBlur = 25; ctx.shadowColor = bThemeColor;
+                ctx.beginPath(); ctx.arc(bw / 2, bh * 0.8, corePulse, 0, Math.PI * 2); ctx.fill();
+
+                ctx.restore();
+                ctx.shadowBlur = 0;
+            }
+
+            if (goal.show) { ctx.drawImage(goalImages[goal.currentFrame - 1], goal.x, goal.y, goal.width, goal.height); if (!cage.broken) { ctx.strokeStyle = "#888"; ctx.lineWidth = 4; ctx.strokeRect(goal.x - 10, goal.y - 10, 200, 200); } }
+
+            // Desenha Partículas por cima de tudo (Exceto UI e Player se desejar)
+            particles.forEach(p => { ctx.globalAlpha = p.life; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, 4 * p.life, 0, Math.PI * 2); ctx.fill(); }); ctx.globalAlpha = 1.0;
+
+            // Draw Powerups
+            powerups.forEach(p => {
+                ctx.save();
+                ctx.translate(p.x + p.width / 2, p.y + p.height / 2);
+
+                // Configuração baseada no tipo
+                // Configuração baseada no tipo
+                if (p.type === 'full') {
+                    ctx.fillStyle = "#ffd700"; // Dourado
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = "#ffaa00";
+                    ctx.scale(1.3, 1.3);
+                } else if (p.type === 'shield') {
+                    ctx.fillStyle = "#00bfff"; // Azul Celeste
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = "#00ffff";
+                    ctx.scale(1.1, 1.1);
+                } else if (p.type === 'fireball') {
+                    ctx.fillStyle = "#ff4d00"; // Speed orange
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = "#ff6a00";
+                    ctx.scale(1.2, 1.2);
+                } else if (p.type === 'damage_boost') {
+                    ctx.fillStyle = "#00d4ff"; // Alpha Blue
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = "#0044ff";
+                    ctx.scale(1.2, 1.2);
+                } else {
+                    ctx.fillStyle = "#ff4d6d";
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = "white";
+                }
+
+                if (p.type === 'shield') {
+                    // Draw Shield Icon
+                    ctx.beginPath();
+                    ctx.moveTo(0, 15);
+                    ctx.lineTo(12, 5);
+                    ctx.lineTo(12, -10);
+                    ctx.lineTo(0, -15);
+                    ctx.lineTo(-12, -10);
+                    ctx.lineTo(-12, 5);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Cross/Plus inside
+                    ctx.fillStyle = "rgba(255,255,255,0.8)";
+                    ctx.fillRect(-3, -8, 6, 16);
+                    ctx.fillRect(-8, -3, 16, 6);
+                } else if (p.type === 'speed_boost') {
+                    // Lightning Bolt (Flight Speed)
+                    ctx.fillStyle = "#ffff00";
+                    ctx.beginPath();
+                    ctx.moveTo(5, -15);
+                    ctx.lineTo(-5, -5);
+                    ctx.lineTo(2, -2);
+                    ctx.lineTo(-8, 15);
+                    ctx.lineTo(8, -2);
+                    ctx.lineTo(0, -5);
+                    ctx.fill();
+                    // Shine
+                    ctx.fillStyle = "rgba(255,255,255,0.6)";
+                    ctx.beginPath(); ctx.arc(0, 0, 5, 0, Math.PI * 2); ctx.fill();
+                } else if (p.type === 'fireball') {
+                    // Timer Icon (Shoot Speed)
+                    ctx.fillStyle = "#ff4d00";
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 15, 0, Math.PI * 2);
+                    ctx.fill();
+                    // Face
+                    ctx.fillStyle = "white";
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 11, 0, Math.PI * 2);
+                    ctx.fill();
+                    // Hands
+                    ctx.strokeStyle = "#ff4d00";
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0); ctx.lineTo(0, -8);
+                    ctx.moveTo(0, 0); ctx.lineTo(6, 0);
+                    ctx.stroke();
+                    // Top button
+                    ctx.fillStyle = "#ff4d00";
+                    ctx.fillRect(-3, -18, 6, 4);
+                } else if (p.type === 'damage_boost') {
+                    // Blue Flame Icon
+                    ctx.beginPath();
+                    ctx.moveTo(0, 15);
+                    ctx.bezierCurveTo(-15, 10, -15, -10, 0, -20);
+                    ctx.bezierCurveTo(5, -10, 15, -5, 15, 5);
+                    ctx.bezierCurveTo(15, 15, 5, 15, 0, 15);
+                    ctx.fill();
+                    // Core
+                    ctx.fillStyle = "white";
+                    ctx.beginPath();
+                    ctx.ellipse(0, 5, 4, 7, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    // Draw Heart Icon
+                    ctx.beginPath();
+                    const size = 15;
+                    ctx.moveTo(0, size * 0.3);
+                    ctx.bezierCurveTo(0, -size * 0.3, -size, -size * 0.3, -size, size * 0.3);
+                    ctx.bezierCurveTo(-size, size * 0.8, 0, size * 1.2, 0, size * 1.5);
+                    ctx.bezierCurveTo(0, size * 1.2, size, size * 0.8, size, size * 0.3);
+                    ctx.bezierCurveTo(size, -size * 0.3, 0, -size * 0.3, 0, size * 0.3);
+                    ctx.fill();
+                    // Shine
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = "rgba(255,255,255,0.4)";
+                    ctx.beginPath();
+                    ctx.arc(-size * 0.3, 0, size * 0.2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            });
+
+            drawPlayer(player.x, player.y);
+
+            // Renderiza Gaiola do Parceiro POR CIMA de tudo
+            obstacles.forEach(o => {
+                if (o.type === 'cage_partner') {
+                    ctx.save();
+                    ctx.translate(o.x + 30, o.y + 30);
+
+                    const sway = Math.sin(frameCount * 0.03) * 5;
+                    ctx.translate(sway, 0);
+
+                    const knotY = -40;
+
+                    // Cordas
+                    ctx.strokeStyle = "#555";
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(-20, -80); ctx.lineTo(0, knotY);
+                    ctx.moveTo(20, -80); ctx.lineTo(0, knotY);
+                    ctx.moveTo(0, -90); ctx.lineTo(0, knotY);
+                    ctx.moveTo(0, knotY); ctx.lineTo(-25, -30);
+                    ctx.moveTo(0, knotY); ctx.lineTo(25, -30);
+                    ctx.stroke();
+
+                    // Balões especiais
+                    const balloons = [
+                        { x: -20, y: -80, r: 18 },
+                        { x: 20, y: -80, r: 18 },
+                        { x: 0, y: -95, r: 22 }
+                    ];
+
+                    balloons.forEach(b => {
+                        ctx.fillStyle = allyColor;
+                        ctx.shadowBlur = 15;
+                        ctx.shadowColor = allyColor;
+                        ctx.beginPath();
+                        ctx.ellipse(b.x, b.y, b.r, b.r * 1.2, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+
+                        ctx.fillStyle = "rgba(255,255,255,0.4)";
+                        ctx.beginPath();
+                        ctx.ellipse(b.x - b.r * 0.4, b.y - b.r * 0.4, b.r * 0.25, b.r * 0.15, -Math.PI / 4, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+
+                    // Gaiola
+                    ctx.fillStyle = "#2a2a2a";
+                    ctx.fillRect(-30, -30, 60, 60);
+
+                    ctx.strokeStyle = "#ffd700";
+                    ctx.lineWidth = 4;
+                    ctx.strokeRect(-30, -30, 60, 60);
+
+                    ctx.fillStyle = "#888";
+                    for (let i = -20; i <= 20; i += 10) {
+                        ctx.fillRect(i, -30, 3, 60);
+                    }
+                    ctx.fillRect(-30, -10, 60, 3);
+                    ctx.fillRect(-30, 10, 60, 3);
+
+                    // Dragão dentro
+                    const partnerImg = goalImages[o.partnerFrame - 1];
+                    ctx.globalAlpha = 0.9;
+                    const dragonSize = 50;
+                    ctx.drawImage(partnerImg, -dragonSize / 2, -dragonSize / 2, dragonSize, dragonSize);
+
+                    ctx.shadowBlur = 20 + Math.sin(frameCount * 0.1) * 10;
+                    ctx.shadowColor = allyColor;
+
+                    ctx.restore();
+                }
+            });
+
+            // Nuvens de Frente (Passam por cima, semi-transparentes)
+            clouds.forEach(c => {
+                if (c.layer === 'front') {
+                    ctx.save();
+                    ctx.fillStyle = `rgba(255, 255, 255, ${c.opacity})`;
+                    ctx.filter = 'blur(10px)'; // Desfoque para parecer mais próximo/etéreo
+
+                    // Forma composta da nuvem
+                    ctx.beginPath();
+                    ctx.ellipse(c.x, c.y, c.width / 2, c.height / 2, 0, 0, Math.PI * 2);
+                    ctx.ellipse(c.x + c.width * 0.2, c.y + c.height * 0.2, c.width * 0.4, c.height * 0.4, 0, 0, Math.PI * 2);
+                    ctx.ellipse(c.x - c.width * 0.2, c.y + c.height * 0.1, c.width * 0.35, c.height * 0.35, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            });
+        }
+
+        function drawPlayer(x, y) {
+            let img = (player.isAttacking > 0) ? playerAttackImg : playerImages[player.currentFrame - 1];
+
+            ctx.save();
+            // 1. Sombra em Sprite (Visão de Cima)
+            // Posiciona a sombra diretamente abaixo
+            const groundOffset = 80;
+            ctx.translate(x, y + groundOffset);
+
+            // Pulsação sutil de altitude
+            const shadowPulse = Math.sin(frameCount * 0.1) * 0.05;
+            ctx.scale(1.0 + shadowPulse, 1.0 + shadowPulse);
+
+            // Estiliza como sombra (Suave e escura)
+            ctx.globalAlpha = 0.2;
+            ctx.filter = 'brightness(0)';
+
+            // Desenha a silhueta
+            ctx.drawImage(img, 0, 0, player.width, player.height);
+            ctx.restore();
+
+            // 2. Desenha o Jogador Real
+            ctx.save();
+            if (player.invincibility > 0 && frameCount % 10 < 5) ctx.globalAlpha = 0.5;
+            if (player.shakes > 0) {
+                ctx.translate((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 10);
+                player.shakes--;
+            }
+            if (player.isAttacking > 0) player.isAttacking--;
+            ctx.drawImage(img, x, y, player.width, player.height);
+            ctx.restore();
+
+            // 3. Desenha Aliado (Parceiro)
+            if (lightFuryAlly.active) {
+                // O parceiro sempre usa as imagens do goalImages (dragão oposto)
+                const allyImg = goalImages[lightFuryAlly.currentFrame - 1];
+
+                ctx.save();
+                // Sombra do aliado
+                ctx.translate(lightFuryAlly.x, lightFuryAlly.y + groundOffset);
+                ctx.globalAlpha = 0.2;
+                ctx.filter = 'brightness(0)';
+                ctx.drawImage(allyImg, 0, 0, player.width, player.height);
+                ctx.restore();
+
+                ctx.save();
+                ctx.drawImage(allyImg, lightFuryAlly.x, lightFuryAlly.y, player.width, player.height);
+                // Brilho do parceiro
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = allyColor;
+                ctx.restore();
+            }
+        }
+
+        function gameWin() {
+            gameActive = false;
+            const dragonName = isBanguela ? 'Banguela' : 'Fúria da Luz';
+            const totalScore = Math.floor(distance) + killPoints;
+            const finalDist = Math.floor(distance);
+
+            document.getElementById('winMessage').textContent = `${dragonName} voou magistralmente!`;
+            document.getElementById('winScore').textContent = totalScore;
+            document.getElementById('winDist').textContent = `${finalDist}m`;
+            document.getElementById('winBosses').textContent = bossesDefeated;
+
+            if (saveHighScore(totalScore, finalDist, bossesDefeated)) {
+                document.getElementById('winRecordBadge').style.display = 'block';
+            }
+
+            document.getElementById('victoryScreen').classList.add('show');
+        }
+        function loop() { update(); draw(); requestAnimationFrame(loop); }
+        const bgMusic = document.getElementById('bgMusic');
+        const playlist = [
+            "../../assets/gamSongs/test-drive-from-how-to-train-your-dragon-music-from-the-motion-picture-320-ytshorts.savetube.me.mp3",
+            "../../assets/gamSongs/Where No One Goes  How to Train Your Dragon 2 (Music from the Motion Picture) - SonySoundtracksVEVO (youtube).mp3"
+        ];
+        let currentSongIndex = Math.floor(Math.random() * playlist.length);
+
+        function playNextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            bgMusic.src = playlist[currentSongIndex];
+            bgMusic.play().catch(() => { });
+        }
+
+        bgMusic.onended = playNextSong;
+        bgMusic.src = playlist[currentSongIndex];
+
+        // UI & Listeners Initialization
+        const pauseBtn = document.getElementById('pauseBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const pauseOverlay = document.getElementById('pauseOverlay');
+        const mobileShootBtn = document.getElementById('mobileShootBtn');
+        const autoFireBtn = document.getElementById('autoFireBtn');
+        const showInventoryBtn = document.getElementById('showInventoryBtn');
+        const inventoryBtn = document.getElementById('inventoryBtn');
+        const inventoryOverlay = document.getElementById('inventoryOverlay');
+        const inventoryGrid = document.getElementById('inventoryGrid');
+
+        window.addEventListener('keyup', (e) => {
+            if (e.code === 'Space') isShooting = false;
+        });
+
+        // Cheats
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'KeyN') {
+                spawnFuryAlly();
+            }
+        });
+
+        function spawnFuryAlly() {
+            if (lightFuryAlly.active) return;
+            lightFuryAlly.active = true;
+            lightFuryAlly.x = player.x - 300;
+            lightFuryAlly.y = player.y;
+
+            const partnerName = isBanguela ? 'Fúria da Luz' : 'Banguela';
+
+            // Desbloqueia Fúria da Luz se o jogador for Banguela e resgatou ela
+            if (isBanguela) {
+                localStorage.setItem('lightFuryUnlocked', 'true');
+            }
+
+            // Bônus de Resgate: Aumenta limites para 7
+            player.hp = Math.min(7, player.hp + 3);
+            player.shields = Math.min(7, player.shields + 3);
+            updateHearts();
+            updateShields();
+            updateInventoryUI();
+            createParticles(player.x + 90, player.y + 90, allyColor, 50);
+            showDifficultyPopup(`${partnerName} resgatado(a)!`);
+        }
+
+        pauseBtn.addEventListener('click', togglePause);
+        muteBtn.addEventListener('click', toggleMute);
+        autoFireBtn.addEventListener('click', toggleAutoFire);
+        showInventoryBtn.addEventListener('click', toggleShowInventory);
+        inventoryBtn.addEventListener('click', toggleInventory);
+
+        mobileShootBtn.addEventListener('touchstart', (e) => {
+            if (gameActive && !isPaused) {
+                isShooting = true;
+                e.preventDefault();
+            }
+        });
+        mobileShootBtn.addEventListener('touchend', (e) => {
+            isShooting = false;
+            e.preventDefault();
+        });
+
+        // Initialize HUD/Buttons Status
+        updateAutoFireBtn();
+        updateShowInventoryBtn();
+        updateInventoryVisibility();
+        updateMuteIcon();
+        updateHearts();
+        updateShields();
+
+        const isMobile = /Android/i.test(navigator.userAgent);
+        if (isMobile) {
+            mobileShootBtn.style.display = 'flex';
+            document.getElementById('instructionHint').textContent = "Arraste para voar e use o botão para atirar!";
+        }
+
+        document.addEventListener('click', () => { if (bgMusic.paused) bgMusic.play(); }, { once: true });
+
+        bgMusic.muted = localStorage.getItem('musicMuted') === 'true';
+        updateMuteIcon();
+        bgMusic.play().catch(() => { });
+
+        loop();
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

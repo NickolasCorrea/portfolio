@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Fases - Banguela & Fúria da Luz</title>
+    <link rel="icon" type="image/png" href="../../assets/faviconNick.ico">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cor-primaria: #ff4d6d;
+            --cor-secundaria: #c9184a;
+            --cor-fundo: #050505;
+            --fonte-titulo: 'Dancing Script', cursive;
+            --fonte-texto: 'Montserrat', sans-serif;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--cor-fundo);
+            color: white;
+            font-family: var(--fonte-texto);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #1a0a1a 0%, #050505 100%);
+        }
+
+        /* Estrelas Animadas */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            width: 100%;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 4rem;
+        }
+
+        .game-title {
+            font-family: var(--fonte-titulo);
+            font-size: 5rem;
+            color: var(--cor-primaria);
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.5), 0 0 40px rgba(255, 77, 109, 0.3);
+            margin-bottom: 1rem;
+            animation: titleGlow 3s infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
+            }
+
+            to {
+                text-shadow: 0 0 40px rgba(255, 77, 109, 0.8), 0 0 60px rgba(255, 77, 109, 0.4);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .level-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .level-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 77, 109, 0.1);
+            border-color: var(--cor-primaria);
+            box-shadow: 0 15px 30px rgba(255, 77, 109, 0.2);
+        }
+
+        .level-card.locked {
+            filter: grayscale(1);
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .level-card.locked:hover {
+            transform: none;
+            background: var(--glass-bg);
+            border-color: var(--glass-border);
+            box-shadow: none;
+        }
+
+        .level-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .level-card:hover .level-image img {
+            transform: scale(1.1);
+        }
+
+        .level-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--cor-primaria);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .level-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .level-info p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .level-stats {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 5px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .stat-line strong {
+            color: var(--cor-primaria);
+            font-weight: bold;
+        }
+
+        .locked-badge {
+            margin-top: 1rem;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link {
+            margin-top: 4rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-link:hover {
+            color: var(--cor-primaria);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 3rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .levels-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <style>
+        .char-card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .char-card.selected {
+            background: rgba(255, 77, 109, 0.2);
+            border-color: #ff4d6d !important;
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.3);
+        }
+
+        .character-selector-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .character-selector-btn:hover {
+            background: rgba(255, 77, 109, 0.2);
+            border-color: var(--cor-primaria);
+            transform: scale(1.05);
+        }
+
+        .char-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid white;
+            background: #111;
+        }
+
+        .char-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .unlock-all-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            cursor: pointer;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            font-family: var(--fonte-texto);
+        }
+
+        .unlock-all-btn:hover {
+            background: rgba(255, 77, 109, 0.2);
+            color: white;
+            border-color: var(--cor-primaria);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="stars-container"></div>
+
+    <button class="unlock-all-btn" onclick="unlockAll()">
+        <ion-icon name="key-outline" style="margin-right:5px;"></ion-icon>
+        Desbloquear Tudo
+    </button>
+
+    <div id="characterSelectOverlay"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:100; display:none; opacity:0; transition:opacity 0.5s; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(10px);">
+        <h2 class="game-title" style="font-size:3rem; margin-bottom:2rem;">Escolha seu Dragão</h2>
+        <div style="display:flex; gap:3rem; margin-bottom:3rem;">
+            <div class="char-card selected" onclick="selectCharacter('banguela')" id="card-banguela"
+                style="cursor:pointer; padding:20px; border-radius:20px; border:2px solid transparent; transition:all 0.3s; text-align:center;">
+                <div
+                    style="width:150px; height:150px; border-radius:50%; overflow:hidden; margin-bottom:10px; border:3px solid #ff4d6d; background:#111;">
+                    <img src="../../assets/gameImages/NightFury1.png"
+                        style="width:100%; height:100%; object-fit:contain;">
+                </div>
+                <h3 style="font-family:var(--fonte-titulo); font-size:2rem; color:#ff4d6d;">Banguela</h3>
+            </div>
+            <div class="char-card" onclick="selectCharacter('furia')" id="card-furia"
+                style="cursor:pointer; padding:20px; border-radius:20px; border:2px solid transparent; transition:all 0.3s; text-align:center;">
+                <div
+                    style="width:150px; height:150px; border-radius:50%; overflow:hidden; margin-bottom:10px; border:3px solid #fff; background:#222;">
+                    <img src="../../assets/gameImages/LightFury1.png"
+                        style="width:100%; height:100%; object-fit:contain;">
+                </div>
+                <h3 style="font-family:var(--fonte-titulo); font-size:2rem; color:white;">Fúria da Luz</h3>
+            </div>
+
+            <!-- Novo Dragão (Bloqueado) -->
+            <div class="char-card locked" onclick="alert('Em breve: Um novo dragão se juntará à aventura! 🥚')"
+                style="cursor:not-allowed; padding:20px; border-radius:20px; border:2px solid transparent; transition:all 0.3s; text-align:center; opacity:0.6; filter:grayscale(1);">
+                <div
+                    style="width:150px; height:150px; border-radius:50%; overflow:hidden; margin-bottom:10px; border:3px solid #777; background:#111; display:flex; align-items:center; justify-content:center;">
+                    <ion-icon name="help" style="font-size: 5rem; color: #555;"></ion-icon>
+                </div>
+                <h3 style="font-family:var(--fonte-titulo); font-size:2rem; color:#888;">???</h3>
+                <div
+                    style="font-size:0.8rem; color:#aaa; margin-top:5px; text-transform:uppercase; letter-spacing:1px;">
+                    Em Breve</div>
+            </div>
+        </div>
+        <button onclick="closeCharSelect()"
+            style="padding:15px 40px; background:#ff4d6d; color:white; border:none; border-radius:50px; font-size:1.2rem; cursor:pointer; font-family:var(--fonte-texto); font-weight:bold; transition:transform 0.2s;">
+            Confirmar
+        </button>
+    </div>
+
+    <main class="container">
+        <header class="header">
+            <h1 class="game-title">Banguela & Fúria da Luz</h1>
+            <p class="subtitle">O Jogo • Seleção de Fases</p>
+
+            <div class="character-selector-btn" onclick="openCharSelect()">
+                <div class="char-preview">
+                    <img id="preview-img" src="../../assets/gameImages/NightFury1.png" alt="Personagem">
+                </div>
+                <span id="preview-name">Banguela</span>
+                <ion-icon name="chevron-down-outline"></ion-icon>
+            </div>
+        </header>
+
+        <div class="levels-grid">
+            <!-- Fase 1 (Planície Verde) -->
+            <a href="banguela-e-furia-da-luz-fase1.html" class="level-card">
+                <div class="level-number">Fase 1</div>
+                <div class="level-image">
+                    <div
+                        style="width: 100%; height: 100%; background: linear-gradient(45deg, #1e3d1a, #2d5a27); display: flex; align-items: center; justify-content: center;">
+                        <img src="../../assets/gameImages/NightFury2.png"
+                            style="width: 70%; height: auto; object-fit: contain;" alt="Planície Verde">
+                    </div>
+                </div>
+                <div class="level-info">
+                    <h3>Planície Verde</h3>
+                    <p>Sobrevoe florestas e cruze rios em uma missão de reconhecimento rasante.</p>
+                    <div class="level-stats" id="stats-fase2">
+                        <div class="stat-line"><span>Recorde</span> <strong id="score-fase2">0</strong></div>
+                        <div class="stat-line"><span>Distância Máxima</span> <strong id="dist-fase2">0m</strong></div>
+                        <div class="stat-line"><span>Bosses Derrotados</span> <strong id="bosses-fase2">0</strong></div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Fase Bônus (Resgate Estelar) -->
+            <a href="banguela-e-furia-da-luz-fase-bonus.html" class="level-card" id="level-bonus-card">
+                <div class="level-number" style="background: linear-gradient(135deg, #ffd700, #ffed4e); color: #111;">
+                    Fase Bônus</div>
+                <div class="level-image">
+                    <!-- Vou usar uma imagem representativa ou um gradiente bonito por enquanto -->
+                    <div
+                        style="width: 100%; height: 100%; background: linear-gradient(45deg, #050505, #2b0a2b); display: flex; align-items: center; justify-content: center;">
+                        <img src="../../assets/gameImages/NightFury1.png"
+                            style="width: 70%; height: auto; object-fit: contain;" alt="Resgate Estelar">
+                    </div>
+                </div>
+                <div class="level-info">
+                    <h3>Resgate Estelar</h3>
+                    <p>Enfrente caçadores e meteoritos para salvar sua amada nos confins do universo.</p>
+                    <div class="level-stats" id="stats-fase1">
+                        <div class="stat-line"><span>Recorde</span> <strong id="score-fase1">0</strong></div>
+                    </div>
+                </div>
+            </a>
+
+            <div class="level-card locked">
+                <div class="level-number">Fase 2</div>
+                <div class="level-image">
+                    <div
+                        style="width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center;">
+                        <ion-icon name="lock-closed" style="font-size: 3rem; color: #333;"></ion-icon>
+                    </div>
+                </div>
+                <div class="level-info">
+                    <div class="locked-badge">
+                        <ion-icon name="rocket-outline"></ion-icon>
+                        Chega em Breve
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="missao-amor-2.html" class="back-link">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+            Voltar para a Jornada
+        </a>
+    </main>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        let selectedCharacter = 'banguela';
+
+        function selectCharacter(char) {
+            if (char === 'furia' && localStorage.getItem('fase1Completed') !== 'true') {
+                alert("Complete a Fase 1 (Resgate Estelar) para desbloquear a Fúria da Luz! 🐉");
+                return;
+            }
+            selectedCharacter = char;
+            document.querySelectorAll('.char-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('card-' + char).classList.add('selected');
+        }
+
+        function openCharSelect() {
+            const overlay = document.getElementById('characterSelectOverlay');
+            overlay.style.display = 'flex';
+            // Force reflow
+            void overlay.offsetWidth;
+            overlay.style.opacity = '1';
+        }
+
+        function closeCharSelect() {
+            const overlay = document.getElementById('characterSelectOverlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                updateLinks();
+                updateButton();
+            }, 500);
+        }
+
+        function updateButton() {
+            const img = document.getElementById('preview-img');
+            const name = document.getElementById('preview-name');
+
+            if (selectedCharacter === 'banguela') {
+                img.src = '../../assets/gameImages/NightFury1.png';
+                name.textContent = 'Banguela';
+            } else {
+                img.src = '../../assets/gameImages/LightFury1.png';
+                name.textContent = 'Fúria da Luz';
+            }
+        }
+
+        function updateLinks() {
+            const links = document.querySelectorAll('.level-card');
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && !href.includes('javascript')) {
+                    const url = new URL(href, window.location.href);
+                    url.searchParams.set('character', selectedCharacter);
+                    link.setAttribute('href', url.toString());
+                }
+            });
+        }
+
+        // Gerador de Estrelas
+        function initStars() {
+            const container = document.getElementById('stars-container');
+            const count = 150;
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                container.appendChild(star);
+            }
+        }
+        initStars();
+        updateLinks(); // Ensures links are correct on load
+        checkUnlockStatus();
+
+        function unlockAll() {
+            if (confirm('Tem certeza? Isso desbloqueará todas as fases e personagens. ❤️')) {
+                localStorage.setItem('fase1Completed', 'true');
+                localStorage.setItem('lightFuryUnlocked', 'true');
+                location.reload();
+            }
+        }
+
+        function checkUnlockStatus() {
+            const levelBonusCard = document.getElementById('level-bonus-card');
+            const furiaCard = document.getElementById('card-furia');
+            const isFase2Played = localStorage.getItem('dragonHighScore_fase2') !== null; // Verifica se jogou a Fase 1 (fase1.html)
+
+            // Carregar Stats Fase 1 (Planície Verde)
+            const high2 = localStorage.getItem('dragonHighScore_fase2') || '0';
+            const dist2 = localStorage.getItem('dragonMaxDist_fase2') || '0';
+            const bosses2 = localStorage.getItem('dragonMaxBosses_fase2') || '0';
+
+            if (high2 !== '0') {
+                document.getElementById('score-fase2').textContent = high2;
+                document.getElementById('dist-fase2').textContent = dist2 + 'm';
+                document.getElementById('bosses-fase2').textContent = bosses2;
+            }
+
+            // Carregar Stats Fase Bônus (Resgate Estelar)
+            const high1 = localStorage.getItem('dragonHighScore_fase1') || '0';
+            if (high1 !== '0') {
+                document.getElementById('score-fase1').textContent = high1;
+            }
+
+            // Logic for Bonus Phase - Bloqueia até jogar a Fase 1
+            if (!isFase2Played) {
+                levelBonusCard.classList.add('locked');
+                levelBonusCard.removeAttribute('href');
+                levelBonusCard.querySelector('.level-info p').textContent = "Complete a Planície Verde para desbloquear.";
+                document.getElementById('stats-fase1').style.display = 'none'; // Esconde recordes se bloqueado
+
+                // Add lock icon overlay to image
+                const imgContainer = levelBonusCard.querySelector('.level-image div');
+                imgContainer.style.position = 'relative';
+                const lockOverlay = document.createElement('div');
+                lockOverlay.style.position = 'absolute';
+                lockOverlay.style.top = '0';
+                lockOverlay.style.left = '0';
+                lockOverlay.style.width = '100%';
+                lockOverlay.style.height = '100%';
+                lockOverlay.style.background = 'rgba(0,0,0,0.6)';
+                lockOverlay.style.display = 'flex';
+                lockOverlay.style.alignItems = 'center';
+                lockOverlay.style.justifyContent = 'center';
+                lockOverlay.innerHTML = '<ion-icon name="lock-closed" style="font-size: 3rem; color: #fff;"></ion-icon>';
+                imgContainer.appendChild(lockOverlay);
+
+                // Add locked badge
+                const badge = document.createElement('div');
+                badge.className = 'locked-badge';
+                badge.innerHTML = '<ion-icon name="lock-closed-outline"></ion-icon> Bloqueado';
+                levelBonusCard.querySelector('.level-info').appendChild(badge);
+            }
+
+            // Logic for Light Fury - Desbloqueada ao resgatar na Fase 1
+            const isLightFuryUnlocked = localStorage.getItem('lightFuryUnlocked') === 'true';
+            if (!isLightFuryUnlocked) {
+                furiaCard.style.opacity = '0.5';
+                furiaCard.style.filter = 'grayscale(1)';
+                furiaCard.style.cursor = 'not-allowed';
+                furiaCard.onclick = (e) => {
+                    e.stopPropagation();
+                    alert('🔒 Fúria da Luz bloqueada!\n\nPara desbloquear: Jogue a Fase 1 com Banguela e resgate a Fúria da Luz aos 100.000m! 🐉✨');
+                };
+
+                // Add lock icon
+                const lockIcon = document.createElement('div');
+                lockIcon.innerHTML = '<ion-icon name="lock-closed" style="font-size: 2rem; color: #fff; position: absolute; top: 10px; right: 10px; background:rgba(0,0,0,0.5); padding:5px; border-radius:50%;"></ion-icon>';
+                furiaCard.style.position = 'relative';
+                furiaCard.appendChild(lockIcon);
+            }
+        }
+    </script>
+</body>
+
+</html>
