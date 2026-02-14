@@ -381,33 +381,6 @@
             color: white;
             text-shadow: 0 0 20px var(--cor-romantica-primaria);
         }
-
-        #mobileShootBtn {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: rgba(255, 77, 109, 0.4);
-            border: 4px solid var(--cor-romantica-primaria);
-            color: white;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            z-index: 100;
-            pointer-events: auto;
-            backdrop-filter: blur(5px);
-            font-family: var(--fonte-texto);
-            font-weight: bold;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        #mobileShootBtn:active {
-            transform: scale(0.9);
-            background: var(--cor-romantica-primaria);
-        }
     </style>
 </head>
 
@@ -548,7 +521,7 @@
         </button>
     </div>
 
-    <button id="mobileShootBtn">FOGO!</button>
+
 
     <div id="instructionHint">Voe baixo e desvie da floresta!</div>
     <canvas id="gameCanvas"></canvas>
@@ -1363,7 +1336,7 @@
             }
 
             // Movement - using individual player speed
-            player.x += (targetX - player.x) * player.movementFactor;
+            player.x += ((targetX - player.width / 2) - player.x) * player.movementFactor;
             if (player.x < 0) player.x = 0;
             if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
 
@@ -1636,9 +1609,9 @@
                         enemyShoot(boss.x + 110, boss.y + 120, 0, 3, "#00ffff");
                         enemyShoot(boss.x + 110, boss.y + 120, 2, 2.5, "#00ffff");
                     } else if (boss.type === 'lightning') {
-                        // Fast Burst - Speed reduced from 5 to 4, Interval increased to 70
-                        enemyShoot(boss.x + 60, boss.y + 120, 0, 4, "#ffff00");
-                        enemyShoot(boss.x + 160, boss.y + 120, 0, 4, "#ffff00");
+                        // Fast Burst - Speed reduced from 4 to 3.5
+                        enemyShoot(boss.x + 60, boss.y + 120, 0, 3.5, "#ffff00");
+                        enemyShoot(boss.x + 160, boss.y + 120, 0, 3.5, "#ffff00");
                     }
                     boss.shootTimer = 0;
                 }
@@ -2907,7 +2880,7 @@
         const pauseBtn = document.getElementById('pauseBtn');
         const muteBtn = document.getElementById('muteBtn');
         const pauseOverlay = document.getElementById('pauseOverlay');
-        const mobileShootBtn = document.getElementById('mobileShootBtn');
+
         const autoFireBtn = document.getElementById('autoFireBtn');
         const showInventoryBtn = document.getElementById('showInventoryBtn');
         const inventoryBtn = document.getElementById('inventoryBtn');
@@ -2954,16 +2927,7 @@
         showInventoryBtn.addEventListener('click', toggleShowInventory);
         inventoryBtn.addEventListener('click', toggleInventory);
 
-        mobileShootBtn.addEventListener('touchstart', (e) => {
-            if (gameActive && !isPaused) {
-                isShooting = true;
-                e.preventDefault();
-            }
-        });
-        mobileShootBtn.addEventListener('touchend', (e) => {
-            isShooting = false;
-            e.preventDefault();
-        });
+
 
         // Initialize HUD/Buttons Status
         updateAutoFireBtn();
@@ -2975,8 +2939,7 @@
 
         const isMobile = /Android/i.test(navigator.userAgent);
         if (isMobile) {
-            mobileShootBtn.style.display = 'flex';
-            document.getElementById('instructionHint').textContent = "Arraste para voar e use o botão para atirar!";
+            document.getElementById('instructionHint').textContent = "Arraste para voar!";
         }
 
         document.addEventListener('click', () => { if (bgMusic.paused) bgMusic.play(); }, { once: true });
