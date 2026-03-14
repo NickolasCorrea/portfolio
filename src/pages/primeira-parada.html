@@ -307,6 +307,10 @@
             border-color: #888;
         }
 
+        .music-button ion-icon {
+            font-size: 1.5rem;
+        }
+
         /* Galeria de Fotos */
         .photo-gallery {
             display: flex;
@@ -568,6 +572,80 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* Menu Sanduíche */
+        .nav-menu-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2000;
+        }
+
+        .hamburger-btn {
+            background-color: white;
+            color: var(--cor-romantica-primaria);
+            border: 2px solid var(--cor-romantica-primaria);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu-container:hover .hamburger-btn {
+            background-color: var(--cor-romantica-primaria);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .nav-links {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--cor-romantica-primaria);
+            border-radius: 15px;
+            padding: 10px 0;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu-container:hover .nav-links {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-links a {
+            color: var(--cor-romantica-terciaria);
+            text-decoration: none;
+            padding: 12px 20px;
+            font-family: var(--fonte-texto);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--cor-romantica-fundo);
+            color: var(--cor-romantica-primaria);
+            padding-left: 25px;
+        }
     </style>
 </head>
 
@@ -600,10 +678,18 @@
             </button>
         </div>
 
-        <a href="ashley.html" class="back-button">
-            <ion-icon name="arrow-back"></ion-icon>
-            Voltar
-        </a>
+        <div class="nav-menu-container">
+            <div class="hamburger-btn">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+            <div class="nav-links">
+                <a href="ashley.html"><ion-icon name="home-outline"></ion-icon> Início</a>
+                <a href="primeira-parada.html"><ion-icon name="heart-outline"></ion-icon> Primeira Parada</a>
+                <a href="missao-amor-2.html"><ion-icon name="heart-half-outline"></ion-icon> Missão Amor 2</a>
+                <a href="missao-amor-3.html"><ion-icon name="heart"></ion-icon> Missão Amor 3</a>
+                <a href="selecao-fases.html"><ion-icon name="game-controller-outline"></ion-icon> O Jogo</a>
+            </div>
+        </div>
 
         <h2 class="missao-amor-title">Primeira Parada</h2>
 

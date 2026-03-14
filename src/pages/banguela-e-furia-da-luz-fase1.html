@@ -632,11 +632,15 @@
         const allyColor = isBanguela ? '#ffccd5' : '#ff8c00'; // Rosa para Light Fury, Laranja para Banguela
         const bulletColor = isBanguela ? '#ff8c00' : '#d8bfd8'; // Orange vs Light Purple
 
+        const isMobileScreen = window.innerWidth < 768;
+        const gameScale = isMobileScreen ? 0.7 : 1.0;
+        const s = (val) => val * gameScale;
+
         const player = {
             x: window.innerWidth / 2,
-            y: window.innerHeight - 200,
-            width: 180,
-            height: 180,
+            y: window.innerHeight - (isMobileScreen ? 190 : 200),
+            width: s(180),
+            height: s(180),
             shakes: 0,
             currentFrame: 1,
             frameTimer: 0,
@@ -645,8 +649,8 @@
             shields: 0,
             inventory: [], // Array to store powerups
             invincibility: 0,
-            baseMovementFactor: 0.1,
-            movementFactor: 0.1,
+            baseMovementFactor: isMobileScreen ? 0.15 : 0.1,
+            movementFactor: isMobileScreen ? 0.15 : 0.1,
             currentDamage: 1,
             currentBulletColor: isBanguela ? '#ff8c00' : '#d8bfd8'
         };
@@ -658,7 +662,7 @@
         let rapidFireTimer = 0; // Timer for rapid fire powerup
         let autoFire = localStorage.getItem('autoFire') !== 'false'; // Padrão: ON
         let showInventory = localStorage.getItem('showInventory') === 'true'; // Padrão: OFF
-        const goal = { x: 0, y: -200, width: 180, height: 180, show: false, following: false, victoryTimer: 0, currentFrame: 1, frameTimer: 0 };
+        const goal = { x: 0, y: -200, width: s(180), height: s(180), show: false, following: false, victoryTimer: 0, currentFrame: 1, frameTimer: 0 };
         const cage = { hp: 10, broken: false };
 
         const bullets = [];
@@ -729,7 +733,11 @@
             }
         }
 
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; player.y = canvas.height - 200; });
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            player.y = canvas.height - (window.innerWidth < 768 ? 170 : 200);
+        });
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         initBackground();
 
@@ -924,7 +932,7 @@
         function discardPartner() {
             if (!lightFuryAlly.active) return;
             lightFuryAlly.active = false;
-            createParticles(lightFuryAlly.x + 90, lightFuryAlly.y + 90, "#fff", 30);
+            createParticles(lightFuryAlly.x + player.width / 2, lightFuryAlly.y + player.width / 2, "#fff", 30);
 
             // Reduzir limites para 5
             player.hp = Math.min(player.hp, 5);
@@ -1048,7 +1056,7 @@
 
 
         function shoot() {
-            const bRadius = 8 + (player.currentDamage >= 11 ? 4 : 0);
+            const bRadius = s(8) + (player.currentDamage >= 11 ? s(4) : 0);
 
             // Tiro do Jogador
             bullets.push({
@@ -1063,7 +1071,7 @@
             // Tiro do Aliado (Sincronizado)
             if (lightFuryAlly.active) {
                 bullets.push({
-                    x: lightFuryAlly.x + 90,
+                    x: lightFuryAlly.x + player.width / 2,
                     y: lightFuryAlly.y + 20,
                     speed: 12,
                     radius: bRadius,
@@ -1108,13 +1116,13 @@
                 player.shields--;
                 player.invincibility = 60; // 1 second invincibility for shield break
                 updateShields();
-                createParticles(player.x + 90, player.y + 90, "#00bfff", 20); // Blue particles for shield break
+                createParticles(player.x + player.width / 2, player.y + player.height / 2, "#00bfff", 20); // Blue particles for shield break
             } else {
                 player.hp--;
                 player.invincibility = 120; // 2 seconds a 60fps
                 player.shakes = 20;
                 updateHearts();
-                createParticles(player.x + 90, player.y + 90, "#ff0000", 20);
+                createParticles(player.x + player.width / 2, player.y + player.height / 2, "#ff0000", 20);
             }
 
             document.body.classList.add('shake');
@@ -1125,7 +1133,7 @@
             // Fúria da Luz sai se a vida cair abaixo de 3 corações
             if (lightFuryAlly.active && player.hp < 3) {
                 lightFuryAlly.active = false;
-                createParticles(lightFuryAlly.x + 90, lightFuryAlly.y + 90, "#fff", 30);
+                createParticles(lightFuryAlly.x + player.width / 2, lightFuryAlly.y + player.width / 2, "#fff", 30);
 
                 // Reduzir limites para 5 quando ela sai
                 player.hp = Math.min(player.hp, 5);
@@ -1299,7 +1307,7 @@
             const effectiveFireStacks = Math.min(fireballCount, 5);
             shootCooldown = 45 - (effectiveFireStacks * 2); // Level 5: 35 frames (Slowed down as requested)
             if (effectiveFireStacks > 0) {
-                if (frameCount % Math.max(5, Math.floor(45 - effectiveFireStacks * 5)) === 0) createParticles(player.x + 90, player.y + 150, "#ff4d00", 3);
+                if (frameCount % Math.max(5, Math.floor(45 - effectiveFireStacks * 5)) === 0) createParticles(player.x + player.width / 2, player.y + player.height * 0.8, "#ff4d00", 3);
             }
 
             // Handle Damage Boost (Blue Fire) Stacks
@@ -1499,7 +1507,7 @@
                             });
 
                             if (!inRiver) {
-                                obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'tree' });
+                                obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'tree', width: s(80), height: s(80) });
                             }
                         }
                     }
@@ -1515,7 +1523,7 @@
                         return ty > riverTop && ty < riverBottom;
                     });
                     if (!inRiver) {
-                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'bush' });
+                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'bush', width: s(40), height: s(40) });
                     }
                 }
                 const balloonInterval = Math.max(300, Math.floor(600 - (difficulty * 25)));
@@ -1523,7 +1531,7 @@
                     const margin = 50;
                     const areaLivre = !rivers.some(r => r.y < 150 && r.y + r.height > -150);
                     if (areaLivre) {
-                        obstacles.push({ x: margin + Math.random() * (canvas.width - margin * 2 - 60), y: -120, speedY: 5.5, type: 'balloon' });
+                        obstacles.push({ x: margin + Math.random() * (canvas.width - margin * 2 - s(60)), y: -120, speedY: 5.5, type: 'balloon', width: s(80), height: s(80) });
                     }
                 }
 
@@ -1534,7 +1542,7 @@
                     const areaLivre = !rivers.some(r => r.y < 200 && r.y + r.height > -200);
                     if (areaLivre) {
                         // Gaiola normal é mais resistente (hp: 3) e mais lenta (speedY: 1.2)
-                        obstacles.push({ x: margin + Math.random() * (canvas.width - margin * 2 - 80), y: -150, speedY: 1.2, type: 'cage', hp: 3 });
+                        obstacles.push({ x: margin + Math.random() * (canvas.width - margin * 2 - s(52)), y: -150, speedY: 1.2, type: 'cage', hp: 3, width: s(52), height: s(52) });
                     }
                 }
 
@@ -1546,16 +1554,17 @@
                     lastPartnerSpawnDistance = distance;
                     const partnerName = isBanguela ? 'Fúria da Luz' : 'Banguela';
 
-                    // Spawna gaiola especial no centro da tela
-                    const cageX = canvas.width / 2 - 40;
+                    showDifficultyPopup(`🎉 ${partnerName} encontrado(a)! Destrua a gaiola!`);
                     obstacles.push({
-                        x: cageX,
+                        x: canvas.width / 2 - s(40),
                         y: -80,
-                        speedY: 1.5, // Velocidade moderada para dar tempo de resgatar
+                        speedY: 1.5,
                         type: 'cage_partner',
-                        hp: 4, // Exatamente 4 tiros para resgatar
+                        hp: 4,
                         partnerFrame: 1,
-                        partnerFrameTimer: 0
+                        partnerFrameTimer: 0,
+                        width: s(80),
+                        height: s(80)
                     });
 
                     showDifficultyPopup(`🎉 ${partnerName} encontrado(a)! Destrua a gaiola!`);
@@ -1571,7 +1580,8 @@
                         return ty > riverTop && ty < riverBottom;
                     });
                     if (!inRiver) {
-                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'tall_tree' });
+                        // Árvore Colidível foi aumentada
+                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'tall_tree', width: s(108), height: s(162) });
                     }
                 }
 
@@ -1585,7 +1595,7 @@
                         return ty > riverTop && ty < riverBottom;
                     });
                     if (!inRiver) {
-                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'rock' });
+                        obstacles.push({ x: tx, y: ty, speedY: 3.5, type: 'rock', width: s(40), height: s(40) });
                     }
                 }
             }
@@ -1728,7 +1738,7 @@
             for (let i = bullets.length - 1; i >= 0; i--) {
                 const b = bullets[i]; b.y -= b.speed;
                 if (frameCount % 2 === 0) particles.push({ x: b.x, y: b.y + b.radius, vx: (Math.random() - 0.5) * 2, vy: 2, life: 0.6, color: b.color });
-                if (boss.active && b.x > boss.x && b.x < boss.x + 200 && b.y > boss.y && b.y < boss.y + 150) {
+                if (boss.active && b.x > boss.x && b.x < boss.x + s(200) && b.y > boss.y && b.y < boss.y + s(150)) {
                     boss.hp -= b.damage || 1; createParticles(b.x, b.y, player.currentBulletColor); bullets.splice(i, 1);
                     if (boss.hp <= 0) {
                         boss.active = false;
@@ -1737,16 +1747,17 @@
                         bossHealthContainer.style.display = 'none';
                         distanceText.classList.remove('boss-alert');
                         // Explosão Massiva do Boss
+                        const bw = s(220), bh = s(160);
                         for (let k = 0; k < 5; k++) {
                             setTimeout(() => {
-                                createParticles(boss.x + Math.random() * 200, boss.y + Math.random() * 150, "orange", 20);
-                                createParticles(boss.x + Math.random() * 200, boss.y + Math.random() * 150, "red", 20);
-                                createParticles(boss.x + Math.random() * 200, boss.y + Math.random() * 150, "yellow", 20);
+                                createParticles(boss.x + Math.random() * bw, boss.y + Math.random() * bh, "orange", 20);
+                                createParticles(boss.x + Math.random() * bw, boss.y + Math.random() * bh, "red", 20);
+                                createParticles(boss.x + Math.random() * bw, boss.y + Math.random() * bh, "yellow", 20);
                             }, k * 100);
                         }
-                        createParticles(boss.x + 100, boss.y + 75, "white", 100);
+                        createParticles(boss.x + bw / 2, boss.y + bh / 2, "white", 100);
                         // Boss drops Full Heal (Guaranteed)
-                        powerups.push({ x: boss.x + 100, y: boss.y + 75, width: 40, height: 40, speed: 3.5, type: 'full' });
+                        powerups.push({ x: boss.x + bw / 2, y: boss.y + bh / 2, width: s(40), height: s(40), speed: 3.5, type: 'full' });
                     }
                 } else {
                     enemies.forEach((e, idx) => {
@@ -1842,8 +1853,10 @@
                 }
 
                 // Player vs Enemy Collision
-                const hx = player.x + 35, hy = player.y + 35, hw = 110, hh = 110;
-                if (e.x < hx + hw && e.x + 60 > hx && e.y < hy + hh && e.y + 60 > hy) {
+                const hRatio = 0.194;
+                const sizeRatio = 0.611;
+                const hx = player.x + (player.width * hRatio), hy = player.y + (player.height * hRatio), hw = player.width * sizeRatio, hh = player.height * sizeRatio;
+                if (e.x < hx + hw && e.x + s(60) > hx && e.y < hy + hh && e.y + s(60) > hy) {
                     takeDamage();
                     createParticles(e.x + 30, e.y + 30, "#555", 25);
                     enemies.splice(i, 1);
@@ -1859,11 +1872,12 @@
                     if (o.y > canvas.height + 50) obstacles.splice(i, 1);
                     continue; // Cenário não colide
                 }
-                const hx = player.x + 35, hy = player.y + 35, hw = 110, hh = 110;
-                const oHeight = o.type === 'tall_tree' ? 120 : (o.type === 'cage' ? 60 : 80);
+                const hx = player.x + (player.width * 0.194), hy = player.y + (player.height * 0.194), hw = player.width * 0.611, hh = player.height * 0.611;
+                const oWidth = o.type === 'tall_tree' ? s(108) : s(80);
+                const oHeight = o.type === 'tall_tree' ? s(162) : (o.type === 'cage' ? s(60) : s(80));
 
                 // Colisão Jogador vs Obstáculo
-                if (o.x < hx + hw && o.x + 80 > hx && o.y < hy + hh && o.y + oHeight > hy) {
+                if (o.x < hx + hw && o.x + oWidth > hx && o.y < hy + hh && o.y + oHeight > hy) {
                     if (!o.hit) {
                         takeDamage();
                         if (o.type === 'balloon') {
@@ -1905,15 +1919,15 @@
                     if (p.type === 'shield') {
                         player.shields = Math.min(player.shields + 1, maxShields);
                         updateShields();
-                        createParticles(player.x + 90, player.y + 90, "#00bfff", 20); // Blue particles
+                        createParticles(player.x + player.width / 2, player.y + player.height / 2, "#00bfff", 20); // Blue particles
                     } else if (p.type === 'speed_boost' || p.type === 'fireball' || p.type === 'damage_boost') {
                         if (player.inventory.length < 25) { // Max 25 slots
                             player.inventory.push(p.type);
                             updateInventoryUI();
                             let pColor = p.type === 'speed_boost' ? "#ffff00" : (p.type === 'fireball' ? "#ff4d00" : "#00d4ff");
-                            createParticles(player.x + 90, player.y + 90, pColor, 30);
+                            createParticles(player.x + player.width / 2, player.y + player.height / 2, pColor, 30);
                         } else {
-                            createParticles(player.x + 90, player.y + 90, "#ffffff", 10);
+                            createParticles(player.x + player.width / 2, player.y + player.height / 2, "#ffffff", 10);
                         }
                     } else if (player.hp < maxHp) {
                         if (p.type === 'full') {
@@ -2074,27 +2088,27 @@
             sortedRocks.forEach(o => {
                 // Rochas Naturais (Cenário)
                 ctx.save();
-                ctx.translate(o.x + 20, o.y + 20);
+                ctx.translate(o.x + s(20), o.y + s(20));
 
                 // Sombra da rocha
                 ctx.fillStyle = "rgba(0,0,0,0.25)";
-                ctx.beginPath(); ctx.ellipse(0, 15, 20, 6, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(0, s(15), s(20), s(6), 0, 0, Math.PI * 2); ctx.fill();
 
                 // Formato angular
                 ctx.fillStyle = "#6b705c"; // Cinza Musgo
                 ctx.beginPath();
-                ctx.moveTo(-15, 10); ctx.lineTo(15, 12); ctx.lineTo(20, -5); ctx.lineTo(5, -15); ctx.lineTo(-10, -12);
+                ctx.moveTo(s(-15), s(10)); ctx.lineTo(s(15), s(12)); ctx.lineTo(s(20), s(-5)); ctx.lineTo(s(5), s(-15)); ctx.lineTo(s(-10), s(-12));
                 ctx.closePath(); ctx.fill();
 
                 // Textura e faces
                 ctx.fillStyle = "#a5a58d"; // Face iluminada
                 ctx.beginPath();
-                ctx.moveTo(-10, -12); ctx.lineTo(5, -15); ctx.lineTo(0, 0); ctx.lineTo(-15, 10);
+                ctx.moveTo(s(-10), s(-12)); ctx.lineTo(s(5), s(-15)); ctx.lineTo(0, 0); ctx.lineTo(s(-15), s(10));
                 ctx.closePath(); ctx.fill();
 
                 ctx.fillStyle = "#3f4238"; // Sombra da face
                 ctx.beginPath();
-                ctx.moveTo(15, 12); ctx.lineTo(20, -5); ctx.lineTo(0, 0);
+                ctx.moveTo(s(15), s(12)); ctx.lineTo(s(20), s(-5)); ctx.lineTo(0, 0);
                 ctx.closePath(); ctx.fill();
 
                 ctx.restore();
@@ -2105,40 +2119,40 @@
                 if (o.type === 'tree') {
                     // Tronco com textura
                     ctx.fillStyle = "#3e2713";
-                    ctx.fillRect(o.x + 35, o.y + 60, 10, 20);
+                    ctx.fillRect(o.x + s(35), o.y + s(60), s(10), s(20));
 
                     // Folhagem em camadas (Pinheiro)
                     // Camada de baixo
                     ctx.fillStyle = "#163013";
-                    ctx.beginPath(); ctx.moveTo(o.x + 10, o.y + 65); ctx.lineTo(o.x + 40, o.y + 35); ctx.lineTo(o.x + 70, o.y + 65); ctx.fill();
+                    ctx.beginPath(); ctx.moveTo(o.x + s(10), o.y + s(65)); ctx.lineTo(o.x + s(40), o.y + s(35)); ctx.lineTo(o.x + s(70), o.y + s(65)); ctx.fill();
                     // Camada do meio
                     ctx.fillStyle = "#1e3d1a";
-                    ctx.beginPath(); ctx.moveTo(o.x + 20, o.y + 45); ctx.lineTo(o.x + 40, o.y + 15); ctx.lineTo(o.x + 60, o.y + 45); ctx.fill();
+                    ctx.beginPath(); ctx.moveTo(o.x + s(20), o.y + s(45)); ctx.lineTo(o.x + s(40), o.y + s(15)); ctx.lineTo(o.x + s(60), o.y + s(45)); ctx.fill();
                     // Camada do topo
                     ctx.fillStyle = "#3e7a37";
-                    ctx.beginPath(); ctx.moveTo(o.x + 28, o.y + 25); ctx.lineTo(o.x + 40, o.y); ctx.lineTo(o.x + 52, o.y + 25); ctx.fill();
+                    ctx.beginPath(); ctx.moveTo(o.x + s(28), o.y + s(25)); ctx.lineTo(o.x + s(40), o.y); ctx.lineTo(o.x + s(52), o.y + s(25)); ctx.fill();
 
                     // Sombra na base
                     ctx.fillStyle = "rgba(0,0,0,0.2)";
-                    ctx.beginPath(); ctx.ellipse(o.x + 40, o.y + 80, 20, 5, 0, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(o.x + s(40), o.y + s(80), s(20), s(5), 0, 0, Math.PI * 2); ctx.fill();
                 } else if (o.type === 'bush') {
                     // Arbustos Orgânicos e Fofos
                     ctx.save();
-                    ctx.translate(o.x + 20, o.y + 20);
+                    ctx.translate(o.x + s(20), o.y + s(20));
 
                     // Sombra do arbusto
                     ctx.fillStyle = "rgba(0,0,0,0.2)";
-                    ctx.beginPath(); ctx.ellipse(0, 15, 18, 5, 0, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(0, s(15), s(18), s(5), 0, 0, Math.PI * 2); ctx.fill();
 
                     // Folhagem composta por múltiplos círculos para textura "fluffy"
                     const circles = [
-                        { x: -10, y: 8, r: 12, c: "#163013" },
-                        { x: 10, y: 8, r: 12, c: "#163013" },
-                        { x: -12, y: 0, r: 10, c: "#1e3d1a" },
-                        { x: 12, y: 0, r: 10, c: "#1e3d1a" },
-                        { x: 0, y: -5, r: 14, c: "#2d5a27" },
-                        { x: -5, y: -8, r: 8, c: "#3e7a37" },
-                        { x: 5, y: -8, r: 8, c: "#3e7a37" }
+                        { x: s(-10), y: s(8), r: s(12), c: "#163013" },
+                        { x: s(10), y: s(8), r: s(12), c: "#163013" },
+                        { x: s(-12), y: 0, r: s(10), c: "#1e3d1a" },
+                        { x: s(12), y: 0, r: s(10), c: "#1e3d1a" },
+                        { x: 0, y: s(-5), r: s(14), c: "#2d5a27" },
+                        { x: s(-5), y: s(-8), r: s(8), c: "#3e7a37" },
+                        { x: s(5), y: s(-8), r: s(8), c: "#3e7a37" }
                     ];
 
                     circles.forEach(circ => {
@@ -2159,30 +2173,37 @@
 
             // 3. Desenha Árvores Altas (Sobrepõe rochas e vegetação comum)
             sortedTallTrees.forEach(o => {
+                ctx.save();
+                ctx.translate(o.x, o.y);
+                const scaleF = 1.35; // Aumentar levemente o tamanho
+                ctx.scale(scaleF, scaleF);
+                
                 // Árvore Alta (Pinho Gigante) - Colidível
                 // Tronco Longo
                 ctx.fillStyle = "#2d1b0d";
-                ctx.fillRect(o.x + 32, o.y + 80, 16, 40);
+                ctx.fillRect(s(32), s(80), s(16), s(40));
 
-                ctx.strokeStyle = "#a3d977"; // Contorno Sugerido: Verde Claro para destaque
-                ctx.lineWidth = 1;
+                ctx.strokeStyle = "#39ff14"; // Verde Neon super visível!
+                ctx.lineWidth = s(3.5) / scaleF;
 
                 // Camada 4 (Base)
                 ctx.fillStyle = "#0c1a0a";
-                ctx.beginPath(); ctx.moveTo(o.x, o.y + 90); ctx.lineTo(o.x + 40, o.y + 50); ctx.lineTo(o.x + 80, o.y + 90); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, s(90)); ctx.lineTo(s(40), s(50)); ctx.lineTo(s(80), s(90)); ctx.fill(); ctx.stroke();
                 // Camada 3
                 ctx.fillStyle = "#122610";
-                ctx.beginPath(); ctx.moveTo(o.x + 10, o.y + 65); ctx.lineTo(o.x + 40, o.y + 25); ctx.lineTo(o.x + 70, o.y + 65); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(s(10), s(65)); ctx.lineTo(s(40), s(25)); ctx.lineTo(s(70), s(65)); ctx.fill(); ctx.stroke();
                 // Camada 2
                 ctx.fillStyle = "#183315";
-                ctx.beginPath(); ctx.moveTo(o.x + 20, o.y + 40); ctx.lineTo(o.x + 40, o.y + 5); ctx.lineTo(o.x + 60, o.y + 40); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(s(20), s(40)); ctx.lineTo(s(40), s(5)); ctx.lineTo(s(60), s(40)); ctx.fill(); ctx.stroke();
                 // Camada 1 (Topo)
                 ctx.fillStyle = "#255021";
-                ctx.beginPath(); ctx.moveTo(o.x + 28, o.y + 15); ctx.lineTo(o.x + 40, o.y - 15); ctx.lineTo(o.x + 52, o.y + 15); ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(s(28), s(15)); ctx.lineTo(s(40), -s(15)); ctx.lineTo(s(52), s(15)); ctx.fill(); ctx.stroke();
 
                 // Sombra Maior
                 ctx.fillStyle = "rgba(0,0,0,0.3)";
-                ctx.beginPath(); ctx.ellipse(o.x + 40, o.y + 120, 30, 8, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(s(40), s(120), s(30), s(8), 0, 0, Math.PI * 2); ctx.fill();
+                
+                ctx.restore();
             });
 
             // 2. Desenha Elementos Voadores (Balões) - No ar acima da floresta
@@ -2262,36 +2283,39 @@
 
                     ctx.restore();
                 } else if (o.type === 'cage' || o.type === 'cage_partner') {
-                    // Gaiola Voadora com Balões DETALHADOS
+                    // Gaiola Voadora com Balões PROPORCIONAIS
                     ctx.save();
-                    ctx.translate(o.x + 30, o.y + 30); // Center of 60x60
+                    const halfW = o.width / 2;
+                    const halfH = o.height / 2;
+                    const scaleFactor = o.width / s(60); // Ratio based on original design size
+
+                    ctx.translate(o.x + halfW, o.y + halfH);
 
                     // Oscilação suave
-                    const sway = Math.sin(frameCount * 0.03 + o.x) * 5;
+                    const sway = Math.sin(frameCount * 0.03 + o.x) * s(5);
                     ctx.translate(sway, 0);
 
                     // 1. Strings (Cordas)
-                    // Ponto de união (nó) logo acima da gaiola
-                    const knotY = -35;
+                    const knotY = -s(35) * scaleFactor;
 
                     ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
-                    ctx.lineWidth = 1.5;
+                    ctx.lineWidth = s(1.5) * scaleFactor;
                     ctx.beginPath();
                     // Cordas dos balões para o nó central
-                    ctx.moveTo(-20, -80); ctx.lineTo(0, knotY); // Balão Esq
-                    ctx.moveTo(20, -80); ctx.lineTo(0, knotY);  // Balão Dir
-                    ctx.moveTo(0, -90); ctx.lineTo(0, knotY);   // Balão Meio
+                    ctx.moveTo(-s(20) * scaleFactor, -s(80) * scaleFactor); ctx.lineTo(0, knotY); // Balão Esq
+                    ctx.moveTo(s(20) * scaleFactor, -s(80) * scaleFactor); ctx.lineTo(0, knotY);  // Balão Dir
+                    ctx.moveTo(0, -s(90) * scaleFactor); ctx.lineTo(0, knotY);   // Balão Meio
 
                     // Cordas do nó para os cantos da gaiola
-                    ctx.moveTo(0, knotY); ctx.lineTo(-25, -30);
-                    ctx.moveTo(0, knotY); ctx.lineTo(25, -30);
+                    ctx.moveTo(0, knotY); ctx.lineTo(-halfW, -halfH);
+                    ctx.moveTo(0, knotY); ctx.lineTo(halfW, -halfH);
                     ctx.stroke();
 
                     // 2. Três Balões Vermelhos (Cluster)
                     const balloons = [
-                        { x: -20, y: -80, r: 18, c: "#ff4d4d", s: "#ff8080" }, // Left
-                        { x: 20, y: -80, r: 18, c: "#ff4d4d", s: "#ff8080" },  // Right
-                        { x: 0, y: -95, r: 22, c: "#ff3333", s: "#ff6666" }    // Top Center (Main)
+                        { x: -s(20) * scaleFactor, y: -s(80) * scaleFactor, r: s(18) * scaleFactor, c: "#ff4d4d" }, // Left
+                        { x: s(20) * scaleFactor, y: -s(80) * scaleFactor, r: s(18) * scaleFactor, c: "#ff4d4d" },  // Right
+                        { x: 0, y: -s(95) * scaleFactor, r: s(22) * scaleFactor, c: "#ff3333" }    // Top Center
                     ];
 
                     balloons.forEach(b => {
@@ -2304,60 +2328,51 @@
                         // Bico do balão (nó)
                         ctx.fillStyle = b.c;
                         ctx.beginPath();
-                        ctx.moveTo(b.x - 4, b.y + b.r * 1.1);
-                        ctx.lineTo(b.x + 4, b.y + b.r * 1.1);
+                        ctx.moveTo(b.x - s(4) * scaleFactor, b.y + b.r * 1.1);
+                        ctx.lineTo(b.x + s(4) * scaleFactor, b.y + b.r * 1.1);
                         ctx.lineTo(b.x, b.y + b.r * 1.4);
                         ctx.fill();
 
-                        // Reflexo/Brilho para volume 3D
+                        // Reflexo/Brilho
                         ctx.fillStyle = "rgba(255,255,255,0.4)";
                         ctx.beginPath();
                         ctx.ellipse(b.x - b.r * 0.4, b.y - b.r * 0.4, b.r * 0.25, b.r * 0.15, -Math.PI / 4, 0, Math.PI * 2);
                         ctx.fill();
                     });
 
-                    // 3. A Gaiola (Agora centralizada corretamente no Hitbox)
-                    // Hitbox é 60x60. O translate está no centro (30,30).
-                    // Logo desenhamos de -30 a 30.
-                    ctx.fillStyle = "#2a2a2a"; // Metal mais escuro
-                    ctx.fillRect(-30, -30, 60, 60);
+                    // 3. A Gaiola
+                    ctx.fillStyle = "#2a2a2a";
+                    ctx.fillRect(-halfW, -halfH, o.width, o.height);
 
                     // Borda Metálica
                     ctx.strokeStyle = "#666";
-                    ctx.lineWidth = 4;
-                    ctx.strokeRect(-30, -30, 60, 60);
+                    ctx.lineWidth = s(4) * scaleFactor;
+                    ctx.strokeRect(-halfW, -halfH, o.width, o.height);
 
                     // Grades Verticais
                     ctx.fillStyle = "#888";
-                    for (let i = -20; i <= 20; i += 10) {
-                        ctx.fillRect(i, -30, 3, 60);
+                    const gridStep = o.width / 6;
+                    for (let x = -halfW + gridStep; x < halfW; x += gridStep) {
+                        ctx.fillRect(x, -halfH, s(3) * scaleFactor, o.height);
                     }
-                    // Grades Horizontais (novas)
-                    ctx.fillRect(-30, -10, 60, 3);
-                    ctx.fillRect(-30, 10, 60, 3);
+                    // Grades Horizontais
+                    ctx.fillRect(-halfW, -halfH / 3, o.width, s(3) * scaleFactor);
+                    ctx.fillRect(-halfW, halfH / 3, o.width, s(3) * scaleFactor);
 
                     // Ícone de Item (?) dentro ou Dragão Parceiro
                     if (o.type === 'cage_partner') {
-                        // Desenhar dragão parceiro animado dentro da gaiola
                         const partnerImg = goalImages[o.partnerFrame - 1];
                         ctx.save();
                         ctx.globalAlpha = 0.9;
-                        // Desenha o dragão menor para caber na gaiola
-                        const dragonSize = 50;
+                        const dragonSize = o.width * 0.8;
                         ctx.drawImage(partnerImg, -dragonSize / 2, -dragonSize / 2, dragonSize, dragonSize);
-
-                        // Brilho especial
-                        ctx.shadowBlur = 20;
-                        ctx.shadowColor = allyColor;
                         ctx.restore();
                     } else {
-                        // Ícone de Item (?) dentro
                         ctx.fillStyle = "#ffd700";
-                        ctx.font = "bold 32px Arial";
-                        ctx.shadowColor = "black";
-                        ctx.shadowBlur = 4;
-                        ctx.fillText("?", -10, 12); // Centralizado visualmente
-                        ctx.shadowBlur = 0;
+                        ctx.font = `bold ${Math.floor(s(32) * scaleFactor)}px Arial`;
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+                        ctx.fillText("?", 0, 0);
                     }
 
                     ctx.restore();
@@ -2392,14 +2407,14 @@
 
                 ctx.save();
                 // Determina estilo baseado no tipo
-                let bodyColor, eyeColor, wingColor, hornColor, size = 60;
+                let bodyColor, eyeColor, wingColor, hornColor, size = s(60);
                 if (e.type === 'ghost') {
                     bodyColor = "#408"; eyeColor = "#f0f"; wingColor = "#60a"; hornColor = "#80f";
                     ctx.shadowBlur = 15; ctx.shadowColor = "#a0f";
                     const pulse = Math.sin(frameCount * 0.1) * 5;
                     size += pulse;
                 } else if (e.type === 'berserker') {
-                    bodyColor = "#111"; eyeColor = "red"; wingColor = "#222"; hornColor = "#ffb700"; size = 80;
+                    bodyColor = "#111"; eyeColor = "red"; wingColor = "#222"; hornColor = "#ffb700"; size = s(80);
                     ctx.shadowBlur = 20; ctx.shadowColor = "#ffb700";
                 } else if (e.type === 'elite') {
                     bodyColor = "#500"; eyeColor = "red"; wingColor = "#300"; hornColor = "#800";
@@ -2491,7 +2506,7 @@
             });
 
             if (boss.active) {
-                const bw = 220, bh = 160;
+                const bw = s(260), bh = s(190);
                 let bThemeColor = boss.type === 'fire' ? "red" : (boss.type === 'ice' ? "#00ffff" : "#ffff00");
                 let bWingColor = boss.type === 'fire' ? "#400" : (boss.type === 'ice' ? "#004466" : "#444400");
                 let bBodyColor = boss.type === 'fire' ? "#111" : (boss.type === 'ice' ? "#e0f7ff" : "#1a1a1a");
@@ -2573,7 +2588,7 @@
                 ctx.shadowBlur = 0;
             }
 
-            if (goal.show) { ctx.drawImage(goalImages[goal.currentFrame - 1], goal.x, goal.y, goal.width, goal.height); if (!cage.broken) { ctx.strokeStyle = "#888"; ctx.lineWidth = 4; ctx.strokeRect(goal.x - 10, goal.y - 10, 200, 200); } }
+            if (goal.show) { ctx.drawImage(goalImages[goal.currentFrame - 1], goal.x, goal.y, goal.width, goal.height); if (!cage.broken) { ctx.strokeStyle = "#888"; ctx.lineWidth = 4; ctx.strokeRect(goal.x - s(10), goal.y - s(10), s(200), s(200)); } }
 
             // Desenha Partículas por cima de tudo (Exceto UI e Player se desejar)
             particles.forEach(p => { ctx.globalAlpha = p.life; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, 4 * p.life, 0, Math.PI * 2); ctx.fill(); }); ctx.globalAlpha = 1.0;
@@ -2614,71 +2629,71 @@
                 if (p.type === 'shield') {
                     // Draw Shield Icon
                     ctx.beginPath();
-                    ctx.moveTo(0, 15);
-                    ctx.lineTo(12, 5);
-                    ctx.lineTo(12, -10);
-                    ctx.lineTo(0, -15);
-                    ctx.lineTo(-12, -10);
-                    ctx.lineTo(-12, 5);
+                    ctx.moveTo(0, s(15));
+                    ctx.lineTo(s(12), s(5));
+                    ctx.lineTo(s(12), s(-10));
+                    ctx.lineTo(0, s(-15));
+                    ctx.lineTo(s(-12), s(-10));
+                    ctx.lineTo(s(-12), s(5));
                     ctx.closePath();
                     ctx.fill();
 
                     // Cross/Plus inside
                     ctx.fillStyle = "rgba(255,255,255,0.8)";
-                    ctx.fillRect(-3, -8, 6, 16);
-                    ctx.fillRect(-8, -3, 16, 6);
+                    ctx.fillRect(s(-3), s(-8), s(6), s(16));
+                    ctx.fillRect(s(-8), s(-3), s(16), s(6));
                 } else if (p.type === 'speed_boost') {
                     // Lightning Bolt (Flight Speed)
                     ctx.fillStyle = "#ffff00";
                     ctx.beginPath();
-                    ctx.moveTo(5, -15);
-                    ctx.lineTo(-5, -5);
-                    ctx.lineTo(2, -2);
-                    ctx.lineTo(-8, 15);
-                    ctx.lineTo(8, -2);
-                    ctx.lineTo(0, -5);
+                    ctx.moveTo(s(5), s(-15));
+                    ctx.lineTo(s(-5), s(-5));
+                    ctx.lineTo(s(2), s(-2));
+                    ctx.lineTo(s(-8), s(15));
+                    ctx.lineTo(s(8), s(-2));
+                    ctx.lineTo(0, s(-5));
                     ctx.fill();
                     // Shine
                     ctx.fillStyle = "rgba(255,255,255,0.6)";
-                    ctx.beginPath(); ctx.arc(0, 0, 5, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(0, 0, s(5), 0, Math.PI * 2); ctx.fill();
                 } else if (p.type === 'fireball') {
                     // Timer Icon (Shoot Speed)
                     ctx.fillStyle = "#ff4d00";
                     ctx.beginPath();
-                    ctx.arc(0, 0, 15, 0, Math.PI * 2);
+                    ctx.arc(0, 0, s(15), 0, Math.PI * 2);
                     ctx.fill();
                     // Face
                     ctx.fillStyle = "white";
                     ctx.beginPath();
-                    ctx.arc(0, 0, 11, 0, Math.PI * 2);
+                    ctx.arc(0, 0, s(11), 0, Math.PI * 2);
                     ctx.fill();
                     // Hands
                     ctx.strokeStyle = "#ff4d00";
                     ctx.lineWidth = 2;
                     ctx.beginPath();
-                    ctx.moveTo(0, 0); ctx.lineTo(0, -8);
-                    ctx.moveTo(0, 0); ctx.lineTo(6, 0);
+                    ctx.moveTo(0, 0); ctx.lineTo(0, s(-8));
+                    ctx.moveTo(0, 0); ctx.lineTo(s(6), 0);
                     ctx.stroke();
                     // Top button
                     ctx.fillStyle = "#ff4d00";
-                    ctx.fillRect(-3, -18, 6, 4);
+                    ctx.fillRect(s(-3), s(-18), s(6), s(4));
                 } else if (p.type === 'damage_boost') {
                     // Blue Flame Icon
                     ctx.beginPath();
-                    ctx.moveTo(0, 15);
-                    ctx.bezierCurveTo(-15, 10, -15, -10, 0, -20);
-                    ctx.bezierCurveTo(5, -10, 15, -5, 15, 5);
-                    ctx.bezierCurveTo(15, 15, 5, 15, 0, 15);
+                    ctx.moveTo(0, s(15));
+                    ctx.bezierCurveTo(s(-15), s(10), s(-15), s(-10), 0, s(-20));
+                    ctx.bezierCurveTo(s(5), s(-10), s(15), s(-5), s(15), s(5));
+                    ctx.bezierCurveTo(s(15), s(15), s(5), s(15), 0, s(15));
                     ctx.fill();
                     // Core
                     ctx.fillStyle = "white";
                     ctx.beginPath();
-                    ctx.ellipse(0, 5, 4, 7, 0, 0, Math.PI * 2);
+                    ctx.ellipse(0, s(5), s(4), s(7), 0, 0, Math.PI * 2);
                     ctx.fill();
                 } else {
                     // Draw Heart Icon
                     ctx.beginPath();
-                    const size = 15;
+                    const size = s(15);
                     ctx.moveTo(0, size * 0.3);
                     ctx.bezierCurveTo(0, -size * 0.3, -size, -size * 0.3, -size, size * 0.3);
                     ctx.bezierCurveTo(-size, size * 0.8, 0, size * 1.2, 0, size * 1.5);
@@ -2760,7 +2775,7 @@
                     // Dragão dentro
                     const partnerImg = goalImages[o.partnerFrame - 1];
                     ctx.globalAlpha = 0.9;
-                    const dragonSize = 50;
+                    const dragonSize = s(50);
                     ctx.drawImage(partnerImg, -dragonSize / 2, -dragonSize / 2, dragonSize, dragonSize);
 
                     ctx.shadowBlur = 20 + Math.sin(frameCount * 0.1) * 10;
@@ -2901,7 +2916,7 @@
         function spawnFuryAlly() {
             if (lightFuryAlly.active) return;
             lightFuryAlly.active = true;
-            lightFuryAlly.x = player.x - 300;
+            lightFuryAlly.x = player.x - s(300);
             lightFuryAlly.y = player.y;
 
             const partnerName = isBanguela ? 'Fúria da Luz' : 'Banguela';
@@ -2917,7 +2932,7 @@
             updateHearts();
             updateShields();
             updateInventoryUI();
-            createParticles(player.x + 90, player.y + 90, allyColor, 50);
+            createParticles(player.x + player.width / 2, player.y + player.height / 2, allyColor, 50);
             showDifficultyPopup(`${partnerName} resgatado(a)!`);
         }
 
