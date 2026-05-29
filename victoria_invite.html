@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convite Especial para Victória</title>
     <style>
-        body, label {
+        body,
+        label {
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23ff7f50' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🍊%3C/text%3E%3C/svg%3E") 5 3, auto !important;
         }
 
@@ -55,6 +56,7 @@
             0% {
                 transform: translateY(-10vh);
             }
+
             100% {
                 transform: translateY(110vh);
             }
@@ -221,9 +223,10 @@
             z-index: 2000;
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             pointer-events: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             white-space: nowrap;
         }
+
         .music-toast.show {
             transform: translateX(-50%) translateY(0);
         }
@@ -246,7 +249,9 @@
     <!-- Efeito de comemoração (YAY!) -->
     <audio id="celebration-sound" src="assets/Sounds/cheering.mp3"></audio>
     <!-- Música de fundo -->
-    <audio id="bg-music" src="assets/Musics/_Usher - Hey Daddy (Daddy's Home) (Official Video) - UsherVEVO (youtube).mp3" autoplay></audio>
+    <audio id="bg-music"
+        src="assets/Musics/_Usher - Hey Daddy (Daddy's Home) (Official Video) - UsherVEVO (youtube).mp3"
+        autoplay></audio>
 
     <div id="music-toast" class="music-toast">🎵 Tocando...</div>
 
@@ -256,7 +261,8 @@
         <img src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif" alt="Gatinho fofo"
             style="width: 200px; border-radius: 10px; margin-bottom: 10px;">
         <h1>🍊🌹 Oi, Victória! 🌹🍊</h1>
-        <p>Eu estava pensando... que tal a gente sair pra fazer alguma coisa legal num dia desses, flor de tangerina? 🥺
+        <p>Esses últimos dias jogando e conversando foram tão legais, e eu tava pensando... Que tal a gente sair pra
+            fazer alguma coisa legal num dia desses, flor de tangerina? 🥺
         </p>
 
         <div class="buttons">
@@ -315,11 +321,13 @@
     </div>
 
     <div class="container success-message" id="final-container">
-        <h1>Encontro Confirmado! ✅</h1>
+        <h1>Encontro confirmado, majestade! ✅</h1>
         <p id="final-text" style="font-size: 1.3rem; margin-bottom: 10px;"></p>
         <img src="assets/shrek_rizz.gif" alt="Shrek"
             style="width: 200px; border-radius: 10px; margin-top: 10px; margin-bottom: 20px;">
-        <button id="btn-whatsapp" class="btn-yes" style="font-size: 1.1rem; padding: 12px 35px; background-color: #25D366; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); display: none;">Abrir WhatsApp 💬</button>
+        <button id="btn-whatsapp" class="btn-yes"
+            style="font-size: 1.1rem; padding: 12px 35px; background-color: #25D366; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); display: none;">Abrir
+            WhatsApp 💬</button>
         <p style="font-size: 0.9rem; color: #57606f; margin-top: 15px; margin-bottom: 0;">PS: Pessoas normais
             convidariam por mensagem, mas eu pensei em algo diferente 👨🏻‍💻</p>
     </div>
@@ -327,7 +335,7 @@
     <div class="modal" id="error-container">
         <div class="modal-content">
             <h1>Erro de Sistema! 🛑</h1>
-            <p>Esse botão não funciona kkkkkkkkkkk</p>
+            <p>Esse botão não funciona kkkkkkkkkkk<br> Tente novamente!</p>
             <button class="btn-yes" onclick="closeModal()" style="margin-top: 20px;">Voltar</button>
         </div>
     </div>
@@ -394,7 +402,7 @@
             const toast = document.getElementById('music-toast');
             toast.innerText = '🎵 Tocando: ' + musicNames[currentTrackIndex];
             toast.classList.add('show');
-            
+
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
                 toast.classList.remove('show');
@@ -610,7 +618,7 @@
         // Criar flores caindo no fundo
         function createFlowers() {
             const container = document.getElementById('hearts-container');
-            const flowerEmojis = ['👓', '🏋🏻‍♀️', '🥋', '🍊', '🌹', '🌼', '🚴🏻‍♀️', '🎮']; // Ícones, tangerinas e flores não-rosas
+            const flowerEmojis = ['👓', '🏋🏻‍♀️', '🥋', '🍊', '🌹', '🌸', '🚴🏻‍♀️', '🎮', '🔬', '🧫', '🧩', '🦇', '🖤', '☕️', '🍣']; // Ícones, ciência e terror gótico
             setInterval(() => {
                 const flower = document.createElement('div');
                 flower.classList.add('flower');
@@ -643,12 +651,12 @@
                 rick.classList.add('rick-fall');
                 rick.style.left = Math.random() * 100 + 'vw';
                 rick.style.width = (Math.random() * 40 + 50) + 'px';
-                
+
                 const duration = Math.random() * 3 + 4;
                 rick.style.animationDuration = duration + 's';
-                
+
                 container.appendChild(rick);
-                
+
                 setTimeout(() => {
                     rick.remove();
                 }, duration * 1000);
