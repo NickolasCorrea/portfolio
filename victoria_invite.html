@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convite Especial para Victória</title>
     <style>
+        body, label {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23ff7f50' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🍊%3C/text%3E%3C/svg%3E") 5 3, auto !important;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -35,6 +39,24 @@
             100% {
                 transform: translateY(110vh) rotate(360deg);
                 opacity: 0.5;
+            }
+        }
+
+        .rick-fall {
+            position: absolute;
+            user-select: none;
+            pointer-events: none;
+            animation: fallNoRotate linear infinite;
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        @keyframes fallNoRotate {
+            0% {
+                transform: translateY(-10vh);
+            }
+            100% {
+                transform: translateY(110vh);
             }
         }
 
@@ -211,7 +233,7 @@
 <body>
     <div
         style="position: absolute; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px; align-items: center;">
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1"
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5"
             style="display: inline-block; width: 80px; accent-color: #ff4757; cursor: pointer;" title="Volume">
         <button id="btn-sound" onclick="toggleSound()" class="control-btn" title="Efeitos Sonoros">🔊</button>
         <button id="btn-music" onclick="toggleMusic()" class="control-btn" title="Música de Fundo">🎵</button>
@@ -232,7 +254,7 @@
 
     <div class="container" id="invite-container">
         <img src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif" alt="Gatinho fofo"
-            style="width: 150px; border-radius: 10px; margin-bottom: 10px;">
+            style="width: 200px; border-radius: 10px; margin-bottom: 10px;">
         <h1>🍊🌹 Oi, Victória! 🌹🍊</h1>
         <p>Eu estava pensando... que tal a gente sair pra fazer alguma coisa legal num dia desses, flor de tangerina? 🥺
         </p>
@@ -245,8 +267,8 @@
     </div>
 
     <div class="container success-message" id="surprise-container">
-        <img src="assets/rick_dancing.gif" alt="Rick Sanchez"
-            style="width: 130px; border-radius: 10px; margin-bottom: 20px;">
+        <img src="assets/smile-totoro.gif" alt="Totoro Rain"
+            style="width: 350px; border-radius: 10px; margin-bottom: 20px;">
         <h1>Sério, você disse sim??? 😭</h1>
         <p>Eu sinceramente tava esperando um não, ou tava achando que você nunca chegaria nessa parte... 😬</p>
         <button class="btn-yes" onclick="nextStep()" style="font-size: 1.1rem; padding: 12px 35px;">Próximo ➡️</button>
@@ -297,7 +319,8 @@
         <p id="final-text" style="font-size: 1.3rem; margin-bottom: 10px;"></p>
         <img src="assets/shrek_rizz.gif" alt="Shrek"
             style="width: 200px; border-radius: 10px; margin-top: 10px; margin-bottom: 20px;">
-        <p style="font-size: 0.9rem; color: #57606f; margin-top: 10px; margin-bottom: 0;">PS: Pessoas normais
+        <button id="btn-whatsapp" class="btn-yes" style="font-size: 1.1rem; padding: 12px 35px; background-color: #25D366; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); display: none;">Abrir WhatsApp 💬</button>
+        <p style="font-size: 0.9rem; color: #57606f; margin-top: 15px; margin-bottom: 0;">PS: Pessoas normais
             convidariam por mensagem, mas eu pensei em algo diferente 👨🏻‍💻</p>
     </div>
 
@@ -460,6 +483,7 @@
         function nextStep() {
             surpriseContainer.style.display = 'none';
             successContainer.style.display = 'flex';
+            createRicks();
         }
 
         function checkActivity() {
@@ -541,6 +565,10 @@
                 celebrationSound.play().catch(e => console.log(e));
             }
 
+            const btnWhatsapp = document.getElementById('btn-whatsapp');
+            btnWhatsapp.onclick = () => window.open(whatsappUrl, '_blank');
+            btnWhatsapp.style.display = 'inline-block';
+
             setTimeout(() => {
                 window.open(whatsappUrl, '_blank');
             }, 5000);
@@ -582,7 +610,7 @@
         // Criar flores caindo no fundo
         function createFlowers() {
             const container = document.getElementById('hearts-container');
-            const flowerEmojis = ['👓', '🏋🏻‍♀️', '🥋', '🍊', '🌹', '🌼']; // Ícones, tangerinas e flores não-rosas
+            const flowerEmojis = ['👓', '🏋🏻‍♀️', '🥋', '🍊', '🌹', '🌼', '🚴🏻‍♀️', '🎮']; // Ícones, tangerinas e flores não-rosas
             setInterval(() => {
                 const flower = document.createElement('div');
                 flower.classList.add('flower');
@@ -592,7 +620,7 @@
                 flower.style.left = Math.random() * 100 + 'vw';
 
                 // Tamanho aleatório
-                flower.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                flower.style.fontSize = (Math.random() * 18 + 18) + 'px';
 
                 // Duração da animação aleatória
                 const duration = Math.random() * 3 + 4;
@@ -603,10 +631,33 @@
                 setTimeout(() => {
                     flower.remove();
                 }, duration * 1000);
-            }, 150);
+            }, 120);
         }
+
+        function createRicks() {
+            const container = document.getElementById('hearts-container');
+            setInterval(() => {
+                if (successContainer.style.display !== 'flex' && document.getElementById('final-container').style.display !== 'flex') return;
+                const rick = document.createElement('img');
+                rick.src = 'assets/rick_dancing.gif';
+                rick.classList.add('rick-fall');
+                rick.style.left = Math.random() * 100 + 'vw';
+                rick.style.width = (Math.random() * 40 + 50) + 'px';
+                
+                const duration = Math.random() * 3 + 4;
+                rick.style.animationDuration = duration + 's';
+                
+                container.appendChild(rick);
+                
+                setTimeout(() => {
+                    rick.remove();
+                }, duration * 1000);
+            }, 800);
+        }
+
         window.onload = function () {
             createFlowers();
+            document.getElementById('bg-music').volume = 0.5;
             document.getElementById('volume-slider').addEventListener('input', (e) => {
                 document.getElementById('bg-music').volume = e.target.value;
             });
