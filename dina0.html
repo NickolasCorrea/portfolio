@@ -31,6 +31,15 @@
         body {
             margin: 0;
             height: 100%;
+            /* Nada pode "vazar" da tela (rosas caindo pelas laterais faziam o celular deixar afastar o zoom) */
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        html {
+            /* Celular não aumenta o texto sozinho ao girar a tela */
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         body,
@@ -43,6 +52,11 @@
             background: radial-gradient(circle at 50% 35%, #ffffff 0%, #ffeef2 45%, #fbd9e1 100%);
             color: var(--ink);
             overflow: hidden;
+            /* Fixa a página no tamanho exato da tela (o iPhone ignora o overflow:hidden sem isso) */
+            position: fixed;
+            inset: 0;
+            /* Tocar várias vezes seguidas no buquê não pode virar "toque duplo = zoom" */
+            touch-action: manipulation;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -433,6 +447,9 @@
             color: #3d2430;
             user-select: text;
             -webkit-user-select: text;
+            touch-action: manipulation;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             transform: translateY(30px) scale(.92);
             transition: transform .7s cubic-bezier(.2, .9, .3, 1.2);
         }
@@ -509,6 +526,28 @@
         .btn-again {
             background: var(--rose);
             box-shadow: 0 5px 15px rgba(194, 24, 91, .35);
+        }
+
+        /* ---------- Cartas guardadas (dina.html por cima da página) ---------- */
+        .saved-view {
+            position: fixed;
+            inset: 0;
+            z-index: 900;
+            /* abaixo do tocador (1000), que continua visível */
+            background: #ffeef2;
+            opacity: 0;
+            transition: opacity .45s ease;
+        }
+
+        .saved-view.show {
+            opacity: 1;
+        }
+
+        .saved-view iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
         /* ---------- Tocador de música ---------- */
@@ -926,7 +965,7 @@
         </div>
     </div>
 
-    <h1 class="title" id="title">Pra você, Diná 🌹</h1>
+    <h1 class="title" id="title">Pra você, Diná</h1>
 
     <div class="stage-wrap breathe" id="stage-wrap">
         <div class="stage">
@@ -1024,17 +1063,21 @@
             <p class="reveal">Como diria a própria Taylor: <em>"I just want to know you better"</em>. ✨</p>
 
             <p class="reveal">Eu não sei o que o futuro guarda, mas as duas cartinhas, a virtual e a de papel, vão
-                ficar salvas aqui no site, pra você reler sempre que quiser. É só tocar em "Guardar" aqui embaixo. 💌</p>
+                ficar salvas aqui no site, pra você reler sempre que quiser. 💌</p>
 
             <p class="sign reveal">Com carinho,<br>Nick</p>
 
             <div class="letter-actions reveal">
-                <button class="btn btn-save" onclick="location.href='dina.html'">Guardar 💌</button>
+                <button class="btn btn-save" onclick="openSaved()">Guardar 💌</button>
                 <button class="btn btn-zap" onclick="replyWhatsapp()">Me conta sua música 💬</button>
                 <button class="btn btn-again" onclick="location.reload()">Ver de novo 🔁</button>
             </div>
         </div>
     </div>
+
+    <!-- ============ CARTAS GUARDADAS ============ -->
+    <!-- O dina.html abre aqui por cima (em vez de trocar de página), assim a música não para -->
+    <div class="saved-view" id="saved-view" hidden></div>
 
     <script>
         /* =========================================================
@@ -1053,6 +1096,10 @@
         const WHATSAPP_MSG = 'Oi Nick! Abri o buquê e li a carta. Minha música favorita da Taylor é: ';
 
         /* =================== Tocador =================== */
+        // iPhone: trata como "tocador de música", que continua tocando com a tela bloqueada
+        // ou em outro app (e ignora a chave do silencioso)
+        try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { }
+
         const bgMusic = document.getElementById('bg-music');
         const player = document.getElementById('player');
         const playlistEl = document.getElementById('playlist');
@@ -1359,6 +1406,7 @@
         const ambient = document.getElementById('ambient');
 
         function spawnAmbientPetal() {
+            if (savedOpen || document.hidden) return; // economiza bateria quando ninguém vê
             const p = document.createElement('div');
             p.className = 'amb-petal';
             p.style.left = Math.random() * 100 + 'vw';
@@ -1588,6 +1636,42 @@
         function replyWhatsapp() {
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`, '_blank');
         }
+
+        /* =================== Cartas guardadas =================== */
+        // "Guardar" abre o dina.html por cima desta página: a música continua tocando sem parar
+        const savedView = document.getElementById('saved-view');
+        let savedOpen = false;
+
+        function openSaved() {
+            if (savedOpen) return;
+            savedOpen = true;
+            if (!savedView.querySelector('iframe')) {
+                const frame = document.createElement('iframe');
+                frame.src = 'dina.html';
+                frame.title = 'Cartinhas da Diná';
+                savedView.appendChild(frame);
+            }
+            savedView.hidden = false;
+            requestAnimationFrame(() => requestAnimationFrame(() => savedView.classList.add('show')));
+            playlistEl.classList.add('closed');
+            // Botão "voltar" do celular fecha as cartas em vez de sair do site
+            try { history.pushState({ dinaSaved: true }, '', '#cartas'); } catch (e) { }
+        }
+
+        function closeSaved(fromHistory) {
+            if (!savedOpen) return;
+            savedOpen = false;
+            savedView.classList.remove('show');
+            setTimeout(() => { if (!savedOpen) savedView.hidden = true; }, 450);
+            if (!fromHistory && history.state && history.state.dinaSaved) history.back();
+        }
+
+        window.addEventListener('popstate', () => closeSaved(true));
+        // O dina.html avisa quando ela toca em "voltar"
+        window.addEventListener('message', e => {
+            const frame = savedView.querySelector('iframe');
+            if (frame && e.source === frame.contentWindow && e.data === 'dina-close') closeSaved(false);
+        });
 
         /* =================== Layout responsivo =================== */
         function fit() {

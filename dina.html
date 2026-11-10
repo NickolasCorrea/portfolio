@@ -45,7 +45,20 @@
             background: radial-gradient(circle at 50% 0%, #ffffff 0%, #ffeef2 40%, #fbd9e1 100%) fixed;
             padding: 28px 16px calc(32px + env(safe-area-inset-bottom));
             overflow-x: hidden;
+            touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        html {
+            /* Nada vaza pelas laterais: sem "sobra" pra afastar o zoom no celular */
+            overflow-x: hidden;
+        }
+
+        /* Dentro do buquê, o tocador fica fixo embaixo: deixa espaço pra ele não cobrir os botões */
+        html.embedded body {
+            padding-bottom: calc(120px + env(safe-area-inset-bottom));
         }
 
         /* Pétalas de fundo */
@@ -515,11 +528,25 @@
         </section>
 
         <div class="actions">
-            <a class="btn" href="dina0.html">🌹 Ver o buquê de novo</a>
+            <a class="btn" id="btn-back" href="dina0.html">🌹 Ver o buquê de novo</a>
         </div>
     </main>
 
     <script>
+        /* Aberta por cima do buquê (botão "Guardar" do dina0.html)?
+           Então a música está tocando lá: os botões de voltar só fecham esta camada */
+        const EMBEDDED = window.self !== window.top;
+        if (EMBEDDED) {
+            document.documentElement.classList.add('embedded');
+            document.getElementById('btn-back').innerText = '💌 Voltar pra carta';
+            document.querySelectorAll('a[href="dina0.html"]').forEach(a => {
+                a.addEventListener('click', e => {
+                    e.preventDefault();
+                    window.parent.postMessage('dina-close', '*');
+                });
+            });
+        }
+
         /* Abas */
         const tabs = [...document.querySelectorAll('.tab')];
 
