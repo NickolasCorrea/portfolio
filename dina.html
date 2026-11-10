@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Cartinhas da Diná 💌</title>
+    <!-- Página pessoal: não aparecer no Google -->
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💌%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --rose: #c2185b;
+            --rose-dark: #880e4f;
+            --ink-pink: #cf2f74;
+            --ink: #4a2c35;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+        }
+
+        body,
+        button,
+        a {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23c2185b' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🌹%3C/text%3E%3C/svg%3E") 5 3, auto !important;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background: radial-gradient(circle at 50% 0%, #ffffff 0%, #ffeef2 40%, #fbd9e1 100%) fixed;
+            padding: 28px 16px calc(32px + env(safe-area-inset-bottom));
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Pétalas de fundo */
+        #ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .amb-petal {
+            position: absolute;
+            top: -30px;
+            border-radius: 0 100% 0 100%;
+            opacity: .5;
+            animation: ambFall linear forwards;
+        }
+
+        @keyframes ambFall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(calc(var(--dx) * -.3), 55vh) rotate(200deg);
+            }
+
+            100% {
+                transform: translate(var(--dx), 112vh) rotate(380deg);
+            }
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
+            color: var(--rose-dark);
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+        }
+
+        header p {
+            margin: 6px 0 0;
+            color: #8a5a67;
+            font-size: clamp(.95rem, 3.6vw, 1.05rem);
+        }
+
+        /* Abas */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            padding: 5px;
+            margin: 0 auto 18px;
+            max-width: 420px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .7);
+            border: 1px solid rgba(194, 24, 91, .15);
+            box-shadow: 0 4px 14px rgba(120, 20, 60, .1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 11px 10px;
+            border: none;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--rose-dark);
+            font: 600 .95rem 'Segoe UI', Tahoma, sans-serif;
+            transition: background .2s, color .2s;
+            touch-action: manipulation;
+        }
+
+        .tab[aria-selected="true"] {
+            background: var(--rose);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(194, 24, 91, .35);
+        }
+
+        .panel {
+            animation: fadeUp .5s ease;
+        }
+
+        .panel[hidden] {
+            display: none;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* ---------- Carta virtual (papel pautado) ---------- */
+        .paper-virtual {
+            padding: 30px 26px 26px 52px;
+            border-radius: 6px;
+            background-color: #fffdf7;
+            background-image:
+                linear-gradient(90deg, transparent 38px, #f4a9b8 38px, #f4a9b8 39px, transparent 39px),
+                repeating-linear-gradient(transparent 0, transparent 33px, #f2dbe0 33px, #f2dbe0 34px);
+            box-shadow: 0 16px 40px rgba(80, 10, 35, .2);
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.3rem, 4.6vw, 1.55rem);
+            line-height: 34px;
+            color: #3d2430;
+        }
+
+        .paper-virtual h2 {
+            margin: 0 0 8px;
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            font-size: 1.5em;
+            line-height: 1.2;
+            color: var(--rose-dark);
+        }
+
+        .paper-virtual p {
+            margin: 0 0 34px;
+        }
+
+        .paper-virtual .sign {
+            text-align: right;
+            margin-bottom: 0;
+            color: var(--rose-dark);
+            font-weight: 700;
+        }
+
+        /* ---------- Carta de papel (igual à impressa) ---------- */
+        .paper-physical {
+            padding: 26px 34px 34px;
+            border-radius: 4px;
+            background: #fff;
+            box-shadow: 0 16px 40px rgba(80, 10, 35, .2);
+            color: var(--ink-pink);
+        }
+
+        .ornament {
+            display: block;
+            width: 100%;
+            max-width: 520px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .paper-physical .date {
+            margin: 18px 0 2px;
+            font-family: 'Allura', cursive;
+            font-size: clamp(1.5rem, 5vw, 1.8rem);
+        }
+
+        .paper-physical .greet {
+            margin: 0 0 6px;
+            font-family: 'Allura', cursive;
+            font-size: clamp(1.8rem, 6vw, 2.1rem);
+        }
+
+        .paper-physical p.body {
+            margin: 0 0 14px;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(.95rem, 3.6vw, 1.05rem);
+            line-height: 1.65;
+            text-align: justify;
+            hyphens: auto;
+            -webkit-hyphens: auto;
+        }
+
+        .paper-physical .signature {
+            margin: 30px 0 4px;
+            font-family: 'Allura', cursive;
+            font-size: clamp(1.8rem, 6vw, 2.1rem);
+        }
+
+        .paper-physical .ornament.bottom {
+            margin: 6px auto 18px;
+        }
+
+        .paper-physical .surprise {
+            text-align: center;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(.95rem, 3.6vw, 1.05rem);
+            margin: 18px 0 0;
+        }
+
+        .paper-physical .surprise a {
+            color: var(--ink-pink);
+        }
+
+        /* Foto da carta (aparece só se o arquivo existir) */
+        .photo {
+            margin: 22px 0 0;
+            text-align: center;
+        }
+
+        .photo img {
+            display: block;
+            width: 100%;
+            border-radius: 6px;
+            box-shadow: 0 16px 40px rgba(80, 10, 35, .2);
+        }
+
+        .photo figcaption {
+            margin-top: 8px;
+            font-size: .85rem;
+            color: #8a5a67;
+        }
+
+        /* Rodapé */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            text-decoration: none;
+            color: #fff;
+            background: var(--rose);
+            box-shadow: 0 5px 15px rgba(194, 24, 91, .35);
+            transition: transform .2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .pdf-row {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .btn-pdf {
+            background: #fff;
+            color: var(--rose-dark);
+            border: 2px solid var(--rose);
+            box-shadow: 0 5px 15px rgba(194, 24, 91, .18);
+        }
+
+        /* Impressão / PDF: só a carta, sem enfeites da página */
+        @media print {
+            @page {
+                margin: 14mm;
+            }
+
+            body {
+                background: #fff !important;
+                padding: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            #ambient,
+            header,
+            .tabs,
+            .actions,
+            .pdf-row,
+            .photo {
+                display: none !important;
+            }
+
+            .panel {
+                animation: none;
+            }
+
+            .paper-virtual,
+            .paper-physical {
+                box-shadow: none;
+            }
+
+            /* As linhas do caderno saem borradas no PDF: fica só a margem rosa */
+            .paper-virtual {
+                padding: 26px 26px 26px 52px;
+                background-image: linear-gradient(90deg, transparent 38px, #f4a9b8 38px, #f4a9b8 39px, transparent 39px) !important;
+                font-size: 1.3rem;
+                line-height: 1.45;
+            }
+
+            .paper-virtual p {
+                margin-bottom: 16px;
+            }
+
+            .paper-virtual p,
+            .paper-physical p {
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding-top: 22px;
+            }
+
+            .paper-virtual {
+                padding: 24px 18px 22px 46px;
+                background-image:
+                    linear-gradient(90deg, transparent 32px, #f4a9b8 32px, #f4a9b8 33px, transparent 33px),
+                    repeating-linear-gradient(transparent 0, transparent 33px, #f2dbe0 33px, #f2dbe0 34px);
+            }
+
+            .paper-physical {
+                padding: 18px 20px 26px;
+            }
+
+            /* Justificado em tela estreita abre buracos entre as palavras */
+            .paper-physical p.body {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ambient"></div>
+
+    <!-- Arabesco usado na carta de papel -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <g id="flourish-half" fill="none" stroke="#cf2f74" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M250,30 C238,14 214,12 210,26 C207,37 222,41 228,32" stroke-width="3" />
+                <path d="M210,26 C170,8 110,6 40,20" stroke-width="3.2" />
+                <path d="M40,20 C20,24 14,40 28,42 C40,44 42,30 32,30" stroke-width="2" />
+                <path d="M200,34 C160,40 110,40 70,32" stroke-width="1.6" opacity=".8" />
+                <path d="M250,50 L60,50" stroke-width="2.2" />
+            </g>
+            <symbol id="flourish" viewBox="0 0 500 60">
+                <use href="#flourish-half" />
+                <use href="#flourish-half" transform="translate(500,0) scale(-1,1)" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <main>
+        <header>
+            <h1>Suas cartinhas, Diná 💌</h1>
+            <p>Guardadas aqui, pra você reler sempre que quiser.</p>
+        </header>
+
+        <div class="tabs" role="tablist">
+            <button class="tab" role="tab" id="tab-virtual" aria-controls="panel-virtual"
+                aria-selected="true">💌 Carta virtual</button>
+            <button class="tab" role="tab" id="tab-fisica" aria-controls="panel-fisica"
+                aria-selected="false">📜 Carta de papel</button>
+        </div>
+
+        <!-- ============ CARTA VIRTUAL ============ -->
+        <!-- ✏️ Se mudar a carta no dina0.html, lembre de mudar aqui também -->
+        <section class="panel" id="panel-virtual" role="tabpanel" aria-labelledby="tab-virtual">
+            <article class="paper-virtual">
+                <h2>Oi, Diná! 🌹</h2>
+
+                <p>Eu sei, as rosas caíram todas... mas relaxa, foi de propósito. A ideia era tirar tudo do caminho
+                    pra sobrar só o que importa... esse recadinho aqui.</p>
+
+                <p>A gente ainda tá se conhecendo, mas queria que soubesse que acho você incrível.</p>
+
+                <p>Sei que você tá passando por um momento difícil, por conta de muitas coisas que me explicou. E,
+                    apesar de eu ser alguém que você ainda tá conhecendo, pode contar comigo pro que precisar: seja
+                    pra conversar, desabafar, ajudar, ou o que for. Estou aqui pra isso também. 🤍</p>
+
+                <p>Ah, e se a carta de papel estiver com um cheirinho diferente, não é impressão: eu perfumei ela com
+                    um perfume que tem algumas das notas que você gosta. Viu só? Prestei um pouquinho de atenção nas
+                    suas primeiras "aulas" de perfumaria. 😌</p>
+
+                <p>Você me contou uma vez que se identifica com as músicas da Taylor, principalmente pelas coisas que
+                    viveu, e eu não me esqueci. Eu ainda não sei qual delas conta mais a sua história, então escolhi
+                    algumas pra tocar enquanto você lê. E olha que eu nem sou tão fã da Taylor assim, kkkk, então
+                    isso já diz muita coisa. Se eu errei, fica de lição de casa 😅🎶</p>
+
+                <p>Como diria a própria Taylor: <em>"I just want to know you better"</em>. ✨</p>
+
+                <p>Eu não sei o que o futuro guarda, mas essa cartinha virtual, assim como a de papel, vai ficar salva
+                    aqui, pra você reler sempre que quiser. 💌</p>
+
+                <p class="sign">Com carinho,<br>Nick</p>
+            </article>
+
+            <div class="pdf-row">
+                <a class="btn btn-pdf" href="assets/Dina/carta_virtual.pdf" download="Carta virtual - Diná.pdf">
+                    ⬇️ Baixar carta virtual (PDF)</a>
+            </div>
+        </section>
+
+        <!-- ============ CARTA DE PAPEL ============ -->
+        <section class="panel" id="panel-fisica" role="tabpanel" aria-labelledby="tab-fisica" hidden>
+            <article class="paper-physical">
+                <svg class="ornament" viewBox="0 0 500 60" aria-hidden="true"><use href="#flourish" /></svg>
+
+                <p class="date">10 de novembro de 2026</p>
+                <p class="greet">Querida Diná,</p>
+
+                <p class="body">Queria começar essa carta agradecendo pelas conversas que tivemos quando eu estava
+                    passando por uma fase mais complicada. Você é maravilhosa por isso, e merece muitas coisas boas,
+                    que é exatamente o que te desejo.</p>
+
+                <p class="body">Também gostaria de enfatizar que, pelo pouco que te conheço, acho você uma mulher
+                    extremamente inteligente, dedicada, linda, e que merece um castelo mágico com muitas flores no
+                    jardim. Isso sem contar que você tem um excelente gosto para diversas coisas, como para cinema,
+                    animes, ou para perfumaria, hobby seu que gostaria de entender ainda mais, além de ser excêntrico
+                    e único.</p>
+
+                <p class="body">E sim, eu gostaria de te conhecer melhor porque você é tudo isso que citei, e tenho
+                    certeza que tem ainda mais.</p>
+
+                <p class="body">Também queria me desculpar por às vezes falar ou escrever demais. Acho que talvez
+                    seja minha ansiedade, ou meu jeito com certas pessoas especiais como você, pois normalmente sou
+                    bem quieto, pra falar a verdade.</p>
+
+                <p class="body">Você virou uma das minhas pessoas favoritas, e eu adoraria descobrir mais sobre a
+                    pessoa e a mulher incrível que você é. Além disso, se precisar de qualquer coisa, principalmente
+                    de um ombro amigo, saiba que estou aqui por você.</p>
+
+                <p class="body">De mim, para você, a alguns anos no futuro...🌷</p>
+
+                <p class="signature">Um grande abraço, Nick.</p>
+
+                <svg class="ornament bottom" viewBox="0 0 500 60" aria-hidden="true"><use href="#flourish" /></svg>
+
+                <p class="body">PS: Eu queria ter enviado um chocolate também, mas da próxima vez vamos falar de
+                    vinho, porque sei que você ama.</p>
+
+                <p class="body">E tem mais uma coisa que preparei…</p>
+
+                <p class="surprise">Uma surpresa pra você: <a href="dina0.html">o buquê 🌹</a></p>
+            </article>
+
+            <div class="pdf-row">
+                <a class="btn btn-pdf" href="assets/Dina/carta_fisica.pdf" download="Carta de papel - Diná.pdf">
+                    ⬇️ Baixar carta de papel (PDF)</a>
+            </div>
+
+            <!-- Foto da carta impressa: salve em assets/Dina/carta_fisica.jpg (se não existir, isso some) -->
+            <figure class="photo" id="photo">
+                <img src="assets/Dina/carta_fisica.jpg" alt="Foto da carta de papel"
+                    onerror="document.getElementById('photo').remove()">
+                <figcaption>A carta de verdade 📜</figcaption>
+            </figure>
+        </section>
+
+        <div class="actions">
+            <a class="btn" href="dina0.html">🌹 Ver o buquê de novo</a>
+        </div>
+    </main>
+
+    <script>
+        /* Abas */
+        const tabs = [...document.querySelectorAll('.tab')];
+
+        function selectTab(tab) {
+            tabs.forEach(t => {
+                const on = t === tab;
+                t.setAttribute('aria-selected', on);
+                document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+            });
+            try { localStorage.setItem('dina-aba', tab.id); } catch (e) { }
+        }
+
+        tabs.forEach(t => t.addEventListener('click', () => selectTab(t)));
+
+        try {
+            const saved = document.getElementById(localStorage.getItem('dina-aba'));
+            if (saved && tabs.includes(saved)) selectTab(saved);
+        } catch (e) { }
+
+        /* Pétalas caindo de leve */
+        const COLORS = ['#e91e63', '#f06292', '#f8bbd0', '#ff8fab', '#f48fb1'];
+        const ambient = document.getElementById('ambient');
+        setInterval(() => {
+            const p = document.createElement('div');
+            p.className = 'amb-petal';
+            const size = 8 + Math.random() * 9;
+            p.style.width = p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+            p.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
+            const dur = 8 + Math.random() * 6;
+            p.style.animationDuration = dur + 's';
+            ambient.appendChild(p);
+            setTimeout(() => p.remove(), dur * 1000);
+        }, 900);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Pra você, Diná 🌹</title>
+    <!-- Página pessoal: não aparecer no Google -->
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌹%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --rose: #c2185b;
+            --rose-dark: #880e4f;
+            --ink: #4a2c35;
+            --green: #4a8a3f;
+            --green-dark: #2e5e2a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+        }
+
+        body,
+        button {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23c2185b' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🌹%3C/text%3E%3C/svg%3E") 5 3, auto !important;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at 50% 35%, #ffffff 0%, #ffeef2 45%, #fbd9e1 100%);
+            color: var(--ink);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ---------- Pétalas de fundo ---------- */
+        #ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .amb-petal {
+            position: absolute;
+            top: -30px;
+            width: 14px;
+            height: 14px;
+            border-radius: 0 100% 0 100%;
+            opacity: .65;
+            animation: ambFall linear forwards;
+        }
+
+        @keyframes ambFall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(calc(var(--dx) * .4), 27vh) rotate(90deg);
+            }
+
+            50% {
+                transform: translate(calc(var(--dx) * -.2), 55vh) rotate(200deg);
+            }
+
+            75% {
+                transform: translate(calc(var(--dx) * .6), 82vh) rotate(290deg);
+            }
+
+            100% {
+                transform: translate(var(--dx), 112vh) rotate(380deg);
+            }
+        }
+
+        .burst-petal {
+            position: fixed;
+            width: 13px;
+            height: 13px;
+            border-radius: 0 100% 0 100%;
+            pointer-events: none;
+            z-index: 60;
+        }
+
+        /* ---------- Textos ---------- */
+        .title {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            margin: 0 16px 4px;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
+            color: var(--rose-dark);
+            font-size: clamp(1.6rem, 6vw, 2.3rem);
+        }
+
+        .hint {
+            position: relative;
+            z-index: 5;
+            min-height: 1.6em;
+            margin: 6px 16px 0;
+            text-align: center;
+            font-size: clamp(1rem, 3.8vw, 1.15rem);
+            color: #7a4a57;
+            transition: opacity .3s ease;
+        }
+
+        .hint.hide {
+            opacity: 0;
+        }
+
+        /* ---------- Palco do buquê ---------- */
+        .stage-wrap {
+            position: relative;
+            z-index: 4;
+            width: calc(300px * var(--s, 1));
+            height: calc(440px * var(--s, 1));
+        }
+
+        .stage-wrap.breathe {
+            animation: breathe 2.6s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.025);
+            }
+        }
+
+        .stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 440px;
+            transform-origin: 0 0;
+            transform: scale(var(--s, 1));
+        }
+
+        .bouquet {
+            position: absolute;
+            inset: 0;
+            transform-origin: 150px 400px;
+        }
+
+        .bouquet.wiggle {
+            animation: wiggle .45s ease;
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-3deg);
+            }
+
+            50% {
+                transform: rotate(2.5deg);
+            }
+
+            75% {
+                transform: rotate(-1.5deg);
+            }
+        }
+
+        .layer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 440px;
+            overflow: visible;
+            pointer-events: none;
+            transform-origin: 50% 80%;
+        }
+
+        .wrap-back {
+            z-index: 1;
+        }
+
+        .filler {
+            z-index: 3;
+        }
+
+        .wrap-front {
+            z-index: 30;
+            filter: drop-shadow(0 6px 10px rgba(120, 30, 60, .18));
+        }
+
+        /* ---------- Rosas ---------- */
+        .rose {
+            position: absolute;
+            width: 70px;
+            left: 115px;
+            bottom: 100px;
+            transform-origin: 50% 100%;
+            pointer-events: none;
+        }
+
+        .rose .stem {
+            position: absolute;
+            left: 50%;
+            top: 34px;
+            bottom: 0;
+            width: 5px;
+            margin-left: -2.5px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--green-dark), var(--green), var(--green-dark));
+        }
+
+        .rose .leaf {
+            position: absolute;
+            width: 26px;
+            height: 12px;
+            background: linear-gradient(135deg, #6aa84f, var(--green-dark));
+        }
+
+        .rose .leaf.l {
+            right: calc(50% + 1px);
+            border-radius: 100% 0 100% 0;
+            transform: rotate(-22deg);
+            transform-origin: 100% 50%;
+        }
+
+        .rose .leaf.r {
+            left: calc(50% + 1px);
+            border-radius: 0 100% 0 100%;
+            transform: rotate(22deg);
+            transform-origin: 0 50%;
+        }
+
+        .rose .head {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 70px;
+            height: 70px;
+            filter: drop-shadow(0 3px 3px rgba(80, 0, 30, .3));
+        }
+
+        /* ---------- Envelope ---------- */
+        .envelope {
+            position: absolute;
+            left: 95px;
+            top: 92px;
+            width: 110px;
+            height: 72px;
+            z-index: 2;
+            transform: rotate(-9deg);
+            transition: transform 1.3s cubic-bezier(.2, .8, .2, 1);
+            perspective: 500px;
+        }
+
+        .envelope.center {
+            z-index: 40;
+            transform: translate(0, 110px) scale(2.1) rotate(0deg);
+        }
+
+        .envelope.ready {
+            cursor: pointer;
+        }
+
+        .env-inner {
+            position: absolute;
+            inset: 0;
+        }
+
+        .envelope.float .env-inner {
+            animation: bob 2.4s ease-in-out infinite;
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-4px) rotate(1deg);
+            }
+        }
+
+        .env-back {
+            position: absolute;
+            inset: 0;
+            background: #f1d2bf;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(120, 40, 60, .25);
+        }
+
+        .env-letter {
+            position: absolute;
+            left: 7px;
+            right: 7px;
+            top: 5px;
+            height: 62px;
+            z-index: 1;
+            background: #fffdf8;
+            border-radius: 2px;
+            display: flex;
+            justify-content: center;
+            padding-top: 5px;
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            font-size: 11px;
+            color: var(--rose-dark);
+            transition: transform .9s ease .45s;
+        }
+
+        .env-front {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: #fbe7da;
+            border-radius: 4px;
+            clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .env-flap {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 60%;
+            z-index: 3;
+            background: #ecc3ab;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: 50% 0;
+            transition: transform .6s ease, z-index 0s linear .3s;
+        }
+
+        .env-seal {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            z-index: 4;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #e0436f, #9c0f3d);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+            color: #ffd5df;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .25s;
+        }
+
+        .envelope.open .env-seal {
+            opacity: 0;
+        }
+
+        .envelope.open .env-flap {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .envelope.open .env-letter {
+            transform: translateY(-46px);
+        }
+
+        /* ---------- Carta aberta ---------- */
+        .letter-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(90, 20, 45, .35);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .6s ease;
+        }
+
+        .letter-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .letter-paper {
+            position: relative;
+            width: min(100%, 540px);
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 30px 26px 26px 52px;
+            border-radius: 6px;
+            background-color: #fffdf7;
+            background-image:
+                linear-gradient(90deg, transparent 38px, #f4a9b8 38px, #f4a9b8 39px, transparent 39px),
+                repeating-linear-gradient(transparent 0, transparent 33px, #f2dbe0 33px, #f2dbe0 34px);
+            background-attachment: local;
+            box-shadow: 0 20px 50px rgba(80, 10, 35, .35);
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.3rem, 4.6vw, 1.55rem);
+            line-height: 34px;
+            color: #3d2430;
+            user-select: text;
+            -webkit-user-select: text;
+            transform: translateY(30px) scale(.92);
+            transition: transform .7s cubic-bezier(.2, .9, .3, 1.2);
+        }
+
+        .letter-overlay.show .letter-paper {
+            transform: none;
+        }
+
+        .letter-paper h2 {
+            margin: 0 0 8px;
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            font-size: 1.5em;
+            line-height: 1.2;
+            color: var(--rose-dark);
+        }
+
+        .letter-paper p {
+            margin: 0 0 34px;
+        }
+
+        .letter-paper .sign {
+            text-align: right;
+            margin-bottom: 10px;
+            color: var(--rose-dark);
+            font-weight: 700;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity .8s ease, transform .8s ease;
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: none;
+        }
+
+        .letter-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 6px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 50px;
+            padding: 12px 22px;
+            font-size: 1rem;
+            font-weight: bold;
+            font-family: inherit;
+            color: white;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.06);
+        }
+
+        .btn-zap {
+            background: #25D366;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, .4);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #e0457b, #880e4f);
+            box-shadow: 0 5px 15px rgba(136, 14, 79, .4);
+        }
+
+        .btn-again {
+            background: var(--rose);
+            box-shadow: 0 5px 15px rgba(194, 24, 91, .35);
+        }
+
+        /* ---------- Tocador de música ---------- */
+        body.has-player {
+            padding-bottom: calc(var(--player-h) + env(safe-area-inset-bottom));
+        }
+
+        :root {
+            --player-h: 92px;
+        }
+
+        /* A carta aberta fica acima do tocador, sem ficar escondida atrás dele */
+        body.has-player .letter-overlay {
+            padding-bottom: calc(var(--player-h) + 12px + env(safe-area-inset-bottom));
+        }
+
+        body.has-player .letter-paper {
+            max-height: 100%;
+        }
+
+        .player {
+            position: fixed;
+            left: 50%;
+            bottom: calc(10px + env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            width: min(calc(100% - 20px), 440px);
+            z-index: 1000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+        }
+
+        .player[hidden] {
+            display: none;
+        }
+
+        .player-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 22px;
+            background: rgba(255, 247, 250, .88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(194, 24, 91, .18);
+            box-shadow: 0 10px 30px rgba(120, 20, 60, .22);
+        }
+
+        .player button {
+            border: none;
+            background: none;
+            padding: 0;
+            font: inherit;
+            color: inherit;
+            touch-action: manipulation;
+        }
+
+        .player .disc {
+            position: relative;
+            flex: 0 0 auto;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, #fff0f4 0 17%, var(--rose) 18% 30%, transparent 31%),
+                repeating-radial-gradient(circle, #2a1a20 0 2px, #3a2530 2px 4px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
+        }
+
+        .disc::after {
+            content: '🌹';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .player.playing .disc {
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .disc-badge {
+            position: absolute;
+            right: -3px;
+            bottom: -3px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--rose);
+            color: #fff;
+            font-size: 11px;
+            line-height: 20px;
+            text-align: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+        }
+
+        .player.playing .disc-badge {
+            animation: spin 4s linear infinite reverse;
+        }
+
+        .pl-info {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .pl-title {
+            font-weight: 700;
+            font-size: .98rem;
+            color: var(--rose-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pl-artist {
+            font-size: .78rem;
+            color: #8a5a67;
+            margin-bottom: 4px;
+        }
+
+        .pl-progress {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .7rem;
+            color: #8a5a67;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .pl-progress span {
+            flex: 0 0 auto;
+            min-width: 28px;
+        }
+
+        .pl-progress span:last-child {
+            text-align: right;
+        }
+
+        input[type=range].seek {
+            --p: 0%;
+            flex: 1 1 auto;
+            min-width: 0;
+            height: 22px;
+            margin: 0;
+            background: transparent;
+            -webkit-appearance: none;
+            appearance: none;
+            touch-action: none;
+        }
+
+        input[type=range].seek::-webkit-slider-runnable-track {
+            height: 4px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--rose) var(--p), #f3c6d3 var(--p));
+        }
+
+        input[type=range].seek::-moz-range-track {
+            height: 4px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--rose) var(--p), #f3c6d3 var(--p));
+        }
+
+        input[type=range].seek::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            margin-top: -5px;
+            border-radius: 50%;
+            background: var(--rose);
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+        }
+
+        input[type=range].seek::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--rose);
+            border: 2px solid #fff;
+        }
+
+        .pl-buttons {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .pl-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--rose-dark) !important;
+            transition: transform .15s, background .15s;
+        }
+
+        .pl-btn:active {
+            transform: scale(.9);
+        }
+
+        .pl-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .pl-btn.play {
+            width: 46px;
+            height: 46px;
+            background: var(--rose);
+            color: #fff !important;
+            box-shadow: 0 4px 12px rgba(194, 24, 91, .4);
+        }
+
+        .pl-btn.play svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        @media (hover: hover) {
+            .pl-btn:not(.play):hover {
+                background: #fbdbe5;
+            }
+        }
+
+        /* Lista de músicas (abre ao tocar no disco) */
+        .playlist {
+            /* Flutua acima do tocador: fechada, não ocupa espaço nem bloqueia toques */
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(100% + 8px);
+            padding: 8px;
+            border-radius: 18px;
+            background: rgba(255, 247, 250, .95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(194, 24, 91, .18);
+            box-shadow: 0 10px 30px rgba(120, 20, 60, .22);
+            transform-origin: bottom center;
+            transition: opacity .25s ease, transform .25s ease;
+        }
+
+        .playlist.closed {
+            opacity: 0;
+            transform: translateY(10px) scale(.97);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .pl-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 4px 8px 8px;
+            font-size: .8rem;
+            color: #8a5a67;
+        }
+
+        .pl-head-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pl-chip {
+            padding: 6px 12px;
+            border-radius: 50px;
+            background: #fbdbe5 !important;
+            color: var(--rose-dark) !important;
+            font-size: .78rem !important;
+            font-weight: 600;
+        }
+
+        .pl-chip.on {
+            background: var(--rose) !important;
+            color: #fff !important;
+        }
+
+        #pl-volume {
+            width: 70px;
+            accent-color: var(--rose);
+        }
+
+        /* Celular/tablet não deixam mudar o volume pela página: usa o botão do aparelho */
+        @media (hover: none) {
+            #pl-volume {
+                display: none;
+            }
+        }
+
+        .pl-track {
+            display: flex !important;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 10px !important;
+            border-radius: 12px;
+            text-align: left;
+            font-size: .92rem !important;
+        }
+
+        .pl-track .num {
+            width: 18px;
+            text-align: center;
+            color: #b07a88;
+            font-size: .8rem;
+        }
+
+        .pl-track.active {
+            background: #fde3eb !important;
+            color: var(--rose-dark) !important;
+            font-weight: 700;
+        }
+
+        .player.playing .pl-track.active .num {
+            color: var(--rose);
+        }
+
+        @media (hover: hover) {
+            .pl-track:hover {
+                background: #fff0f4 !important;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .player .disc {
+                width: 44px;
+                height: 44px;
+            }
+
+            .pl-btn {
+                width: 34px;
+                height: 34px;
+            }
+
+            .pl-btn.play {
+                width: 42px;
+                height: 42px;
+            }
+
+            .player-main {
+                gap: 8px;
+                padding: 8px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter-paper {
+                padding: 24px 18px 22px 46px;
+                background-image:
+                    linear-gradient(90deg, transparent 32px, #f4a9b8 32px, #f4a9b8 33px, transparent 33px),
+                    repeating-linear-gradient(transparent 0, transparent 33px, #f2dbe0 33px, #f2dbe0 34px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ambient"></div>
+
+    <audio id="bg-music" preload="metadata" playsinline></audio>
+
+    <!-- ============ TOCADOR DE MÚSICA ============ -->
+    <div class="player" id="player">
+        <div class="playlist closed" id="playlist">
+            <div class="pl-head">
+                <span>Músicas pra você 🎶</span>
+                <div class="pl-head-actions">
+                    <input type="range" id="pl-volume" min="0" max="1" step="0.01" value="0.6" aria-label="Volume">
+                    <button class="pl-chip on" id="pl-sfx" type="button">🔔 Efeitos</button>
+                    <button class="pl-chip" id="pl-loop" type="button">🔁 Repetir</button>
+                </div>
+            </div>
+            <div id="pl-tracks"></div>
+        </div>
+
+        <div class="player-main">
+            <button class="disc" id="pl-disc" type="button" aria-label="Ver lista de músicas">
+                <span class="disc-badge">♪</span>
+            </button>
+            <div class="pl-info">
+                <div class="pl-title" id="pl-title">Carregando...</div>
+                <div class="pl-artist">Taylor Swift</div>
+                <div class="pl-progress">
+                    <span id="pl-cur">0:00</span>
+                    <input type="range" class="seek" id="pl-seek" min="0" max="1000" value="0" step="1"
+                        aria-label="Posição da música">
+                    <span id="pl-dur">0:00</span>
+                </div>
+            </div>
+            <div class="pl-buttons">
+                <button class="pl-btn" id="pl-prev" type="button" aria-label="Música anterior">
+                    <svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z" /></svg>
+                </button>
+                <button class="pl-btn play" id="pl-play" type="button" aria-label="Tocar">
+                    <svg viewBox="0 0 24 24" id="pl-play-icon"><path d="M8 5v14l11-7z" /></svg>
+                </button>
+                <button class="pl-btn" id="pl-next" type="button" aria-label="Próxima música">
+                    <svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z" /></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="title" id="title">Pra você, Diná 🌹</h1>
+
+    <div class="stage-wrap breathe" id="stage-wrap">
+        <div class="stage">
+            <div class="bouquet" id="bouquet">
+
+                <!-- Papel de trás -->
+                <svg class="layer wrap-back" viewBox="0 0 300 440">
+                    <defs>
+                        <linearGradient id="paperBack" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#f6cdd7" />
+                            <stop offset="1" stop-color="#e7a9b9" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M18,160 L95,106 L150,126 L205,102 L284,158 L176,408 L124,408 Z" fill="url(#paperBack)"
+                        stroke="#d98ea2" stroke-width="1.5" stroke-linejoin="round" />
+                    <path d="M95,106 L150,330 M205,102 L150,330" stroke="#dc97aa" stroke-width="1" opacity=".6" />
+                </svg>
+
+                <!-- Envelope escondido dentro do buquê -->
+                <div class="envelope" id="envelope">
+                    <div class="env-inner">
+                        <div class="env-back"></div>
+                        <div class="env-letter">Pra Diná ♡</div>
+                        <div class="env-front"></div>
+                        <div class="env-flap"></div>
+                        <div class="env-seal">❤</div>
+                    </div>
+                </div>
+
+                <!-- Folhas e mosquitinhos (gerados no JS) -->
+                <svg class="layer filler" id="filler" viewBox="0 0 300 440"></svg>
+
+                <!-- Rosas entram aqui via JS -->
+
+                <!-- Papel da frente + laço -->
+                <svg class="layer wrap-front" viewBox="0 0 300 440">
+                    <defs>
+                        <linearGradient id="paperFront" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0" stop-color="#fbdbe3" />
+                            <stop offset=".5" stop-color="#fff5f7" />
+                            <stop offset="1" stop-color="#f6cbd6" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M28,246 Q90,268 150,292 Q210,268 272,246 L178,418 Q150,426 122,418 Z"
+                        fill="url(#paperFront)" stroke="#e3a5b5" stroke-width="1.5" stroke-linejoin="round" />
+                    <path d="M28,246 Q90,268 150,292 L150,422 Q136,423 122,418 Z" fill="#e9a0b4" opacity=".18" />
+                    <path d="M150,292 L150,422" stroke="#efbfcb" stroke-width="1.2" />
+                    <!-- fita -->
+                    <path d="M86,344 Q150,364 214,344 L208,362 Q150,380 92,362 Z" fill="#c2185b" />
+                    <!-- laço -->
+                    <g transform="translate(150,360)">
+                        <path d="M-4,4 L-28,62 L-16,55 L-9,66 Z" fill="#a3123f" />
+                        <path d="M4,4 L26,63 L14,56 L6,67 Z" fill="#a3123f" />
+                        <path d="M0,0 C-20,-28 -54,-20 -46,2 C-41,19 -16,11 0,0 Z" fill="#d81b60" stroke="#880e4f"
+                            stroke-width="1.5" />
+                        <path d="M0,0 C20,-28 54,-20 46,2 C41,19 16,11 0,0 Z" fill="#d81b60" stroke="#880e4f"
+                            stroke-width="1.5" />
+                        <path d="M-8,-4 C-20,-14 -34,-12 -36,-2" fill="none" stroke="#f06292" stroke-width="2"
+                            stroke-linecap="round" opacity=".7" />
+                        <path d="M8,-4 C20,-14 34,-12 36,-2" fill="none" stroke="#f06292" stroke-width="2"
+                            stroke-linecap="round" opacity=".7" />
+                        <ellipse rx="9" ry="8" fill="#ad1457" stroke="#880e4f" stroke-width="1.5" />
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <p class="hint" id="hint">Toca no buquê 🌹</p>
+
+    <!-- ============ CARTA ============ -->
+    <!-- ✏️ EDITE O TEXTO DA CARTA AQUI À VONTADE -->
+    <div class="letter-overlay" id="letter">
+        <div class="letter-paper">
+            <h2 class="reveal">Oi, Diná! 🌹</h2>
+
+            <p class="reveal">Eu sei, as rosas caíram todas... mas relaxa, foi de propósito. A ideia era tirar
+                tudo do caminho pra sobrar só o que importa... esse recadinho aqui.</p>
+
+            <p class="reveal">A gente ainda tá se conhecendo, mas queria que soubesse que acho você incrível.</p>
+
+            <p class="reveal">Sei que você tá passando por um momento difícil, por conta de muitas coisas que me
+                explicou. E, apesar de eu ser alguém que você ainda tá conhecendo, pode contar comigo pro que
+                precisar: seja pra conversar, desabafar, ajudar, ou o que for. Estou aqui pra isso também. 🤍</p>
+
+            <p class="reveal">Ah, e se a carta de papel estiver com um cheirinho diferente, não é impressão: eu
+                perfumei ela com um perfume que tem algumas das notas que você gosta. Viu só? Prestei um pouquinho
+                de atenção nas suas primeiras "aulas" de perfumaria. 😌</p>
+
+            <p class="reveal">Você me contou uma vez que se identifica com as músicas da Taylor, principalmente pelas coisas que viveu, e eu não me esqueci. Eu
+                ainda não sei qual delas conta mais a sua história, então escolhi algumas pra tocar enquanto você lê. E
+                olha que eu nem sou tão fã da Taylor assim, kkkk, então isso já diz muita coisa. Se eu errei, fica de
+                lição de casa 😅🎶</p>
+
+            <p class="reveal">Como diria a própria Taylor: <em>"I just want to know you better"</em>. ✨</p>
+
+            <p class="reveal">Eu não sei o que o futuro guarda, mas essa cartinha virtual, assim como a de papel,
+                vai ficar salva aí com você, pra reler sempre que quiser. 💌</p>
+
+            <p class="sign reveal">Com carinho,<br>Nick</p>
+
+            <div class="letter-actions reveal">
+                <button class="btn btn-save" onclick="location.href='dina.html'">Guardar 💌</button>
+                <button class="btn btn-zap" onclick="replyWhatsapp()">Me conta sua música 💬</button>
+                <button class="btn btn-again" onclick="location.reload()">Ver de novo 🔁</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================================
+           MÚSICAS DA TAYLOR (arquivos em assets/Musics/)
+           Se algum arquivo não existir, ele é pulado automaticamente.
+           ========================================================= */
+        const musicList = [
+            { src: 'assets/Musics/Taylor-Swift-Enchanted-Taylor-s-Version-Lyric-Video_009_128k.mp3', title: 'Enchanted' },
+            { src: 'assets/Musics/Taylor-Swift-Everything-Has-Changed-ft-Ed-Sheeran_009_128k.mp3', title: 'Everything Has Changed' },
+            { src: 'assets/Musics/Taylor-Swift-invisible-string-Official-Lyric-Video_009_128k.mp3', title: 'invisible string' },
+            { src: 'assets/Musics/Taylor-Swift-Daylight-Official-Audio_009_128k.mp3', title: 'Daylight' },
+        ];
+        const ARTIST = 'Taylor Swift';
+
+        const WHATSAPP_NUMBER = '5513982118181';
+        const WHATSAPP_MSG = 'Oi Nick! Abri o buquê e li a carta. Minha música favorita da Taylor é: ';
+
+        /* =================== Tocador =================== */
+        const bgMusic = document.getElementById('bg-music');
+        const player = document.getElementById('player');
+        const playlistEl = document.getElementById('playlist');
+        const tracksEl = document.getElementById('pl-tracks');
+        const titleEl = document.getElementById('pl-title');
+        const curEl = document.getElementById('pl-cur');
+        const durEl = document.getElementById('pl-dur');
+        const seekEl = document.getElementById('pl-seek');
+        const playBtn = document.getElementById('pl-play');
+        const playIcon = document.getElementById('pl-play-icon');
+        const loopBtn = document.getElementById('pl-loop');
+        const volumeEl = document.getElementById('pl-volume');
+
+        const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+        const ICON_PAUSE = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
+
+        let currentTrack = 0;
+        let userPaused = false;   // se ela pausou, a música não volta sozinha
+        let isLooping = false;
+        let seeking = false;
+        let hasStarted = false;
+        const failed = new Set();
+
+        document.body.classList.add('has-player');
+
+        function fmt(sec) {
+            if (!isFinite(sec) || sec < 0) return '0:00';
+            const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+            return m + ':' + String(s).padStart(2, '0');
+        }
+
+        function renderPlaylist() {
+            tracksEl.innerHTML = '';
+            musicList.forEach((t, i) => {
+                if (failed.has(i)) return;
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'pl-track' + (i === currentTrack ? ' active' : '');
+                const playingNow = i === currentTrack && !bgMusic.paused;
+                b.innerHTML = `<span class="num">${playingNow ? '♪' : i + 1}</span><span>${t.title}</span>`;
+                b.addEventListener('click', () => {
+                    userPaused = false;
+                    if (i === currentTrack) bgMusic.play().catch(() => { });
+                    else loadTrack(i, true);
+                });
+                tracksEl.appendChild(b);
+            });
+        }
+
+        function updateMediaSession() {
+            if (!('mediaSession' in navigator)) return;
+            try {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: musicList[currentTrack].title,
+                    artist: ARTIST,
+                    album: 'Pra você, Diná 🌹'
+                });
+            } catch (e) { }
+        }
+
+        function loadTrack(i, autoplay) {
+            currentTrack = i;
+            bgMusic.src = musicList[i].src;
+            titleEl.innerText = musicList[i].title;
+            curEl.innerText = '0:00';
+            durEl.innerText = '0:00';
+            seekEl.value = 0;
+            seekEl.style.setProperty('--p', '0%');
+            updateMediaSession();
+            renderPlaylist();
+            if (autoplay) bgMusic.play().catch(() => { });
+        }
+
+        function stepTrack(dir) {
+            if (failed.size === musicList.length) return;
+            let n = currentTrack;
+            do { n = (n + dir + musicList.length) % musicList.length; } while (failed.has(n));
+            return n;
+        }
+
+        // Chamado pelo toque no buquê e pelo primeiro toque na tela
+        function playMusic() {
+            if (userPaused || failed.size === musicList.length) return Promise.resolve();
+            return bgMusic.play();
+        }
+
+        function togglePlay() {
+            if (bgMusic.paused) {
+                userPaused = false;
+                bgMusic.play().catch(() => { });
+            } else {
+                userPaused = true;
+                bgMusic.pause();
+            }
+        }
+
+        function nextTrack() {
+            const n = stepTrack(1);
+            if (n !== undefined) loadTrack(n, !userPaused);
+        }
+
+        function prevTrack() {
+            if (bgMusic.currentTime > 3) { bgMusic.currentTime = 0; return; }
+            const n = stepTrack(-1);
+            if (n !== undefined) loadTrack(n, !userPaused);
+        }
+
+        function setPlayingUI(playing) {
+            player.classList.toggle('playing', playing);
+            playIcon.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+            playBtn.setAttribute('aria-label', playing ? 'Pausar' : 'Tocar');
+            if ('mediaSession' in navigator) {
+                try { navigator.mediaSession.playbackState = playing ? 'playing' : 'paused'; } catch (e) { }
+            }
+            renderPlaylist();
+        }
+
+        playBtn.addEventListener('click', togglePlay);
+        document.getElementById('pl-next').addEventListener('click', () => { userPaused = false; nextTrack(); });
+        document.getElementById('pl-prev').addEventListener('click', () => { userPaused = false; prevTrack(); });
+
+        document.getElementById('pl-disc').addEventListener('click', e => {
+            e.stopPropagation();
+            playlistEl.classList.toggle('closed');
+        });
+        // Fecha a lista ao tocar fora do tocador
+        document.addEventListener('click', e => {
+            if (!player.contains(e.target)) playlistEl.classList.add('closed');
+        });
+
+        loopBtn.addEventListener('click', () => {
+            isLooping = !isLooping;
+            bgMusic.loop = isLooping;
+            loopBtn.classList.toggle('on', isLooping);
+            loopBtn.innerText = isLooping ? '🔂 Repetindo' : '🔁 Repetir';
+        });
+
+        volumeEl.addEventListener('input', e => bgMusic.volume = e.target.value);
+
+        /* =================== Efeitos sonoros =================== */
+        // Gerados na hora com Web Audio (não precisa de arquivo nenhum)
+        const sfx = (() => {
+            let ctx = null, master = null, noiseBuf = null;
+            let enabled = true;
+
+            function ensure() {
+                if (!enabled) return null;
+                if (!ctx) {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (!AC) return null;
+                    // iPhone: deixa os efeitos tocarem mesmo no modo silencioso, igual à música
+                    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { }
+                    ctx = new AC();
+                    master = ctx.createGain();
+                    master.gain.value = 0.5;
+                    master.connect(ctx.destination);
+                    noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2.5, ctx.sampleRate);
+                    const d = noiseBuf.getChannelData(0);
+                    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+                }
+                if (ctx.state === 'suspended') ctx.resume();
+                return ctx;
+            }
+
+            // Ruído filtrado: farfalhar de papel / vento
+            function noise(t, dur, f1, f2, gain, q = 1) {
+                const src = ctx.createBufferSource();
+                src.buffer = noiseBuf;
+                const bp = ctx.createBiquadFilter();
+                bp.type = 'bandpass';
+                bp.Q.value = q;
+                bp.frequency.setValueAtTime(f1, t);
+                bp.frequency.exponentialRampToValueAtTime(f2, t + dur);
+                const g = ctx.createGain();
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.exponentialRampToValueAtTime(gain, t + Math.min(.06, dur / 3));
+                g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+                src.connect(bp).connect(g).connect(master);
+                src.start(t, Math.random() * .5, dur + .05);
+            }
+
+            // Nota curta tipo sininho
+            function tone(t, freq, dur, gain, type = 'triangle', toFreq) {
+                const o = ctx.createOscillator();
+                o.type = type;
+                o.frequency.setValueAtTime(freq, t);
+                if (toFreq) o.frequency.exponentialRampToValueAtTime(toFreq, t + dur * .6);
+                const g = ctx.createGain();
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.exponentialRampToValueAtTime(gain, t + .015);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+                o.connect(g).connect(master);
+                o.start(t);
+                o.stop(t + dur + .05);
+            }
+
+            const NOTES = [1046.5, 1174.7, 1318.5, 1568, 1760, 2093]; // pentatônica (soa sempre bonito)
+
+            function play(fn) {
+                if (!ensure()) return;
+                try { fn(ctx.currentTime + .01); } catch (e) { }
+            }
+
+            return {
+                get enabled() { return enabled; },
+                set enabled(v) { enabled = v; },
+                unlock: () => ensure(),
+                // Toque no buquê: farfalhar do papel + "pop" suave
+                rustle: () => play(t => {
+                    noise(t, .18, 3200, 1800, .35, .7);
+                    tone(t, 520, .12, .12, 'sine', 300);
+                }),
+                // Cada rosa caindo: vento descendo + sininho
+                fall: () => play(t => {
+                    noise(t, .75, 1800, 300, .14, 1.2);
+                    tone(t + .05, NOTES[Math.floor(Math.random() * NOTES.length)], .9, .07);
+                }),
+                // Papel e laço caindo
+                wrapFall: () => play(t => {
+                    noise(t, 1.2, 900, 140, .2, .8);
+                }),
+                // Envelope aparece: brilho mágico
+                sparkle: () => play(t => {
+                    [1046.5, 1318.5, 1568, 2093, 2637].forEach((f, i) => tone(t + i * .08, f, 1, .09));
+                }),
+                // Abrindo o envelope: lacre + papel + acorde
+                open: () => play(t => {
+                    tone(t, 900, .1, .15, 'sine', 380);
+                    noise(t + .08, .14, 2600, 2000, .3, .9);
+                    noise(t + .3, .22, 2200, 1500, .25, .9);
+                    [523.3, 659.3, 784, 1046.5].forEach((f, i) => tone(t + .5 + i * .06, f, 1.6, .06, 'sine'));
+                }),
+                // Carta aparece: acorde bem suave
+                letter: () => play(t => {
+                    [523.3, 659.3, 784].forEach(f => tone(t, f, 2.2, .045, 'sine'));
+                    tone(t + .25, 1568, 1.4, .04);
+                }),
+            };
+        })();
+
+        const sfxBtn = document.getElementById('pl-sfx');
+        sfxBtn.addEventListener('click', () => {
+            sfx.enabled = !sfx.enabled;
+            sfxBtn.classList.toggle('on', sfx.enabled);
+            sfxBtn.innerText = sfx.enabled ? '🔔 Efeitos' : '🔕 Efeitos';
+        });
+
+        function vibrate(ms) {
+            try { if (sfx.enabled && navigator.vibrate) navigator.vibrate(ms); } catch (e) { }
+        }
+
+        // Barra de progresso (funciona com dedo e mouse)
+        seekEl.addEventListener('input', () => {
+            seeking = true;
+            const pct = seekEl.value / 10;
+            seekEl.style.setProperty('--p', pct + '%');
+            if (isFinite(bgMusic.duration)) curEl.innerText = fmt(bgMusic.duration * seekEl.value / 1000);
+        });
+        seekEl.addEventListener('change', () => {
+            if (isFinite(bgMusic.duration)) bgMusic.currentTime = bgMusic.duration * seekEl.value / 1000;
+            seeking = false;
+        });
+
+        bgMusic.addEventListener('loadedmetadata', () => durEl.innerText = fmt(bgMusic.duration));
+        bgMusic.addEventListener('timeupdate', () => {
+            if (seeking || !isFinite(bgMusic.duration)) return;
+            const pct = bgMusic.currentTime / bgMusic.duration * 100;
+            seekEl.value = Math.round(pct * 10);
+            seekEl.style.setProperty('--p', pct + '%');
+            curEl.innerText = fmt(bgMusic.currentTime);
+        });
+        bgMusic.addEventListener('play', () => { hasStarted = true; setPlayingUI(true); });
+        bgMusic.addEventListener('pause', () => setPlayingUI(false));
+        bgMusic.addEventListener('ended', () => { if (!isLooping) { const n = stepTrack(1); loadTrack(n, true); } });
+        bgMusic.addEventListener('error', () => {
+            // Arquivo não encontrado: pula pra próxima
+            failed.add(currentTrack);
+            if (failed.size === musicList.length) {
+                player.hidden = true;
+                document.body.classList.remove('has-player');
+                fit();
+                return;
+            }
+            loadTrack(stepTrack(1), hasStarted && !userPaused);
+        });
+
+        // Controles na tela de bloqueio / central de controle do celular
+        if ('mediaSession' in navigator) {
+            const ms = navigator.mediaSession;
+            const handlers = {
+                play: () => { userPaused = false; bgMusic.play().catch(() => { }); },
+                pause: () => { userPaused = true; bgMusic.pause(); },
+                nexttrack: () => { userPaused = false; nextTrack(); },
+                previoustrack: () => { userPaused = false; prevTrack(); },
+            };
+            Object.entries(handlers).forEach(([k, fn]) => { try { ms.setActionHandler(k, fn); } catch (e) { } });
+        }
+
+        bgMusic.volume = volumeEl.value;
+        loadTrack(0, false);
+
+        /* =================== Pétalas de fundo =================== */
+        const PETAL_COLORS = ['#e91e63', '#f06292', '#c2185b', '#f8bbd0', '#d81b60', '#ff8fab'];
+        const ambient = document.getElementById('ambient');
+
+        function spawnAmbientPetal() {
+            const p = document.createElement('div');
+            p.className = 'amb-petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.background = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
+            const size = 9 + Math.random() * 10;
+            p.style.width = p.style.height = size + 'px';
+            p.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
+            const dur = 7 + Math.random() * 6;
+            p.style.animationDuration = dur + 's';
+            ambient.appendChild(p);
+            setTimeout(() => p.remove(), dur * 1000);
+        }
+
+        function burstPetals(x, y, count = 8) {
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'burst-petal';
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                p.style.background = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
+                document.body.appendChild(p);
+                const ang = Math.random() * Math.PI * 2;
+                const dist = 30 + Math.random() * 60;
+                const dx = Math.cos(ang) * dist;
+                const dy = Math.sin(ang) * dist * .6 - 20;
+                const anim = p.animate([
+                    { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+                    { transform: `translate(${dx}px, ${dy}px) rotate(${180 * Math.random()}deg)`, opacity: 1, offset: .3 },
+                    { transform: `translate(${dx * 1.5}px, ${dy + 260 + Math.random() * 120}px) rotate(${360 + 360 * Math.random()}deg)`, opacity: 0 }
+                ], { duration: 1600 + Math.random() * 800, easing: 'ease-out', fill: 'forwards' });
+                anim.onfinish = () => p.remove();
+            }
+        }
+
+        /* =================== Monta o buquê =================== */
+        const bouquet = document.getElementById('bouquet');
+        const wrapFront = bouquet.querySelector('.wrap-front');
+
+        // a = inclinação (graus), h = altura do caule (px). Primeiro as de trás.
+        const ROSES = [
+            { a: -24, h: 200 }, { a: -9, h: 228 }, { a: 7, h: 222 }, { a: 22, h: 198 },
+            { a: -30, h: 160 }, { a: -15, h: 172 }, { a: 0, h: 184 }, { a: 15, h: 170 }, { a: 29, h: 158 }
+        ];
+
+        const PALETTES = [
+            { base: '#d81b60', mid: '#e8407f', light: '#f48fb1', dark: '#880e4f' }, // pink forte
+            { base: '#e0457b', mid: '#ec6a96', light: '#f7a1bf', dark: '#a3164d' }, // rosa médio
+            { base: '#f06e9c', mid: '#f78fb3', light: '#fcc4d8', dark: '#b8336a' }, // rosa claro
+            { base: '#f48fb1', mid: '#f8a8c5', light: '#fdd5e3', dark: '#c2185b' }, // rosa bebê
+        ];
+        const ROSE_COLORS = [0, 1, 2, 0, 3, 1, 2, 3, 0];
+
+        function roseSVG(c, spin) {
+            const outer = [0, 72, 144, 216, 288].map(r =>
+                `<ellipse cx="0" cy="-22" rx="22" ry="25" transform="rotate(${r})" fill="${c.base}" stroke="${c.dark}" stroke-width="1.2" stroke-opacity=".5"/>`).join('');
+            const inner = [36, 108, 180, 252, 324].map(r =>
+                `<ellipse cx="0" cy="-12" rx="14" ry="16" transform="rotate(${r})" fill="${c.light}" stroke="${c.dark}" stroke-width="1" stroke-opacity=".4"/>`).join('');
+            return `<svg class="head" viewBox="-50 -50 100 100"><g transform="rotate(${spin})">
+                ${outer}
+                <circle r="25" fill="${c.mid}"/>
+                ${inner}
+                <circle r="13" fill="${c.mid}"/>
+                <path d="M-1,3 a8,8 0 1,1 9,-7 a6,6 0 1,1 -10,5 a3.5,3.5 0 1,1 5,-3" fill="none" stroke="${c.dark}" stroke-width="2.4" stroke-linecap="round"/>
+            </g></svg>`;
+        }
+
+        const roseEls = ROSES.map((r, i) => {
+            const el = document.createElement('div');
+            el.className = 'rose';
+            el.style.height = r.h + 'px';
+            el.style.transform = `rotate(${r.a}deg)`;
+            el.style.zIndex = 4 + i;
+            el.innerHTML = `
+                <div class="stem"></div>
+                <div class="leaf l" style="top:${42 + (i % 3) * 8}%"></div>
+                <div class="leaf r" style="top:${50 + (i % 2) * 9}%"></div>
+                ${roseSVG(PALETTES[ROSE_COLORS[i]], Math.random() * 360)}`;
+            el.dataset.angle = r.a;
+            bouquet.insertBefore(el, wrapFront);
+            return el;
+        });
+
+        // Folhas e mosquitinhos (gypsophila) atrás das rosas
+        (function buildFiller() {
+            const svg = document.getElementById('filler');
+            let html = '';
+            const leaves = [[60, 170, -55], [240, 168, 55], [48, 215, -70], [252, 212, 70], [150, 100, 0], [105, 112, -25], [195, 110, 25]];
+            leaves.forEach(([x, y, r]) => {
+                html += `<g transform="translate(${x},${y}) rotate(${r})">
+                    <path d="M0,22 C-12,6 -10,-12 0,-26 C10,-12 12,6 0,22 Z" fill="#5a9a48" stroke="#2e5e2a" stroke-width="1"/>
+                    <path d="M0,20 L0,-22" stroke="#2e5e2a" stroke-width="1" opacity=".6"/></g>`;
+            });
+            const clusters = [[70, 130], [230, 128], [40, 190], [262, 186], [130, 92], [178, 90], [150, 240], [90, 235], [210, 236]];
+            clusters.forEach(([cx, cy]) => {
+                for (let k = 0; k < 7; k++) {
+                    const x = cx + (Math.random() * 26 - 13), y = cy + (Math.random() * 22 - 11);
+                    html += `<circle cx="${x}" cy="${y}" r="${2 + Math.random() * 2}" fill="#fff" stroke="#f1d5dc" stroke-width=".6"/>`;
+                }
+            });
+            svg.innerHTML = html;
+        })();
+
+        /* =================== Interação =================== */
+        const hint = document.getElementById('hint');
+        const envelope = document.getElementById('envelope');
+        const stageWrap = document.getElementById('stage-wrap');
+
+        const DROP_ORDER = [4, 8, 6, 0, 3, 5, 7, 1, 2]; // as que tampam o envelope caem por último
+        const DROPS_PER_CLICK = [1, 2, 1, 2, 1, 2];     // 6 toques no total
+        const HINTS = [
+            'Opa, caiu uma! 🙈',
+            'Calma, é de propósito 😅',
+            'Continua... tem algo escondido aí 👀',
+            'Tá quase! 💐',
+            'Só mais um pouquinho...',
+        ];
+
+        let clickCount = 0;
+        let dropped = 0;
+        let lastClick = 0;
+        let envReady = false;
+        let opened = false;
+
+        function getScale() {
+            return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--s')) || 1;
+        }
+
+        function setHint(text) {
+            hint.classList.add('hide');
+            setTimeout(() => { hint.innerText = text; hint.classList.remove('hide'); }, 250);
+        }
+
+        function dropRose(el) {
+            const angle = parseFloat(el.dataset.angle);
+            const head = el.querySelector('.head').getBoundingClientRect();
+            burstPetals(head.left + head.width / 2, head.top + head.height / 2, 7);
+            sfx.fall();
+
+            el.style.zIndex = 50;
+            const dir = angle === 0 ? (Math.random() < .5 ? -1 : 1) : Math.sign(angle);
+            const dx = dir * (60 + Math.random() * 120);
+            const fall = window.innerHeight / getScale() + 300;
+            el.animate([
+                { transform: `rotate(${angle}deg)` },
+                { transform: `translate(${dx * .15}px, -45px) rotate(${angle + dir * 15}deg)`, offset: .18 },
+                { transform: `translate(${dx}px, ${fall}px) rotate(${angle + dir * (160 + Math.random() * 120)}deg)` }
+            ], { duration: 1700 + Math.random() * 500, easing: 'cubic-bezier(.45,0,.85,.55)', fill: 'forwards' });
+        }
+
+        function onBouquetClick() {
+            if (opened) return;
+            if (envReady) { openEnvelope(); return; }
+            if (clickCount >= DROPS_PER_CLICK.length) return;
+
+            const now = Date.now();
+            if (now - lastClick < 220) return;
+            lastClick = now;
+
+            playMusic().catch(() => { });
+            sfx.rustle();
+            vibrate(12);
+            stageWrap.classList.remove('breathe');
+
+            bouquet.classList.remove('wiggle');
+            void bouquet.offsetWidth;
+            bouquet.classList.add('wiggle');
+
+            const n = DROPS_PER_CLICK[clickCount];
+            for (let k = 0; k < n && dropped < DROP_ORDER.length; k++) {
+                const el = roseEls[DROP_ORDER[dropped++]];
+                setTimeout(() => dropRose(el), k * 160);
+            }
+            clickCount++;
+
+            if (dropped >= DROP_ORDER.length) {
+                hint.classList.add('hide');
+                setTimeout(revealLetter, 900);
+            } else {
+                setHint(HINTS[Math.min(clickCount - 1, HINTS.length - 1)]);
+            }
+        }
+
+        function revealLetter() {
+            const fall = window.innerHeight / getScale() + 300;
+            sfx.wrapFall();
+            bouquet.querySelectorAll('.layer').forEach((layer, i) => {
+                const dir = i % 2 ? 1 : -1;
+                layer.animate([
+                    { transform: 'none', opacity: 1 },
+                    { transform: `translate(${dir * 40}px, ${fall}px) rotate(${dir * 25}deg)`, opacity: .6 }
+                ], { duration: 1500, delay: i * 90, easing: 'cubic-bezier(.5,0,.9,.5)', fill: 'forwards' });
+            });
+
+            envelope.classList.add('center');
+            setTimeout(() => {
+                envelope.classList.add('float', 'ready');
+                envReady = true;
+                sfx.sparkle();
+                setHint('Tem uma carta pra você 💌 Toca pra abrir');
+            }, 1350);
+        }
+
+        function openEnvelope() {
+            opened = true;
+            envReady = false;
+            hint.classList.add('hide');
+            envelope.classList.remove('float');
+            envelope.classList.add('open');
+            sfx.open();
+            vibrate(30);
+
+            const r = envelope.getBoundingClientRect();
+            setTimeout(() => burstPetals(r.left + r.width / 2, r.top + r.height / 3, 18), 500);
+
+            setTimeout(() => {
+                const letter = document.getElementById('letter');
+                letter.classList.add('show');
+                sfx.letter();
+                letter.querySelectorAll('.reveal').forEach((el, i) => {
+                    setTimeout(() => el.classList.add('in'), 500 + i * 900);
+                });
+            }, 1700);
+        }
+
+        bouquet.addEventListener('click', onBouquetClick);
+
+        function replyWhatsapp() {
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`, '_blank');
+        }
+
+        /* =================== Layout responsivo =================== */
+        function fit() {
+            const reserved = 170 + (document.body.classList.contains('has-player') ? 96 : 0);
+            const s = Math.min(1.25, (window.innerWidth - 32) / 300, (window.innerHeight - reserved) / 440);
+            document.documentElement.style.setProperty('--s', Math.max(.55, s).toFixed(3));
+        }
+        window.addEventListener('resize', fit);
+        fit();
+
+        /* =================== Início =================== */
+        window.addEventListener('load', () => {
+            setInterval(spawnAmbientPetal, 650);
+            // Tenta autoplay; se o navegador bloquear (quase sempre no celular),
+            // a música começa no primeiro toque na tela
+            playMusic().catch(() => {
+                document.addEventListener('click', () => playMusic().catch(() => { }), { once: true });
+            });
+        });
+    </script>
+</body>
+
+</html>
