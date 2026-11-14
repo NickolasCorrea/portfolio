@@ -4,16 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Cartinhas da Diná 💌</title>
+    <title>Cantinho da Diná 🌸</title>
     <!-- Página pessoal: não aparecer no Google -->
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💌%3C/text%3E%3C/svg%3E">
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌸%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="assets/Dina/player.css">
     <style>
         :root {
             --rose: #c2185b;
@@ -34,7 +35,7 @@
         body,
         button,
         a {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23c2185b' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🌹%3C/text%3E%3C/svg%3E") 5 3, auto !important;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23c2185b' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🌷%3C/text%3E%3C/svg%3E") 5 3, auto !important;
         }
 
         body {
@@ -56,7 +57,9 @@
             overflow-x: hidden;
         }
 
-        /* Dentro do buquê, o tocador fica fixo embaixo: deixa espaço pra ele não cobrir os botões */
+        /* O tocador fica fixo embaixo (o daqui, ou o do buquê quando aberto por cima dele):
+           deixa espaço pra ele não cobrir os botões */
+        body.has-player,
         html.embedded body {
             padding-bottom: calc(120px + env(safe-area-inset-bottom));
         }
@@ -116,6 +119,92 @@
             margin: 6px 0 0;
             color: #8a5a67;
             font-size: clamp(.95rem, 3.6vw, 1.05rem);
+        }
+
+        /* ---------- Início: cantinho da Diná ---------- */
+        .view[hidden] {
+            display: none;
+        }
+
+        .view {
+            animation: fadeUp .45s ease;
+        }
+
+        .home-header {
+            margin: 6vh 0 26px;
+        }
+
+        .hub {
+            display: grid;
+            gap: 14px;
+        }
+
+        .hub-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .85);
+            border: 1px solid rgba(194, 24, 91, .15);
+            box-shadow: 0 8px 24px rgba(120, 20, 60, .12);
+            color: var(--ink);
+            text-decoration: none;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(120, 20, 60, .18);
+        }
+
+        .hub-card:active {
+            transform: scale(.98);
+        }
+
+        .hub-emoji {
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #ffe3ec, #fbd0dc);
+            font-size: 1.9rem;
+        }
+
+        .hub-text strong {
+            display: block;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--rose-dark);
+        }
+
+        .hub-text small {
+            display: block;
+            margin-top: 2px;
+            color: #8a5a67;
+            font-size: .92rem;
+        }
+
+        .hub-arrow {
+            margin-left: auto;
+            font-size: 1.9rem;
+            line-height: 1;
+            color: var(--rose);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 7px 14px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .75);
+            border: 1px solid rgba(194, 24, 91, .18);
+            color: var(--rose-dark);
+            font-weight: 600;
+            text-decoration: none;
         }
 
         /* Abas */
@@ -338,6 +427,9 @@
             header,
             .tabs,
             .actions,
+            .back-link,
+            #view-home,
+            .player,
             .pdf-row,
             .photo {
                 display: none !important;
@@ -415,6 +507,39 @@
     </svg>
 
     <main>
+        <!-- ============ INÍCIO (cantinho da Diná) ============ -->
+        <section class="view" id="view-home">
+            <header class="home-header">
+                <h1>Seu cantinho, Diná 🌸</h1>
+                <p>Tudo o que eu preparei pra você, num lugar só.</p>
+            </header>
+
+            <nav class="hub">
+                <a class="hub-card" id="card-buque" href="dina0.html">
+                    <span class="hub-emoji">🌷</span>
+                    <span class="hub-text"><strong>O buquê</strong>
+                        <small id="card-buque-desc">Derrubar as rosas e abrir a carta de novo</small></span>
+                    <span class="hub-arrow">›</span>
+                </a>
+                <a class="hub-card" href="#cartas">
+                    <span class="hub-emoji">💌</span>
+                    <span class="hub-text"><strong>Cartas guardadas</strong>
+                        <small>A carta virtual e a de papel, pra reler quando quiser</small></span>
+                    <span class="hub-arrow">›</span>
+                </a>
+                <a class="hub-card" href="dinaInvite.html">
+                    <span class="hub-emoji">🥂</span>
+                    <span class="hub-text"><strong>Um convite</strong>
+                        <small>Tenho uma proposta pra você...</small></span>
+                    <span class="hub-arrow">›</span>
+                </a>
+            </nav>
+        </section>
+
+        <!-- ============ CARTAS GUARDADAS ============ -->
+        <section class="view" id="view-cartas" hidden>
+        <a class="back-link" href="#inicio">← Início</a>
+
         <header>
             <h1>Suas cartinhas, Diná 💌</h1>
             <p>Guardadas aqui, pra você reler sempre que quiser.</p>
@@ -484,7 +609,7 @@
 
                 <p class="body">Apesar de eu não ser nenhum artista ou escultor, fiz o Titã do Eren impresso em 3D,
                     porque sei o quanto você gosta do personagem e do anime, e você merece muito mais do que isso. E,
-                    de bônus, também fiz um coelhinho, por você ser tão gentil comigo.</p>
+                    de bônus, também fiz uma coelhinha, por você ser tão gentil comigo.</p>
 
                 <p class="body">Também queria me desculpar por às vezes falar ou escrever demais. Acho que talvez
                     seja minha ansiedade, ou meu jeito com certas pessoas especiais como você, pois normalmente sou
@@ -507,7 +632,7 @@
 
                 <p class="body">E tem mais uma coisa que preparei…</p>
 
-                <p class="surprise">Uma surpresa pra você: <a href="dina0.html">o buquê 🌹</a></p>
+                <p class="surprise">Uma surpresa pra você: <a href="dina0.html">o buquê 🌷</a></p>
             </article>
 
             <div class="pdf-row">
@@ -522,19 +647,18 @@
                 <figcaption>A carta de verdade 📜</figcaption>
             </figure>
         </section>
-
-        <div class="actions">
-            <a class="btn" id="btn-back" href="dina0.html">🌹 Ver o buquê de novo</a>
-        </div>
+        </section>
     </main>
 
+    <!-- Tocador de música (o mesmo do buquê; continua a música do ponto em que estava) -->
+    <script src="assets/Dina/player.js"></script>
     <script>
         /* Aberta por cima do buquê (botão "Guardar" do dina0.html)?
            Então a música está tocando lá: os botões de voltar só fecham esta camada */
         const EMBEDDED = window.self !== window.top;
         if (EMBEDDED) {
             document.documentElement.classList.add('embedded');
-            document.getElementById('btn-back').innerText = '💌 Voltar pra carta';
+            document.getElementById('card-buque-desc').innerText = 'Voltar pra carta do buquê';
             document.querySelectorAll('a[href="dina0.html"]').forEach(a => {
                 a.addEventListener('click', e => {
                     e.preventDefault();
@@ -542,6 +666,16 @@
                 });
             });
         }
+
+        /* Telas: início (#inicio) e cartas guardadas (#cartas) */
+        function route() {
+            const cartas = location.hash === '#cartas';
+            document.getElementById('view-home').hidden = cartas;
+            document.getElementById('view-cartas').hidden = !cartas;
+            window.scrollTo(0, 0);
+        }
+        window.addEventListener('hashchange', route);
+        route();
 
         /* Abas */
         const tabs = [...document.querySelectorAll('.tab')];

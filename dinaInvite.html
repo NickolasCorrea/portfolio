@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Um convite pra Diná 🥂</title>
+    <!-- Página pessoal: não aparecer no Google -->
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🥂%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/Dina/player.css">
+    <style>
+        :root {
+            --rose: #c2185b;
+            --rose-dark: #880e4f;
+            --ink: #4a2c35;
+            --muted: #8a5a67;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body,
+        label,
+        button,
+        select,
+        input,
+        a {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23c2185b' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🌷%3C/text%3E%3C/svg%3E") 5 3, auto !important;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 72px 16px 32px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background: radial-gradient(circle at 50% 35%, #ffffff 0%, #ffeef2 45%, #fbd9e1 100%) fixed;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* O tocador fica fixo embaixo (o daqui, ou o do buquê quando aberto por cima dele) */
+        body.has-player,
+        html.embedded body {
+            padding-bottom: calc(120px + env(safe-area-inset-bottom));
+        }
+
+        /* ---------- Pétalas e coisinhas caindo ---------- */
+        .falling {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .petal {
+            position: absolute;
+            top: -30px;
+            border-radius: 0 100% 0 100%;
+            opacity: .6;
+            animation: petalFall linear forwards;
+        }
+
+        @keyframes petalFall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(calc(var(--dx) * -.3), 55vh) rotate(200deg);
+            }
+
+            100% {
+                transform: translate(var(--dx), 112vh) rotate(380deg);
+            }
+        }
+
+        .emoji {
+            position: absolute;
+            top: 0;
+            user-select: none;
+            animation: emojiFall linear forwards;
+            opacity: .9;
+        }
+
+        @keyframes emojiFall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(300deg);
+                opacity: .4;
+            }
+        }
+
+        /* ---------- Cartão ---------- */
+        .card {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 520px;
+            padding: 30px 26px 28px;
+            border-radius: 24px;
+            text-align: center;
+            background: rgba(255, 255, 255, .86);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(194, 24, 91, .15);
+            box-shadow: 0 16px 40px rgba(120, 20, 60, .16);
+        }
+
+        .step {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeUp .5s ease;
+        }
+
+        .step.active {
+            display: flex;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .gif {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 14px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(120, 20, 60, .18);
+        }
+
+        h1 {
+            margin: 6px 0 14px;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
+            font-size: clamp(1.6rem, 6vw, 2.1rem);
+            line-height: 1.2;
+            color: var(--rose-dark);
+        }
+
+        p {
+            margin: 0 0 18px;
+            font-size: clamp(1rem, 3.8vw, 1.1rem);
+            line-height: 1.55;
+            color: var(--ink);
+        }
+
+        .quote {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.35rem, 5vw, 1.55rem);
+            line-height: 1.3;
+            color: var(--rose);
+        }
+
+        /* Rosinha cor de rosa (igual às do buquê), do tamanho de um emoji */
+        .pink-rose {
+            display: inline-block;
+            width: 1.1em;
+            height: 1.1em;
+            vertical-align: -0.2em;
+            filter: drop-shadow(0 1px 1px rgba(80, 0, 30, .25));
+        }
+
+        /* ---------- Botões ---------- */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 8px;
+            min-height: 52px;
+        }
+
+        .btn {
+            padding: 13px 26px;
+            border: none;
+            border-radius: 50px;
+            font: bold 1.05rem 'Segoe UI', Tahoma, sans-serif;
+            white-space: nowrap;
+            touch-action: manipulation;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .btn:active {
+            transform: scale(.96);
+        }
+
+        .btn-yes {
+            color: #fff;
+            background: linear-gradient(135deg, #e0457b, #880e4f);
+            box-shadow: 0 6px 16px rgba(136, 14, 79, .35);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.06);
+        }
+
+        .btn-no {
+            color: var(--rose-dark);
+            background: #fff;
+            border: 2px solid #f3b6c8;
+            box-shadow: 0 6px 16px rgba(120, 20, 60, .12);
+            transition: all .2s ease-out;
+            z-index: 50;
+        }
+
+        .zap-hint {
+            margin: 4px 0 12px;
+            font-size: .95rem;
+            color: var(--muted);
+        }
+
+        .zap-hint strong {
+            color: var(--rose-dark);
+        }
+
+        /* Pulsa de leve pra mostrar que ainda falta tocar nele */
+        .btn-zap {
+            animation: zapPulse 1.8s ease-in-out infinite;
+            white-space: normal;
+            max-width: 100%;
+        }
+
+        @keyframes zapPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 6px 16px rgba(37, 211, 102, .4), 0 0 0 0 rgba(37, 211, 102, .45);
+            }
+
+            50% {
+                box-shadow: 0 6px 16px rgba(37, 211, 102, .4), 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+        }
+
+        .btn-zap {
+            color: #fff;
+            background: #25D366;
+            box-shadow: 0 6px 16px rgba(37, 211, 102, .4);
+        }
+
+        /* ---------- Formulário ---------- */
+        .form {
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .form label {
+            display: block;
+            font-weight: 700;
+            color: var(--rose-dark);
+        }
+
+        .form label .optional {
+            font-weight: 400;
+            font-size: .85rem;
+            color: var(--muted);
+        }
+
+        .form select,
+        .form input {
+            width: 100%;
+            margin: 6px 0 18px;
+            padding: 12px 14px;
+            font: 1.02rem 'Segoe UI', Tahoma, sans-serif;
+            color: var(--ink);
+            background: #fff;
+            border: 1.5px solid #f3c6d3;
+            border-radius: 14px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form select {
+            background-image: linear-gradient(45deg, transparent 50%, var(--rose) 50%), linear-gradient(135deg, var(--rose) 50%, transparent 50%);
+            background-position: calc(100% - 20px) 52%, calc(100% - 14px) 52%;
+            background-size: 6px 6px, 6px 6px;
+            background-repeat: no-repeat;
+            padding-right: 36px;
+        }
+
+        .form select:focus,
+        .form input:focus {
+            border-color: var(--rose);
+            box-shadow: 0 0 0 3px rgba(194, 24, 91, .12);
+        }
+
+        .hint-ok {
+            display: none;
+            margin: -12px 0 16px;
+            font-size: .92rem;
+            font-weight: 700;
+            color: var(--rose);
+        }
+
+        /* ---------- Calendário ---------- */
+        .cal {
+            margin: 6px 0 18px;
+            padding: 10px;
+            background: #fff;
+            border: 1.5px solid #f3c6d3;
+            border-radius: 16px;
+        }
+
+        .cal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-weight: 700;
+            color: var(--rose-dark);
+        }
+
+        .cal-nav {
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: #fde3eb;
+            color: var(--rose-dark);
+            font-size: 1.4rem;
+            line-height: 1;
+            touch-action: manipulation;
+        }
+
+        .cal-nav:disabled {
+            opacity: .3;
+        }
+
+        .cal-week,
+        .cal-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            text-align: center;
+        }
+
+        .cal-week span {
+            padding: 2px 0 4px;
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .cal-day {
+            aspect-ratio: 1;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            font: 600 .95rem 'Segoe UI', Tahoma, sans-serif;
+            color: var(--ink);
+            touch-action: manipulation;
+            transition: background .15s;
+        }
+
+        @media (hover: hover) {
+            .cal-day:not(:disabled):hover {
+                background: #fde3eb;
+            }
+        }
+
+        .cal-day.today {
+            box-shadow: inset 0 0 0 1.5px #f3b6c8;
+        }
+
+        .cal-day.selected {
+            color: #fff;
+            background: linear-gradient(135deg, #e0457b, #880e4f);
+        }
+
+        .cal-day:disabled {
+            color: #dbc7cd;
+        }
+
+        /* Dias bloqueados (GTA 6): riscados */
+        .cal-day.blocked {
+            text-decoration: line-through;
+        }
+
+        .form-error {
+            min-height: 1.3em;
+            margin: 0 0 12px;
+            font-size: .95rem;
+            font-weight: 700;
+            color: var(--rose);
+        }
+
+        .ps {
+            margin: 18px 0 0;
+            font-size: .9rem;
+            color: var(--muted);
+        }
+
+        /* ---------- Recado do botão "não" ---------- */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1500;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            background: rgba(90, 20, 45, .35);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+
+        .modal .card {
+            max-width: 380px;
+        }
+
+        /* ---------- Voltar pro cantinho ---------- */
+        .back {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1000;
+            padding: 8px 15px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .8);
+            border: 1px solid rgba(194, 24, 91, .18);
+            box-shadow: 0 4px 14px rgba(120, 20, 60, .1);
+            color: var(--rose-dark);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding-top: 64px;
+            }
+
+            .card {
+                padding: 24px 18px 22px;
+            }
+
+            .btn {
+                padding: 12px 18px;
+                font-size: 1rem;
+            }
+
+            /* Os dois botões do convite cabem lado a lado */
+            .buttons .btn {
+                padding: 12px 15px;
+                font-size: .97rem;
+            }
+
+            .back {
+                top: 12px;
+                left: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="falling" id="falling"></div>
+
+    <!-- Rosinha cor de rosa, desenhada igual às rosas do buquê -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="pink-rose" viewBox="-50 -50 100 100">
+            <ellipse cx="-24" cy="34" rx="16" ry="7" transform="rotate(-30 -24 34)" fill="#5a9a48" />
+            <ellipse cx="24" cy="34" rx="16" ry="7" transform="rotate(30 24 34)" fill="#4a8a3f" />
+            <g stroke="#b8336a" stroke-opacity=".45">
+                <ellipse cx="0" cy="-22" rx="22" ry="25" fill="#f06e9c" />
+                <ellipse cx="0" cy="-22" rx="22" ry="25" fill="#f06e9c" transform="rotate(72)" />
+                <ellipse cx="0" cy="-22" rx="22" ry="25" fill="#f06e9c" transform="rotate(144)" />
+                <ellipse cx="0" cy="-22" rx="22" ry="25" fill="#f06e9c" transform="rotate(216)" />
+                <ellipse cx="0" cy="-22" rx="22" ry="25" fill="#f06e9c" transform="rotate(288)" />
+            </g>
+            <circle r="25" fill="#f78fb3" />
+            <g stroke="#b8336a" stroke-opacity=".35">
+                <ellipse cx="0" cy="-12" rx="14" ry="16" fill="#fcc4d8" transform="rotate(36)" />
+                <ellipse cx="0" cy="-12" rx="14" ry="16" fill="#fcc4d8" transform="rotate(108)" />
+                <ellipse cx="0" cy="-12" rx="14" ry="16" fill="#fcc4d8" transform="rotate(180)" />
+                <ellipse cx="0" cy="-12" rx="14" ry="16" fill="#fcc4d8" transform="rotate(252)" />
+                <ellipse cx="0" cy="-12" rx="14" ry="16" fill="#fcc4d8" transform="rotate(324)" />
+            </g>
+            <circle r="13" fill="#f78fb3" />
+            <path d="M-1,3 a8,8 0 1,1 9,-7 a6,6 0 1,1 -10,5 a3.5,3.5 0 1,1 5,-3" fill="none" stroke="#b8336a"
+                stroke-width="3" stroke-linecap="round" />
+        </symbol>
+    </svg>
+
+    <a class="back" href="dina.html">← Início</a>
+
+    <!-- Som de comemoração -->
+    <audio id="celebration-sound" src="assets/Sounds/cheering.mp3" preload="auto"></audio>
+
+    <main class="card">
+        <!-- ============ 1. CONVITE ============ -->
+        <section class="step active" id="invite-step">
+            <h1>Diná, tenho uma proposta 🌸</h1>
+            <img class="gif" width="200" height="200" src="https://media.giphy.com/media/CS7UUA7OUwjRj1vKQJ/200.gif"
+                alt="Rosa cor de rosa abrindo">
+            <p class="quote">Como diria o Don Corleone: vou te fazer uma oferta que você não pode recusar...
+                <svg class="pink-rose" aria-hidden="true"><use href="#pink-rose" /></svg>
+            </p>
+            <p>A gente tá se conhecendo, e eu tô curtindo muito as nossas conversas. Que tal a gente sair pra fazer
+                alguma coisa legal num dia desses?</p>
+
+            <div class="buttons">
+                <button class="btn btn-yes" onclick="acceptInvite()">Sim, claro! 🥰</button>
+                <button class="btn btn-no" id="btn-no" onmouseover="moveButton()" ontouchstart="handleTouch(event)"
+                    onclick="rejectInvite()">Nem pensar 🏃‍♀️</button>
+            </div>
+        </section>
+
+        <!-- ============ 2. SÉRIO? ============ -->
+        <section class="step" id="surprise-step">
+            <h1>Sério, você disse sim??? 😭</h1>
+            <img class="gif" width="356" height="200" data-src="https://media.giphy.com/media/4vaCmXkHTr8Z1GKPWk/200.gif"
+                alt="Attack on Titan: Dedicate your heart">
+            <p class="quote">Shinzou wo sasageyo! 🫡</p>
+            <p>Eu já tava pronto pra lutar contra um "não", igual o Eren contra os titãs... mas não precisou ⚔️</p>
+            <button class="btn btn-yes" onclick="nextStep()">Próximo ➡️</button>
+        </section>
+
+        <!-- ============ 3. O QUE, QUANDO, QUE HORAS ============ -->
+        <section class="step" id="details-step">
+            <h1>AEEEEEEEE! 🎉</h1>
+            <img class="gif" width="356" height="200" data-src="https://media.giphy.com/media/jpiiSfXUHSdovQwX3T/200.gif"
+                alt="Taylor Swift sorrindo">
+            <p>Até a Taylor ficou feliz com esse sim 😌<br>Me diz o que você tá mais a fim de fazer:</p>
+
+            <div class="form">
+                <label for="activity-select">O que vamos fazer?</label>
+                <select id="activity-select" onchange="checkActivity()">
+                    <option value="" disabled selected>Toca aqui pra escolher 🌸</option>
+                    <option value="vinho">Um vinho e uma boa conversa 🍷</option>
+                    <option value="jantar">Um jantar digno de Poderoso Chefão 🕯️</option>
+                    <option value="cinema">Cinema (você escolhe o filme) 🍿</option>
+                    <option value="cafe">Café com docinho ☕</option>
+                    <option value="outro">Outra ideia (você escolhe!) 💡</option>
+                </select>
+
+                <div id="other-wrap" hidden>
+                    <label for="other-input">Qual a sua ideia?</label>
+                    <input type="text" id="other-input" maxlength="80" placeholder="Ex.: ir naquela exposição..."
+                        oninput="document.getElementById('form-error').innerText = ''">
+                </div>
+
+                <div id="movie-wrap" hidden>
+                    <label for="movie-input">Qual filme? <span class="optional">(se já souber)</span></label>
+                    <input type="text" id="movie-input" maxlength="60" placeholder="Ex.: Duna 3 🏜️">
+                </div>
+
+                <label id="date-label">Que dia?</label>
+                <!-- Calendário próprio: o do celular não deixa bloquear dias específicos -->
+                <input type="hidden" id="date-input">
+                <div class="cal" role="group" aria-labelledby="date-label">
+                    <div class="cal-head">
+                        <button type="button" class="cal-nav" id="cal-prev" aria-label="Mês anterior">‹</button>
+                        <span id="cal-title"></span>
+                        <button type="button" class="cal-nav" id="cal-next" aria-label="Próximo mês">›</button>
+                    </div>
+                    <div class="cal-week" aria-hidden="true">
+                        <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+                    </div>
+                    <div class="cal-days" id="cal-days"></div>
+                </div>
+                <p class="hint-ok" id="date-message"></p>
+
+                <label for="time-select">Que horas?</label>
+                <select id="time-select" onchange="checkTime()">
+                    <option value="" disabled selected>Depende do que vamos fazer ☝️</option>
+                </select>
+
+                <div id="other-time-wrap" hidden>
+                    <label for="other-time">Que horário fica bom?</label>
+                    <input type="time" id="other-time" step="900"
+                        oninput="document.getElementById('form-error').innerText = ''">
+                </div>
+            </div>
+
+            <p class="form-error" id="form-error"></p>
+
+            <button class="btn btn-yes" onclick="confirmInvite()">Confirmar! 🌷</button>
+        </section>
+
+        <!-- ============ 4. COMBINADO ============ -->
+        <section class="step" id="final-step">
+            <h1>Tá combinado! ✅</h1>
+            <p id="final-text"></p>
+            <img class="gif" width="138" height="200" data-src="https://media.giphy.com/media/Y32xn6fCWAKKYFRHSd/200.gif"
+                alt="O Poderoso Chefão">
+            <p class="quote">Palavra de Don Corleone: agora é oficial 🌷</p>
+            <p class="zap-hint">Falta só um passo: toca aqui embaixo e <strong>envia a mensagem</strong> que já vai
+                prontinha pra mim no WhatsApp 👇</p>
+            <button class="btn btn-zap" id="btn-whatsapp">Confirmar no WhatsApp 💬</button>
+            <p class="ps">PS: o Titã e a coelhinha mandaram dizer que aprovam esse rolê 🪽🐰</p>
+        </section>
+    </main>
+
+    <!-- ============ BOTÃO "NÃO" ============ -->
+    <div class="modal" id="no-modal">
+        <div class="card">
+            <h1>"Não" silenciado 🤫</h1>
+            <img class="gif" width="125" height="200" data-src="https://media.giphy.com/media/zc023IAzyAsGYDmMnN/200.gif"
+                alt="Duna: Silence!">
+            <p>Brincadeira! 😅 Sem pressão nenhuma... o convite fica guardado aqui pra quando você quiser 🌷</p>
+            <button class="btn btn-yes" onclick="closeModal()">Voltar</button>
+        </div>
+    </div>
+
+    <!-- Tocador de música (o mesmo do buquê; continua a música do ponto em que estava) -->
+    <script src="assets/Dina/player.js"></script>
+    <script>
+        /* Aberta dentro do buquê (dina0.html)? Então o tocador de lá continua tocando */
+        if (window.self !== window.top) document.documentElement.classList.add('embedded');
+
+        const WHATSAPP_NUMBER = '5513982118181';
+        const btnNo = document.getElementById('btn-no');
+        const noModal = document.getElementById('no-modal');
+        const celebrationSound = document.getElementById('celebration-sound');
+
+        /* =================== Etapas =================== */
+        function showStep(id) {
+            document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', s.id === id));
+            loadGifs(document.getElementById(id));
+            window.scrollTo(0, 0);
+        }
+
+        // Cada GIF só baixa quando a etapa dele aparece (economiza internet no celular)
+        function loadGifs(scope) {
+            scope.querySelectorAll('img[data-src]').forEach(img => {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            });
+        }
+
+        /* =================== Botão "não" fujão =================== */
+        let moveCount = 0;
+
+        function handleTouch(e) {
+            if (moveCount <= 10) {
+                e.preventDefault();
+                moveButton();
+            }
+        }
+
+        function moveButton() {
+            moveCount++;
+            if (moveCount > 10) {
+                btnNo.innerText = 'Tá bom, clica aí...';
+                return;
+            }
+            // Sai de dentro do cartão pra poder fugir pela tela toda
+            if (btnNo.parentElement !== document.body) document.body.appendChild(btnNo);
+            const playerSpace = 120; // não foge pra trás do tocador
+            const maxX = window.innerWidth - btnNo.offsetWidth;
+            const maxY = window.innerHeight - btnNo.offsetHeight - playerSpace;
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = `${Math.random() * Math.max(0, maxX)}px`;
+            btnNo.style.top = `${60 + Math.random() * Math.max(0, maxY - 60)}px`;
+        }
+
+        function rejectInvite() {
+            if (moveCount > 10) {
+                loadGifs(noModal);
+                noModal.style.display = 'flex';
+                btnNo.style.display = 'none';
+            }
+        }
+
+        function closeModal() {
+            noModal.style.display = 'none';
+        }
+
+        /* =================== Sim! =================== */
+        function celebrate() {
+            createConfetti();
+            // Respeita o botão "🔔 Efeitos" do tocador
+            if (window.DinaPlayer && !DinaPlayer.sfxEnabled) return;
+            celebrationSound.currentTime = 0;
+            celebrationSound.play().catch(() => { });
+        }
+
+        function acceptInvite() {
+            btnNo.style.display = 'none';
+            showStep('surprise-step');
+            celebrate();
+        }
+
+        function nextStep() {
+            showStep('details-step');
+        }
+
+        function checkActivity() {
+            const activity = document.getElementById('activity-select').value;
+            const timeSelect = document.getElementById('time-select');
+
+            // "Outra ideia": aparece um campo pra ela escrever a proposta dela
+            const otherWrap = document.getElementById('other-wrap');
+            otherWrap.hidden = activity !== 'outro';
+            // Cinema: campo pra ela escrever o filme (opcional)
+            document.getElementById('movie-wrap').hidden = activity !== 'cinema';
+            if (activity === 'outro') document.getElementById('other-input').focus();
+
+            if (activity === 'cinema') {
+                timeSelect.innerHTML = `
+                    <option value="filme" selected>Horário da sessão do filme 🎟️</option>
+                    <option value="outro">Outro horário 🕐</option>
+                `;
+            } else {
+                timeSelect.innerHTML = `
+                    <option value="" disabled selected>Qual horário fica melhor pra você?</option>
+                    <option value="15">15h - Tarde leve ☀️</option>
+                    <option value="16">16h - Tarde tranquila ☕</option>
+                    <option value="17">17h - Pôr do sol 🌇</option>
+                    <option value="18">18h - Começo da noite 🌆</option>
+                    <option value="19">19h - Pra jantar 🍽️</option>
+                    <option value="20">20h - Noite adentro 🌙</option>
+                    <option value="21">21h - Rolê noturno 🌃</option>
+                    <option value="outro">Outro horário 🕐</option>
+                `;
+            }
+            checkTime();
+            document.getElementById('form-error').innerText = '';
+        }
+
+        // "Outro horário": aparece um campo pra ela escolher a hora que quiser
+        function checkTime() {
+            const isOther = document.getElementById('time-select').value === 'outro';
+            document.getElementById('other-time-wrap').hidden = !isOther;
+            if (isOther) document.getElementById('other-time').focus();
+            document.getElementById('form-error').innerText = '';
+        }
+
+        /* =================== Calendário =================== */
+        // Dias em que o Nick não pode sair (lançamento do GTA 6 kkkk): aparecem riscados e não dá pra escolher
+        const BLOCKED_DATES = ['2026-11-18', '2026-11-19'];
+        const MONTHS_AHEAD = 4; // até quantos meses pra frente dá pra escolher
+        const MONTH_NAMES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto',
+            'setembro', 'outubro', 'novembro', 'dezembro'];
+
+        const todayDate = new Date();
+        todayDate.setHours(0, 0, 0, 0);
+        const firstMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
+        const lastMonth = new Date(todayDate.getFullYear(), todayDate.getMonth() + MONTHS_AHEAD, 1);
+        let calMonth = new Date(firstMonth);
+
+        const isoDate = d =>
+            `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+        function renderCalendar() {
+            const y = calMonth.getFullYear(), m = calMonth.getMonth();
+            const selected = document.getElementById('date-input').value;
+            document.getElementById('cal-title').innerText = `${MONTH_NAMES[m]} de ${y}`;
+            document.getElementById('cal-prev').disabled = calMonth <= firstMonth;
+            document.getElementById('cal-next').disabled = calMonth >= lastMonth;
+
+            const days = document.getElementById('cal-days');
+            days.innerHTML = '';
+            const startWeekday = new Date(y, m, 1).getDay();
+            for (let i = 0; i < startWeekday; i++) days.appendChild(document.createElement('span'));
+
+            const total = new Date(y, m + 1, 0).getDate();
+            for (let d = 1; d <= total; d++) {
+                const date = new Date(y, m, d);
+                const iso = isoDate(date);
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'cal-day';
+                btn.innerText = d;
+                const blocked = BLOCKED_DATES.includes(iso);
+                btn.disabled = date < todayDate || blocked;
+                if (blocked) btn.classList.add('blocked');
+                if (date.getTime() === todayDate.getTime()) btn.classList.add('today');
+                if (iso === selected) btn.classList.add('selected');
+                btn.setAttribute('aria-label', `${d} de ${MONTH_NAMES[m]}`);
+                btn.addEventListener('click', () => {
+                    document.getElementById('date-input').value = iso;
+                    renderCalendar();
+                    checkDate();
+                });
+                days.appendChild(btn);
+            }
+        }
+
+        document.getElementById('cal-prev').addEventListener('click', () => {
+            calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() - 1, 1);
+            renderCalendar();
+        });
+        document.getElementById('cal-next').addEventListener('click', () => {
+            calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 1);
+            renderCalendar();
+        });
+        renderCalendar();
+
+        function checkDate() {
+            const value = document.getElementById('date-input').value;
+            const msg = document.getElementById('date-message');
+            document.getElementById('form-error').innerText = '';
+            if (value) {
+                const [y, m, d] = value.split('-');
+                const day = new Date(y, m - 1, d).getDay();
+                if (day === 0 || day === 6) {
+                    msg.innerText = 'Fim de semana? Ótima escolha! 😎';
+                    msg.style.display = 'block';
+                    return;
+                }
+            }
+            msg.style.display = 'none';
+        }
+
+        function confirmInvite() {
+            const activitySelect = document.getElementById('activity-select');
+            const dateValue = document.getElementById('date-input').value;
+            const timeSelect = document.getElementById('time-select');
+            const error = document.getElementById('form-error');
+
+            const otherIdea = document.getElementById('other-input').value.trim();
+            if (!activitySelect.value || !dateValue || !timeSelect.value) {
+                error.innerText = 'Preenche tudo direitinho, vai! 😉';
+                return;
+            }
+            if (activitySelect.value === 'outro' && !otherIdea) {
+                error.innerText = 'Me conta qual é a sua ideia! 💡';
+                return;
+            }
+            const otherTime = document.getElementById('other-time').value;
+            if (timeSelect.value === 'outro' && !otherTime) {
+                error.innerText = 'Me diz que horas fica bom! 🕐';
+                return;
+            }
+            error.innerText = '';
+
+            let activityText = activitySelect.value === 'outro'
+                ? otherIdea
+                : activitySelect.options[activitySelect.selectedIndex].text;
+            // Cinema com o filme digitado: "Ver "Duna 3" no cinema 🍿"
+            const movie = document.getElementById('movie-input').value.trim();
+            if (activitySelect.value === 'cinema' && movie) activityText = `Ver "${movie}" no cinema 🍿`;
+            const [year, month, day] = dateValue.split('-');
+            const formattedDate = `${day}/${month}/${year}`;
+
+            let timeText, shortTime;
+            if (timeSelect.value === 'outro') {
+                const [h, m] = otherTime.split(':');
+                shortTime = timeText = m === '00' ? `${+h}h` : `${+h}h${m}`; // ex.: 14h ou 14h30
+            } else {
+                timeText = timeSelect.options[timeSelect.selectedIndex].text;
+                shortTime = timeText.includes('-') ? timeText.split('-')[0].trim() : timeText;
+            }
+
+            // textContent: o que ela digitar aparece como texto, nunca como código
+            const finalText = document.getElementById('final-text');
+            const what = activityText.charAt(0).toLowerCase() + activityText.slice(1);
+            if (timeSelect.value === 'filme') {
+                finalText.innerHTML = `Te vejo no dia <strong></strong>, no <strong>horário da sessão</strong>, para <strong></strong>!`;
+                const [elDate, , elWhat] = finalText.querySelectorAll('strong');
+                elDate.textContent = formattedDate;
+                elWhat.textContent = what;
+            } else {
+                finalText.innerHTML = `Te vejo às <strong></strong> no dia <strong></strong> para <strong></strong>!`;
+                const [elTime, elDate, elWhat] = finalText.querySelectorAll('strong');
+                elTime.textContent = shortTime;
+                elDate.textContent = formattedDate;
+                elWhat.textContent = what;
+            }
+
+            // Só emojis antigos, que aparecem certinho em qualquer celular
+            const message =
+                `Oie, Nick! Topei o convite! 🌷\n\n` +
+                `📅 Data: ${formattedDate}\n` +
+                `🕐 Horário: ${timeText}\n` +
+                `✨ O que vamos fazer: ${activityText}\n\n` +
+                `Shinzou wo sasageyo! ⚔️💕`;
+            // Direto no api.whatsapp.com: o atalho "wa.me" troca os emojis por "�" ao redirecionar
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+            document.getElementById('btn-whatsapp').onclick = () => window.open(whatsappUrl, '_blank');
+
+            showStep('final-step');
+            celebrate();
+        }
+
+        /* =================== Confete, pétalas e coisinhas caindo =================== */
+        const falling = document.getElementById('falling');
+        const PETAL_COLORS = ['#e91e63', '#f06292', '#c2185b', '#f8bbd0', '#d81b60', '#ff8fab'];
+
+        function createConfetti() {
+            for (let i = 0; i < 140; i++) {
+                setTimeout(() => {
+                    const c = document.createElement('div');
+                    const size = 8 + Math.random() * 6;
+                    Object.assign(c.style, {
+                        position: 'absolute', left: Math.random() * 100 + 'vw', top: '-5vh',
+                        width: size + 'px', height: size + 'px',
+                        background: PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)],
+                        borderRadius: Math.random() < .5 ? '50%' : '0 100% 0 100%',
+                        transition: 'all 0.9s ease-in', zIndex: 20,
+                    });
+                    falling.appendChild(c);
+                    setTimeout(() => {
+                        c.style.top = '105vh';
+                        c.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    }, 50);
+                    setTimeout(() => c.remove(), 1000);
+                }, i * 20);
+            }
+        }
+
+        function spawnPetal() {
+            if (document.hidden) return;
+            const p = document.createElement('div');
+            p.className = 'petal';
+            const size = 9 + Math.random() * 9;
+            p.style.width = p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.background = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
+            p.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
+            const dur = 7 + Math.random() * 6;
+            p.style.animationDuration = dur + 's';
+            falling.appendChild(p);
+            setTimeout(() => p.remove(), dur * 1000);
+        }
+
+        // Junto com as pétalas (iguais às do buquê): vinho, florzinhas cor de rosa e estrelinhas
+        const EMOJIS = ['🍷', '🍷', '✨', '✨', '🌸', '🌷'];
+        function spawnEmoji() {
+            if (document.hidden) return;
+            const e = document.createElement('div');
+            e.className = 'emoji';
+            e.innerText = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+            e.style.left = Math.random() * 94 + 'vw';
+            e.style.fontSize = (Math.random() * 12 + 18) + 'px';
+            const dur = 6 + Math.random() * 4;
+            e.style.animationDuration = dur + 's';
+            falling.appendChild(e);
+            setTimeout(() => e.remove(), dur * 1000);
+        }
+
+        /* =================== Início =================== */
+        window.addEventListener('load', () => {
+            setInterval(spawnPetal, 650);
+            setInterval(spawnEmoji, 1400);
+        });
+    </script>
+</body>
+
+</html>
