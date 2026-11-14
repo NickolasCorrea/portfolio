@@ -1,0 +1,409 @@
+/* =========================================================
+   Tocador de música das páginas da Diná (buquê, cantinho e convite)
+   Usado junto com assets/Dina/player.js
+   ========================================================= */
+
+.player {
+    --rose: #c2185b;
+    --rose-dark: #880e4f;
+    --ink: #4a2c35;
+}
+
+body.has-player {
+    padding-bottom: calc(var(--player-h) + env(safe-area-inset-bottom));
+}
+
+:root {
+    --player-h: 92px;
+}
+
+
+.player {
+    position: fixed;
+    left: 50%;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: min(calc(100% - 20px), 440px);
+    z-index: 1000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--ink);
+}
+
+.player[hidden] {
+    display: none;
+}
+
+.player-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 22px;
+    background: rgba(255, 247, 250, .88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(194, 24, 91, .18);
+    box-shadow: 0 10px 30px rgba(120, 20, 60, .22);
+}
+
+.player button {
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    touch-action: manipulation;
+}
+
+.player .disc {
+    position: relative;
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, #fff0f4 0 17%, var(--rose) 18% 30%, transparent 31%),
+        repeating-radial-gradient(circle, #2a1a20 0 2px, #3a2530 2px 4px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
+}
+
+.disc::after {
+    content: '🌷';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+.player.playing .disc {
+    animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.disc-badge {
+    position: absolute;
+    right: -3px;
+    bottom: -3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--rose);
+    color: #fff;
+    font-size: 11px;
+    line-height: 20px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+}
+
+.player.playing .disc-badge {
+    animation: spin 4s linear infinite reverse;
+}
+
+.pl-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.pl-title {
+    font-weight: 700;
+    font-size: .98rem;
+    color: var(--rose-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pl-artist-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+
+.pl-artist {
+    font-size: .78rem;
+    color: #8a5a67;
+}
+
+/* Botão de silenciar (ao lado do nome da artista) */
+.player .pl-mute {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 24px;
+    margin: -4px -4px -4px 0;
+    border-radius: 50px;
+    color: var(--rose-dark);
+    transition: background .15s, color .15s;
+}
+
+.player .pl-mute svg {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+}
+
+/* Silenciado: fica rosinha pra ela perceber que a música está sem som */
+.player .pl-mute.on {
+    background: #fbdbe5;
+    color: var(--rose);
+}
+
+@media (hover: hover) {
+    .player .pl-mute:hover {
+        background: #fbdbe5;
+    }
+}
+
+.pl-progress {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .7rem;
+    color: #8a5a67;
+    font-variant-numeric: tabular-nums;
+}
+
+.pl-progress span {
+    flex: 0 0 auto;
+    min-width: 28px;
+}
+
+.pl-progress span:last-child {
+    text-align: right;
+}
+
+input[type=range].seek {
+    --p: 0%;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 22px;
+    margin: 0;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: none;
+}
+
+input[type=range].seek::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--rose) var(--p), #f3c6d3 var(--p));
+}
+
+input[type=range].seek::-moz-range-track {
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--rose) var(--p), #f3c6d3 var(--p));
+}
+
+input[type=range].seek::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    margin-top: -5px;
+    border-radius: 50%;
+    background: var(--rose);
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+}
+
+input[type=range].seek::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--rose);
+    border: 2px solid #fff;
+}
+
+.pl-buttons {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.pl-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--rose-dark) !important;
+    transition: transform .15s, background .15s;
+}
+
+.pl-btn:active {
+    transform: scale(.9);
+}
+
+.pl-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.pl-btn.play {
+    width: 46px;
+    height: 46px;
+    background: var(--rose);
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(194, 24, 91, .4);
+}
+
+.pl-btn.play svg {
+    width: 22px;
+    height: 22px;
+}
+
+@media (hover: hover) {
+    .pl-btn:not(.play):hover {
+        background: #fbdbe5;
+    }
+}
+
+/* Lista de músicas (abre ao tocar no disco) */
+.playlist {
+    /* Flutua acima do tocador: fechada, não ocupa espaço nem bloqueia toques */
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + 8px);
+    padding: 8px;
+    border-radius: 18px;
+    background: rgba(255, 247, 250, .95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(194, 24, 91, .18);
+    box-shadow: 0 10px 30px rgba(120, 20, 60, .22);
+    transform-origin: bottom center;
+    transition: opacity .25s ease, transform .25s ease;
+}
+
+.playlist.closed {
+    opacity: 0;
+    transform: translateY(10px) scale(.97);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.pl-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px 8px 8px;
+    font-size: .8rem;
+    color: #8a5a67;
+}
+
+/* Sem espaço (celular estreito): os botões descem pra linha de baixo em vez de sair da borda */
+.pl-head-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.player .pl-chip {
+    padding: 6px 10px;
+    white-space: nowrap;
+    border-radius: 50px;
+    background: #fbdbe5 !important;
+    color: var(--rose-dark) !important;
+    font-size: .78rem !important;
+    font-weight: 600;
+}
+
+.pl-chip.on {
+    background: var(--rose) !important;
+    color: #fff !important;
+}
+
+/* Volume (some no iPhone, que não deixa site mudar o volume) */
+.pl-volume-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: .9rem;
+}
+
+.pl-volume-wrap[hidden] {
+    display: none;
+}
+
+#pl-volume {
+    width: 64px;
+    margin: 0;
+    accent-color: var(--rose);
+}
+
+.pl-track {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 10px !important;
+    border-radius: 12px;
+    text-align: left;
+    font-size: .92rem !important;
+}
+
+.pl-track .num {
+    width: 18px;
+    text-align: center;
+    color: #b07a88;
+    font-size: .8rem;
+}
+
+.pl-track.active {
+    background: #fde3eb !important;
+    color: var(--rose-dark) !important;
+    font-weight: 700;
+}
+
+.player.playing .pl-track.active .num {
+    color: var(--rose);
+}
+
+@media (hover: hover) {
+    .pl-track:hover {
+        background: #fff0f4 !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .player .disc {
+        width: 44px;
+        height: 44px;
+    }
+
+    .pl-btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    .pl-btn.play {
+        width: 42px;
+        height: 42px;
+    }
+
+    .player-main {
+        gap: 8px;
+        padding: 8px 10px;
+    }
+}

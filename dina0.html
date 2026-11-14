@@ -4,16 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Pra você, Diná 🌹</title>
+    <title>Pra você, Diná 🌷</title>
     <!-- Página pessoal: não aparecer no Google -->
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌹%3C/text%3E%3C/svg%3E">
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌷%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="assets/Dina/player.css">
     <style>
         :root {
             --rose: #c2185b;
@@ -44,7 +45,7 @@
 
         body,
         button {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23c2185b' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🌹%3C/text%3E%3C/svg%3E") 5 3, auto !important;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23c2185b' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🌷%3C/text%3E%3C/svg%3E") 5 3, auto !important;
         }
 
         body {
@@ -550,15 +551,7 @@
             border: 0;
         }
 
-        /* ---------- Tocador de música ---------- */
-        body.has-player {
-            padding-bottom: calc(var(--player-h) + env(safe-area-inset-bottom));
-        }
-
-        :root {
-            --player-h: 92px;
-        }
-
+        /* ---------- Tocador de música: visual em assets/Dina/player.css ---------- */
         /* A carta aberta fica acima do tocador, sem ficar escondida atrás dele */
         body.has-player .letter-overlay {
             padding-bottom: calc(var(--player-h) + 12px + env(safe-area-inset-bottom));
@@ -566,345 +559,6 @@
 
         body.has-player .letter-paper {
             max-height: 100%;
-        }
-
-        .player {
-            position: fixed;
-            left: 50%;
-            bottom: calc(10px + env(safe-area-inset-bottom));
-            transform: translateX(-50%);
-            width: min(calc(100% - 20px), 440px);
-            z-index: 1000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--ink);
-        }
-
-        .player[hidden] {
-            display: none;
-        }
-
-        .player-main {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 22px;
-            background: rgba(255, 247, 250, .88);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(194, 24, 91, .18);
-            box-shadow: 0 10px 30px rgba(120, 20, 60, .22);
-        }
-
-        .player button {
-            border: none;
-            background: none;
-            padding: 0;
-            font: inherit;
-            color: inherit;
-            touch-action: manipulation;
-        }
-
-        .player .disc {
-            position: relative;
-            flex: 0 0 auto;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background:
-                radial-gradient(circle, #fff0f4 0 17%, var(--rose) 18% 30%, transparent 31%),
-                repeating-radial-gradient(circle, #2a1a20 0 2px, #3a2530 2px 4px);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
-        }
-
-        .disc::after {
-            content: '🌹';
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-        }
-
-        .player.playing .disc {
-            animation: spin 4s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .disc-badge {
-            position: absolute;
-            right: -3px;
-            bottom: -3px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--rose);
-            color: #fff;
-            font-size: 11px;
-            line-height: 20px;
-            text-align: center;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
-        }
-
-        .player.playing .disc-badge {
-            animation: spin 4s linear infinite reverse;
-        }
-
-        .pl-info {
-            flex: 1 1 auto;
-            min-width: 0;
-        }
-
-        .pl-title {
-            font-weight: 700;
-            font-size: .98rem;
-            color: var(--rose-dark);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .pl-artist {
-            font-size: .78rem;
-            color: #8a5a67;
-            margin-bottom: 4px;
-        }
-
-        .pl-progress {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: .7rem;
-            color: #8a5a67;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .pl-progress span {
-            flex: 0 0 auto;
-            min-width: 28px;
-        }
-
-        .pl-progress span:last-child {
-            text-align: right;
-        }
-
-        input[type=range].seek {
-            --p: 0%;
-            flex: 1 1 auto;
-            min-width: 0;
-            height: 22px;
-            margin: 0;
-            background: transparent;
-            -webkit-appearance: none;
-            appearance: none;
-            touch-action: none;
-        }
-
-        input[type=range].seek::-webkit-slider-runnable-track {
-            height: 4px;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--rose) var(--p), #f3c6d3 var(--p));
-        }
-
-        input[type=range].seek::-moz-range-track {
-            height: 4px;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--rose) var(--p), #f3c6d3 var(--p));
-        }
-
-        input[type=range].seek::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            margin-top: -5px;
-            border-radius: 50%;
-            background: var(--rose);
-            border: 2px solid #fff;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
-        }
-
-        input[type=range].seek::-moz-range-thumb {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--rose);
-            border: 2px solid #fff;
-        }
-
-        .pl-buttons {
-            flex: 0 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .pl-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--rose-dark) !important;
-            transition: transform .15s, background .15s;
-        }
-
-        .pl-btn:active {
-            transform: scale(.9);
-        }
-
-        .pl-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-
-        .pl-btn.play {
-            width: 46px;
-            height: 46px;
-            background: var(--rose);
-            color: #fff !important;
-            box-shadow: 0 4px 12px rgba(194, 24, 91, .4);
-        }
-
-        .pl-btn.play svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        @media (hover: hover) {
-            .pl-btn:not(.play):hover {
-                background: #fbdbe5;
-            }
-        }
-
-        /* Lista de músicas (abre ao tocar no disco) */
-        .playlist {
-            /* Flutua acima do tocador: fechada, não ocupa espaço nem bloqueia toques */
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: calc(100% + 8px);
-            padding: 8px;
-            border-radius: 18px;
-            background: rgba(255, 247, 250, .95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(194, 24, 91, .18);
-            box-shadow: 0 10px 30px rgba(120, 20, 60, .22);
-            transform-origin: bottom center;
-            transition: opacity .25s ease, transform .25s ease;
-        }
-
-        .playlist.closed {
-            opacity: 0;
-            transform: translateY(10px) scale(.97);
-            pointer-events: none;
-            visibility: hidden;
-        }
-
-        .pl-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            padding: 4px 8px 8px;
-            font-size: .8rem;
-            color: #8a5a67;
-        }
-
-        .pl-head-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .pl-chip {
-            padding: 6px 12px;
-            border-radius: 50px;
-            background: #fbdbe5 !important;
-            color: var(--rose-dark) !important;
-            font-size: .78rem !important;
-            font-weight: 600;
-        }
-
-        .pl-chip.on {
-            background: var(--rose) !important;
-            color: #fff !important;
-        }
-
-        #pl-volume {
-            width: 70px;
-            accent-color: var(--rose);
-        }
-
-        /* Celular/tablet não deixam mudar o volume pela página: usa o botão do aparelho */
-        @media (hover: none) {
-            #pl-volume {
-                display: none;
-            }
-        }
-
-        .pl-track {
-            display: flex !important;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            padding: 10px 10px !important;
-            border-radius: 12px;
-            text-align: left;
-            font-size: .92rem !important;
-        }
-
-        .pl-track .num {
-            width: 18px;
-            text-align: center;
-            color: #b07a88;
-            font-size: .8rem;
-        }
-
-        .pl-track.active {
-            background: #fde3eb !important;
-            color: var(--rose-dark) !important;
-            font-weight: 700;
-        }
-
-        .player.playing .pl-track.active .num {
-            color: var(--rose);
-        }
-
-        @media (hover: hover) {
-            .pl-track:hover {
-                background: #fff0f4 !important;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .player .disc {
-                width: 44px;
-                height: 44px;
-            }
-
-            .pl-btn {
-                width: 34px;
-                height: 34px;
-            }
-
-            .pl-btn.play {
-                width: 42px;
-                height: 42px;
-            }
-
-            .player-main {
-                gap: 8px;
-                padding: 8px 10px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -920,50 +574,6 @@
 
 <body>
     <div id="ambient"></div>
-
-    <audio id="bg-music" preload="metadata" playsinline></audio>
-
-    <!-- ============ TOCADOR DE MÚSICA ============ -->
-    <div class="player" id="player">
-        <div class="playlist closed" id="playlist">
-            <div class="pl-head">
-                <span>Músicas pra você 🎶</span>
-                <div class="pl-head-actions">
-                    <input type="range" id="pl-volume" min="0" max="1" step="0.01" value="0.6" aria-label="Volume">
-                    <button class="pl-chip on" id="pl-sfx" type="button">🔔 Efeitos</button>
-                    <button class="pl-chip" id="pl-loop" type="button">🔁 Repetir</button>
-                </div>
-            </div>
-            <div id="pl-tracks"></div>
-        </div>
-
-        <div class="player-main">
-            <button class="disc" id="pl-disc" type="button" aria-label="Ver lista de músicas">
-                <span class="disc-badge">♪</span>
-            </button>
-            <div class="pl-info">
-                <div class="pl-title" id="pl-title">Carregando...</div>
-                <div class="pl-artist">Taylor Swift</div>
-                <div class="pl-progress">
-                    <span id="pl-cur">0:00</span>
-                    <input type="range" class="seek" id="pl-seek" min="0" max="1000" value="0" step="1"
-                        aria-label="Posição da música">
-                    <span id="pl-dur">0:00</span>
-                </div>
-            </div>
-            <div class="pl-buttons">
-                <button class="pl-btn" id="pl-prev" type="button" aria-label="Música anterior">
-                    <svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z" /></svg>
-                </button>
-                <button class="pl-btn play" id="pl-play" type="button" aria-label="Tocar">
-                    <svg viewBox="0 0 24 24" id="pl-play-icon"><path d="M8 5v14l11-7z" /></svg>
-                </button>
-                <button class="pl-btn" id="pl-next" type="button" aria-label="Próxima música">
-                    <svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z" /></svg>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <h1 class="title" id="title">Pra você, Diná</h1>
 
@@ -1034,7 +644,7 @@
         </div>
     </div>
 
-    <p class="hint" id="hint">Toca no buquê 🌹</p>
+    <p class="hint" id="hint">Toca no buquê 🌷</p>
 
     <!-- ============ CARTA ============ -->
     <!-- ✏️ EDITE O TEXTO DA CARTA AQUI À VONTADE -->
@@ -1075,174 +685,19 @@
     <!-- O dina.html abre aqui por cima (em vez de trocar de página), assim a música não para -->
     <div class="saved-view" id="saved-view" hidden></div>
 
+    <!-- Tocador de música (o mesmo do cantinho e do convite) -->
+    <script src="assets/Dina/player.js"></script>
     <script>
-        /* =========================================================
-           MÚSICAS DA TAYLOR (arquivos em assets/Musics/)
-           Se algum arquivo não existir, ele é pulado automaticamente.
-           ========================================================= */
-        const musicList = [
-            { src: 'assets/Musics/Taylor-Swift-Enchanted-Taylor-s-Version-Lyric-Video_009_128k.mp3', title: 'Enchanted' },
-            { src: 'assets/Musics/Taylor-Swift-Everything-Has-Changed-ft-Ed-Sheeran_009_128k.mp3', title: 'Everything Has Changed' },
-            { src: 'assets/Musics/Taylor-Swift-invisible-string-Official-Lyric-Video_009_128k.mp3', title: 'invisible string' },
-            { src: 'assets/Musics/Taylor-Swift-Daylight-Official-Audio_009_128k.mp3', title: 'Daylight' },
-        ];
-        const ARTIST = 'Taylor Swift';
-
         const WHATSAPP_NUMBER = '5513982118181';
         const WHATSAPP_MSG = 'Oi Nick! Abri o buquê e li a carta. Minha música favorita da Taylor é: ';
-
-        /* =================== Tocador =================== */
-        // iPhone: trata como "tocador de música", que continua tocando com a tela bloqueada
-        // ou em outro app (e ignora a chave do silencioso)
-        try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { }
-
-        const bgMusic = document.getElementById('bg-music');
-        const player = document.getElementById('player');
-        const playlistEl = document.getElementById('playlist');
-        const tracksEl = document.getElementById('pl-tracks');
-        const titleEl = document.getElementById('pl-title');
-        const curEl = document.getElementById('pl-cur');
-        const durEl = document.getElementById('pl-dur');
-        const seekEl = document.getElementById('pl-seek');
-        const playBtn = document.getElementById('pl-play');
-        const playIcon = document.getElementById('pl-play-icon');
-        const loopBtn = document.getElementById('pl-loop');
-        const volumeEl = document.getElementById('pl-volume');
-
-        const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
-        const ICON_PAUSE = '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>';
-
-        let currentTrack = 0;
-        let userPaused = false;   // se ela pausou, a música não volta sozinha
-        let isLooping = false;
-        let seeking = false;
-        let hasStarted = false;
-        const failed = new Set();
-
-        document.body.classList.add('has-player');
-
-        function fmt(sec) {
-            if (!isFinite(sec) || sec < 0) return '0:00';
-            const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
-            return m + ':' + String(s).padStart(2, '0');
-        }
-
-        function renderPlaylist() {
-            tracksEl.innerHTML = '';
-            musicList.forEach((t, i) => {
-                if (failed.has(i)) return;
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.className = 'pl-track' + (i === currentTrack ? ' active' : '');
-                const playingNow = i === currentTrack && !bgMusic.paused;
-                b.innerHTML = `<span class="num">${playingNow ? '♪' : i + 1}</span><span>${t.title}</span>`;
-                b.addEventListener('click', () => {
-                    userPaused = false;
-                    if (i === currentTrack) bgMusic.play().catch(() => { });
-                    else loadTrack(i, true);
-                });
-                tracksEl.appendChild(b);
-            });
-        }
-
-        function updateMediaSession() {
-            if (!('mediaSession' in navigator)) return;
-            try {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: musicList[currentTrack].title,
-                    artist: ARTIST,
-                    album: 'Pra você, Diná 🌹'
-                });
-            } catch (e) { }
-        }
-
-        function loadTrack(i, autoplay) {
-            currentTrack = i;
-            bgMusic.src = musicList[i].src;
-            titleEl.innerText = musicList[i].title;
-            curEl.innerText = '0:00';
-            durEl.innerText = '0:00';
-            seekEl.value = 0;
-            seekEl.style.setProperty('--p', '0%');
-            updateMediaSession();
-            renderPlaylist();
-            if (autoplay) bgMusic.play().catch(() => { });
-        }
-
-        function stepTrack(dir) {
-            if (failed.size === musicList.length) return;
-            let n = currentTrack;
-            do { n = (n + dir + musicList.length) % musicList.length; } while (failed.has(n));
-            return n;
-        }
-
-        // Chamado pelo toque no buquê e pelo primeiro toque na tela
-        function playMusic() {
-            if (userPaused || failed.size === musicList.length) return Promise.resolve();
-            return bgMusic.play();
-        }
-
-        function togglePlay() {
-            if (bgMusic.paused) {
-                userPaused = false;
-                bgMusic.play().catch(() => { });
-            } else {
-                userPaused = true;
-                bgMusic.pause();
-            }
-        }
-
-        function nextTrack() {
-            const n = stepTrack(1);
-            if (n !== undefined) loadTrack(n, !userPaused);
-        }
-
-        function prevTrack() {
-            if (bgMusic.currentTime > 3) { bgMusic.currentTime = 0; return; }
-            const n = stepTrack(-1);
-            if (n !== undefined) loadTrack(n, !userPaused);
-        }
-
-        function setPlayingUI(playing) {
-            player.classList.toggle('playing', playing);
-            playIcon.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
-            playBtn.setAttribute('aria-label', playing ? 'Pausar' : 'Tocar');
-            if ('mediaSession' in navigator) {
-                try { navigator.mediaSession.playbackState = playing ? 'playing' : 'paused'; } catch (e) { }
-            }
-            renderPlaylist();
-        }
-
-        playBtn.addEventListener('click', togglePlay);
-        document.getElementById('pl-next').addEventListener('click', () => { userPaused = false; nextTrack(); });
-        document.getElementById('pl-prev').addEventListener('click', () => { userPaused = false; prevTrack(); });
-
-        document.getElementById('pl-disc').addEventListener('click', e => {
-            e.stopPropagation();
-            playlistEl.classList.toggle('closed');
-        });
-        // Fecha a lista ao tocar fora do tocador
-        document.addEventListener('click', e => {
-            if (!player.contains(e.target)) playlistEl.classList.add('closed');
-        });
-
-        loopBtn.addEventListener('click', () => {
-            isLooping = !isLooping;
-            bgMusic.loop = isLooping;
-            loopBtn.classList.toggle('on', isLooping);
-            loopBtn.innerText = isLooping ? '🔂 Repetindo' : '🔁 Repetir';
-        });
-
-        volumeEl.addEventListener('input', e => bgMusic.volume = e.target.value);
 
         /* =================== Efeitos sonoros =================== */
         // Gerados na hora com Web Audio (não precisa de arquivo nenhum)
         const sfx = (() => {
             let ctx = null, master = null, noiseBuf = null;
-            let enabled = true;
 
             function ensure() {
-                if (!enabled) return null;
+                if (!DinaPlayer.sfxEnabled) return null;
                 if (!ctx) {
                     const AC = window.AudioContext || window.webkitAudioContext;
                     if (!AC) return null;
@@ -1300,8 +755,7 @@
             }
 
             return {
-                get enabled() { return enabled; },
-                set enabled(v) { enabled = v; },
+                get enabled() { return DinaPlayer.sfxEnabled; },
                 unlock: () => ensure(),
                 // Toque no buquê: farfalhar do papel + "pop" suave
                 rustle: () => play(t => {
@@ -1336,66 +790,9 @@
             };
         })();
 
-        const sfxBtn = document.getElementById('pl-sfx');
-        sfxBtn.addEventListener('click', () => {
-            sfx.enabled = !sfx.enabled;
-            sfxBtn.classList.toggle('on', sfx.enabled);
-            sfxBtn.innerText = sfx.enabled ? '🔔 Efeitos' : '🔕 Efeitos';
-        });
-
         function vibrate(ms) {
             try { if (sfx.enabled && navigator.vibrate) navigator.vibrate(ms); } catch (e) { }
         }
-
-        // Barra de progresso (funciona com dedo e mouse)
-        seekEl.addEventListener('input', () => {
-            seeking = true;
-            const pct = seekEl.value / 10;
-            seekEl.style.setProperty('--p', pct + '%');
-            if (isFinite(bgMusic.duration)) curEl.innerText = fmt(bgMusic.duration * seekEl.value / 1000);
-        });
-        seekEl.addEventListener('change', () => {
-            if (isFinite(bgMusic.duration)) bgMusic.currentTime = bgMusic.duration * seekEl.value / 1000;
-            seeking = false;
-        });
-
-        bgMusic.addEventListener('loadedmetadata', () => durEl.innerText = fmt(bgMusic.duration));
-        bgMusic.addEventListener('timeupdate', () => {
-            if (seeking || !isFinite(bgMusic.duration)) return;
-            const pct = bgMusic.currentTime / bgMusic.duration * 100;
-            seekEl.value = Math.round(pct * 10);
-            seekEl.style.setProperty('--p', pct + '%');
-            curEl.innerText = fmt(bgMusic.currentTime);
-        });
-        bgMusic.addEventListener('play', () => { hasStarted = true; setPlayingUI(true); });
-        bgMusic.addEventListener('pause', () => setPlayingUI(false));
-        bgMusic.addEventListener('ended', () => { if (!isLooping) { const n = stepTrack(1); loadTrack(n, true); } });
-        bgMusic.addEventListener('error', () => {
-            // Arquivo não encontrado: pula pra próxima
-            failed.add(currentTrack);
-            if (failed.size === musicList.length) {
-                player.hidden = true;
-                document.body.classList.remove('has-player');
-                fit();
-                return;
-            }
-            loadTrack(stepTrack(1), hasStarted && !userPaused);
-        });
-
-        // Controles na tela de bloqueio / central de controle do celular
-        if ('mediaSession' in navigator) {
-            const ms = navigator.mediaSession;
-            const handlers = {
-                play: () => { userPaused = false; bgMusic.play().catch(() => { }); },
-                pause: () => { userPaused = true; bgMusic.pause(); },
-                nexttrack: () => { userPaused = false; nextTrack(); },
-                previoustrack: () => { userPaused = false; prevTrack(); },
-            };
-            Object.entries(handlers).forEach(([k, fn]) => { try { ms.setActionHandler(k, fn); } catch (e) { } });
-        }
-
-        bgMusic.volume = volumeEl.value;
-        loadTrack(0, false);
 
         /* =================== Pétalas de fundo =================== */
         const PETAL_COLORS = ['#e91e63', '#f06292', '#c2185b', '#f8bbd0', '#d81b60', '#ff8fab'];
@@ -1561,7 +958,7 @@
             if (now - lastClick < 220) return;
             lastClick = now;
 
-            playMusic().catch(() => { });
+            DinaPlayer.play().catch(() => { });
             sfx.rustle();
             vibrate(12);
             stageWrap.classList.remove('breathe');
@@ -1630,7 +1027,8 @@
         bouquet.addEventListener('click', onBouquetClick);
 
         function replyWhatsapp() {
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`, '_blank');
+            // Direto no api.whatsapp.com: o atalho "wa.me" estraga emojis e símbolos ao redirecionar
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(WHATSAPP_MSG)}`, '_blank');
         }
 
         /* =================== Cartas guardadas =================== */
@@ -1641,15 +1039,18 @@
         function openSaved() {
             if (savedOpen) return;
             savedOpen = true;
-            if (!savedView.querySelector('iframe')) {
-                const frame = document.createElement('iframe');
-                frame.src = 'dina.html';
-                frame.title = 'Cartinhas da Diná';
+            // Abre o cantinho da Diná (dina.html) direto nas cartas guardadas.
+            // De lá ela também chega no convite, sempre com a música daqui tocando
+            let frame = savedView.querySelector('iframe');
+            if (!frame) {
+                frame = document.createElement('iframe');
+                frame.title = 'Cantinho da Diná';
                 savedView.appendChild(frame);
             }
+            frame.src = 'dina.html#cartas';
             savedView.hidden = false;
             requestAnimationFrame(() => requestAnimationFrame(() => savedView.classList.add('show')));
-            playlistEl.classList.add('closed');
+            DinaPlayer.closePlaylist();
             // Botão "voltar" do celular fecha as cartas em vez de sair do site
             try { history.pushState({ dinaSaved: true }, '', '#cartas'); } catch (e) { }
         }
@@ -1676,16 +1077,13 @@
             document.documentElement.style.setProperty('--s', Math.max(.55, s).toFixed(3));
         }
         window.addEventListener('resize', fit);
+        window.addEventListener('dinaplayer:hidden', fit); // sem músicas: o buquê usa a tela toda
         fit();
 
         /* =================== Início =================== */
         window.addEventListener('load', () => {
             setInterval(spawnAmbientPetal, 650);
-            // Tenta autoplay; se o navegador bloquear (quase sempre no celular),
-            // a música começa no primeiro toque na tela
-            playMusic().catch(() => {
-                document.addEventListener('click', () => playMusic().catch(() => { }), { once: true });
-            });
+            // A música (e continuar do ponto em que parou) fica por conta do assets/Dina/player.js
         });
     </script>
 </body>
