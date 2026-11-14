@@ -457,8 +457,13 @@
             border: 1px solid rgba(194, 24, 91, .18);
             box-shadow: 0 4px 14px rgba(120, 20, 60, .1);
             color: var(--rose-dark);
-            font-weight: 600;
+            font: 600 1rem 'Segoe UI', Tahoma, sans-serif;
             text-decoration: none;
+            touch-action: manipulation;
+        }
+
+        .back[hidden] {
+            display: none;
         }
 
         @media (max-width: 480px) {
@@ -518,7 +523,8 @@
         </symbol>
     </svg>
 
-    <a class="back" href="dina.html">← Início</a>
+    <!-- Volta pra tela anterior do convite (na primeira tela fica escondido) -->
+    <button type="button" class="back" id="btn-back" onclick="goBack()" hidden>← Voltar</button>
 
     <!-- Som de comemoração -->
     <audio id="celebration-sound" src="assets/Sounds/cheering.mp3" preload="auto"></audio>
@@ -651,10 +657,31 @@
         const celebrationSound = document.getElementById('celebration-sound');
 
         /* =================== Etapas =================== */
+        const STEPS = ['invite-step', 'surprise-step', 'details-step', 'final-step'];
+
         function showStep(id) {
             document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', s.id === id));
             loadGifs(document.getElementById(id));
+            // "← Voltar" só aparece depois da primeira tela
+            document.getElementById('btn-back').hidden = id === STEPS[0];
             window.scrollTo(0, 0);
+        }
+
+        // Volta pra tela anterior (o que ela já preencheu continua lá)
+        function goBack() {
+            const current = STEPS.findIndex(id => document.getElementById(id).classList.contains('active'));
+            if (current <= 0) return;
+            const previous = STEPS[current - 1];
+            if (previous === 'invite-step') resetNoButton();
+            showStep(previous);
+        }
+
+        // De volta à pergunta inicial: o "Nem pensar" volta pro lugar, pronto pra fugir de novo
+        function resetNoButton() {
+            moveCount = 0;
+            btnNo.innerText = 'Nem pensar 🏃‍♀️';
+            btnNo.removeAttribute('style');
+            document.querySelector('#invite-step .buttons').appendChild(btnNo);
         }
 
         // Cada GIF só baixa quando a etapa dele aparece (economiza internet no celular)
