@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nossos momentos 📸</title>
+    <!-- Página pessoal: não aparecer no Google -->
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📸%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/Dina/player.css">
+    <style>
+        :root {
+            --rose: #c2185b;
+            --rose-dark: #880e4f;
+            --ink: #4a2c35;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body,
+        button,
+        a {
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 32 32'%3E%3Cpath fill='%23c2185b' stroke='white' stroke-width='1.5' stroke-linejoin='round' d='M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L5.5 3.21z'/%3E%3Ctext x='8' y='20' font-size='16'%3E🌷%3C/text%3E%3C/svg%3E") 5 3, auto !important;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background: radial-gradient(circle at 50% 0%, #ffffff 0%, #ffeef2 40%, #fbd9e1 100%) fixed;
+            padding: 28px 16px calc(32px + env(safe-area-inset-bottom));
+            overflow-x: hidden;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        /* Espaço pro tocador fixo embaixo (o daqui, ou o do buquê quando aberto por cima dele) */
+        body.has-player,
+        html.embedded body {
+            padding-bottom: calc(120px + env(safe-area-inset-bottom));
+        }
+
+        /* Pétalas de fundo */
+        #ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .amb-petal {
+            position: absolute;
+            top: -30px;
+            border-radius: 0 100% 0 100%;
+            opacity: .5;
+            animation: ambFall linear forwards;
+        }
+
+        @keyframes ambFall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(calc(var(--dx) * -.3), 55vh) rotate(200deg);
+            }
+
+            100% {
+                transform: translate(var(--dx), 112vh) rotate(380deg);
+            }
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+            animation: fadeUp .45s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 7px 14px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .75);
+            border: 1px solid rgba(194, 24, 91, .18);
+            color: var(--rose-dark);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 26px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
+            color: var(--rose-dark);
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+        }
+
+        header p {
+            margin: 6px 0 0;
+            color: #8a5a67;
+            font-size: clamp(.95rem, 3.6vw, 1.05rem);
+        }
+
+        /* ---------- Fotos (estilo polaroid) ---------- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+            gap: 26px 22px;
+            justify-items: center;
+        }
+
+        .polaroid {
+            width: 100%;
+            max-width: 340px;
+            margin: 0;
+            padding: 12px 12px 14px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 14px 34px rgba(80, 10, 35, .2);
+            transform: rotate(var(--tilt, -2deg));
+            transition: transform .25s ease, box-shadow .25s ease;
+            position: relative;
+        }
+
+        .gallery> :nth-child(even) .polaroid,
+        .gallery>.polaroid:nth-child(even) {
+            --tilt: 2deg;
+        }
+
+        /* Fitinha segurando a foto */
+        .polaroid::before {
+            content: '';
+            position: absolute;
+            top: -11px;
+            left: 50%;
+            width: 92px;
+            height: 24px;
+            transform: translateX(-50%) rotate(-3deg);
+            background: rgba(248, 187, 208, .75);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+        }
+
+        .polaroid button {
+            display: block;
+            width: 100%;
+            padding: 0;
+            border: none;
+            background: #f6e9ed;
+            touch-action: manipulation;
+        }
+
+        .polaroid img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+        }
+
+        .polaroid figcaption {
+            margin-top: 10px;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-weight: 700;
+            font-size: 1.5rem;
+            line-height: 1.15;
+            color: var(--rose-dark);
+        }
+
+        .polaroid figcaption small {
+            display: block;
+            font-weight: 500;
+            font-size: 1.05rem;
+            color: #8a5a67;
+        }
+
+        @media (hover: hover) {
+            .polaroid:hover {
+                transform: rotate(0) scale(1.02);
+                box-shadow: 0 18px 40px rgba(80, 10, 35, .26);
+            }
+        }
+
+        /* Espaço do próximo momento */
+        .polaroid.next {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            aspect-ratio: 4 / 5.6;
+            background: rgba(255, 255, 255, .55);
+            border: 2px dashed rgba(194, 24, 91, .35);
+            box-shadow: none;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 1.45rem;
+            color: var(--rose-dark);
+        }
+
+        .polaroid.next::before {
+            display: none;
+        }
+
+        .polaroid.next span {
+            font-size: 2.4rem;
+        }
+
+        /* ---------- Foto ampliada ---------- */
+        .viewer {
+            position: fixed;
+            inset: 0;
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+            background: rgba(40, 10, 22, .96);
+            animation: fadeIn .25s ease;
+        }
+
+        .viewer[hidden] {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+        }
+
+        /* Botão de baixar a foto (embaixo da polaroid e na foto ampliada) */
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border: 2px solid var(--rose);
+            border-radius: 50px;
+            background: #fff;
+            color: var(--rose-dark);
+            font: 700 .95rem 'Segoe UI', Tahoma, sans-serif;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(194, 24, 91, .18);
+            transition: transform .2s;
+            touch-action: manipulation;
+        }
+
+        .btn-download:active {
+            transform: scale(.96);
+        }
+
+        @media (hover: hover) {
+            .btn-download:hover {
+                transform: scale(1.04);
+            }
+        }
+
+        .moment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .viewer .btn-download {
+            border-color: #fff;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, .35);
+        }
+
+        .viewer img {
+            max-width: 100%;
+            max-height: calc(100% - 130px);
+            border-radius: 6px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+            object-fit: contain;
+        }
+
+        .viewer p {
+            margin: 0;
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            color: #ffe3ec;
+            text-align: center;
+        }
+
+        .viewer-close {
+            position: absolute;
+            top: calc(12px + env(safe-area-inset-top));
+            right: 12px;
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .9);
+            color: var(--rose-dark);
+            font-size: 1.3rem;
+            font-weight: 700;
+            touch-action: manipulation;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding-top: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ambient"></div>
+
+    <main>
+        <a class="back-link" href="dina.html">← Início</a>
+
+        <header>
+            <h1>Nossos momentos 📸</h1>
+            <p>Um cantinho pra guardar as nossas fotos. Por enquanto é só uma, mas já é um começo. 🌷</p>
+        </header>
+
+        <section class="gallery" id="gallery" aria-label="Fotos"></section>
+    </main>
+
+    <!-- Foto ampliada (abre ao tocar numa foto) -->
+    <div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="Foto ampliada">
+        <button type="button" class="viewer-close" id="viewer-close" aria-label="Fechar">✕</button>
+        <img id="viewer-img" alt="">
+        <p id="viewer-caption"></p>
+        <a class="btn-download" id="viewer-download" href="#">⬇️ Baixar foto</a>
+    </div>
+
+    <!-- Tocador de música (o mesmo do buquê; continua a música do ponto em que estava) -->
+    <script src="assets/Dina/player.js"></script>
+    <script>
+        /* ============================================================
+           📸 FOTOS: pra adicionar uma nova, coloque o arquivo em
+           assets/Dina/fotos/ e acrescente uma linha aqui embaixo.
+           (date é opcional: deixe '' se não quiser mostrar;
+            name é o nome do arquivo quando ela baixar a foto)
+           ============================================================ */
+        const MOMENTS = [
+            { src: 'assets/Dina/fotos/dina-e-nick.jpeg', caption: 'Nossa primeira foto 🤍', date: '18/11/2026 · nosso primeiro encontro', name: 'Diná e Nick' },
+        ];
+
+        /* Aberta por cima do buquê (botão "Guardar" do dina0.html → cantinho → aqui)?
+           Então o tocador é o de lá: só deixa o espaço embaixo pra ele */
+        if (window.self !== window.top) document.documentElement.classList.add('embedded');
+
+        // Ela já viu esta página: tira o selo "Novo ✨" do cartão no cantinho (dina.html)
+        try { localStorage.setItem('dina-visto-momentos', '1'); } catch (e) { }
+
+        const gallery = document.getElementById('gallery');
+        const viewer = document.getElementById('viewer');
+        const viewerImg = document.getElementById('viewer-img');
+        const viewerCaption = document.getElementById('viewer-caption');
+
+        /* Baixar a foto
+           - Celular: abre o "compartilhar" do aparelho, que tem "Salvar imagem"
+             (no iPhone é o jeito de ela ir direto pra galeria / Fotos)
+           - Computador (ou celular sem esse recurso): baixa o arquivo normal */
+        function fileName(m) {
+            const ext = (m.src.match(/\.\w+$/) || ['.jpg'])[0];
+            return (m.name || 'Foto') + ext;
+        }
+
+        function downloadLink(m, a) {
+            a.href = m.src;
+            a.setAttribute('download', fileName(m));
+            a.onclick = async e => {
+                const touch = matchMedia('(pointer: coarse)').matches;
+                if (!touch || !navigator.canShare) return; // segue o download normal do link
+                e.preventDefault();
+                try {
+                    const blob = await (await fetch(m.src)).blob();
+                    const file = new File([blob], fileName(m), { type: blob.type || 'image/jpeg' });
+                    if (navigator.canShare({ files: [file] })) {
+                        await navigator.share({ files: [file] });
+                        return;
+                    }
+                } catch (err) {
+                    if (err && err.name === 'AbortError') return; // ela fechou o compartilhar
+                }
+                // Não deu pra compartilhar: baixa do jeito normal
+                const tmp = document.createElement('a');
+                tmp.href = m.src;
+                tmp.download = fileName(m);
+                document.body.appendChild(tmp);
+                tmp.click();
+                tmp.remove();
+            };
+        }
+
+        MOMENTS.forEach((m, i) => {
+            const wrap = document.createElement('div');
+            wrap.className = 'moment';
+
+            const fig = document.createElement('figure');
+            fig.className = 'polaroid';
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.setAttribute('aria-label', 'Ampliar foto: ' + m.caption);
+            const img = document.createElement('img');
+            img.src = m.src;
+            img.alt = m.caption;
+            img.loading = i < 2 ? 'eager' : 'lazy';
+            img.decoding = 'async';
+            // Arquivo que não existe: some com a polaroid em vez de mostrar imagem quebrada
+            img.onerror = () => wrap.remove();
+            btn.appendChild(img);
+            btn.addEventListener('click', () => openViewer(m));
+
+            const cap = document.createElement('figcaption');
+            cap.textContent = m.caption;
+            if (m.date) {
+                const d = document.createElement('small');
+                d.textContent = m.date;
+                cap.appendChild(d);
+            }
+
+            fig.append(btn, cap);
+
+            const dl = document.createElement('a');
+            dl.className = 'btn-download';
+            dl.textContent = '⬇️ Baixar foto';
+            downloadLink(m, dl);
+
+            wrap.append(fig, dl);
+            gallery.appendChild(wrap);
+        });
+
+        // Um espaço vazio esperando a próxima foto
+        const next = document.createElement('div');
+        next.className = 'polaroid next';
+        next.innerHTML = '<span>✨</span>Próximo momento:<br>em breve...';
+        gallery.appendChild(next);
+
+        /* Foto ampliada */
+        function openViewer(m) {
+            viewerImg.src = m.src;
+            viewerImg.alt = m.caption;
+            viewerCaption.textContent = m.caption + (m.date ? ' · ' + m.date : '');
+            downloadLink(m, document.getElementById('viewer-download'));
+            viewer.hidden = false;
+            document.body.style.overflow = 'hidden';
+            if (window.DinaPlayer && DinaPlayer.closePlaylist) DinaPlayer.closePlaylist();
+        }
+
+        function closeViewer() {
+            viewer.hidden = true;
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('viewer-close').addEventListener('click', closeViewer);
+        viewer.addEventListener('click', e => { if (e.target === viewer) closeViewer(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && !viewer.hidden) closeViewer(); });
+
+        /* Pétalas caindo de leve */
+        const COLORS = ['#e91e63', '#f06292', '#f8bbd0', '#ff8fab', '#f48fb1'];
+        const ambient = document.getElementById('ambient');
+        setInterval(() => {
+            const p = document.createElement('div');
+            p.className = 'amb-petal';
+            const size = 8 + Math.random() * 9;
+            p.style.width = p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+            p.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
+            const dur = 8 + Math.random() * 6;
+            p.style.animationDuration = dur + 's';
+            ambient.appendChild(p);
+            setTimeout(() => p.remove(), dur * 1000);
+        }, 900);
+    </script>
+</body>
+
+</html>

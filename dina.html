@@ -153,6 +153,43 @@
             transition: transform .2s, box-shadow .2s;
         }
 
+        /* Selo "Novo ✨": cartão com novidade que ela ainda não abriu */
+        .hub-card {
+            position: relative;
+        }
+
+        .hub-card.is-new {
+            border-color: rgba(194, 24, 91, .45);
+        }
+
+        .hub-card.is-new::after {
+            content: 'Novo ✨';
+            position: absolute;
+            top: -10px;
+            right: 14px;
+            padding: 4px 11px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: #fff;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .02em;
+            box-shadow: 0 4px 12px rgba(194, 24, 91, .4);
+            animation: newPulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes newPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
         .hub-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 30px rgba(120, 20, 60, .18);
@@ -527,6 +564,19 @@
                         <small>A carta virtual e a de papel, pra reler quando quiser</small></span>
                     <span class="hub-arrow">›</span>
                 </a>
+                <!-- data-new: mostra o selo "Novo ✨" até ela abrir a página (some sozinho depois) -->
+                <a class="hub-card" href="dinaMomentos.html" data-new="momentos">
+                    <span class="hub-emoji">📸</span>
+                    <span class="hub-text"><strong>Nossos momentos</strong>
+                        <small>Nossas fotos, guardadas aqui</small></span>
+                    <span class="hub-arrow">›</span>
+                </a>
+                <a class="hub-card" href="dinaInvite.html">
+                    <span class="hub-emoji">🥂</span>
+                    <span class="hub-text"><strong>Um convite</strong>
+                        <small>Tenho uma proposta pra você...</small></span>
+                    <span class="hub-arrow">›</span>
+                </a>
             </nav>
         </section>
 
@@ -660,6 +710,18 @@
                 });
             });
         }
+
+        /* Selo "Novo ✨" nos cartões que ela ainda não abriu (a página aberta marca como vista) */
+        function markNew() {
+            document.querySelectorAll('[data-new]').forEach(card => {
+                let seen = false;
+                try { seen = localStorage.getItem('dina-visto-' + card.dataset.new) === '1'; } catch (e) { }
+                card.classList.toggle('is-new', !seen);
+            });
+        }
+        markNew();
+        // Voltou pelo "voltar" do navegador (página guardada em cache): confere de novo
+        window.addEventListener('pageshow', markNew);
 
         /* Telas: início (#inicio) e cartas guardadas (#cartas) */
         function route() {

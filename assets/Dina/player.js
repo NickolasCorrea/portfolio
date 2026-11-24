@@ -31,7 +31,9 @@
     }
 
     /* ---------- Músicas (arquivos em assets/Musics/) ---------- */
+    // A primeira da lista é a que toca quando ela abre o site pela primeira vez
     const TRACKS = [
+        { src: 'assets/Musics/Taylor-Swift-Guilty-as-Sin.mp3', title: 'Guilty as Sin?' },
         { src: 'assets/Musics/Taylor-Swift-Enchanted-Taylor-s-Version-Lyric-Video_009_128k.mp3', title: 'Enchanted' },
         { src: 'assets/Musics/Taylor-Swift-Everything-Has-Changed-ft-Ed-Sheeran_009_128k.mp3', title: 'Everything Has Changed' },
         { src: 'assets/Musics/Taylor-Swift-invisible-string-Official-Lyric-Video_009_128k.mp3', title: 'invisible string' },
@@ -154,6 +156,7 @@
         try {
             localStorage.setItem(STATE_KEY, JSON.stringify({
                 track: current,
+                src: TRACKS[current].src, // lembra pela música, não pela posição na lista
                 time: pendingSeek !== null ? pendingSeek : (audio.currentTime || 0),
                 paused: userPaused,
                 loop: isLooping,
@@ -382,15 +385,18 @@
 
     /* ---------- Começa de onde parou ---------- */
     const state = readState();
-    if (state && TRACKS[state.track]) {
-        const recent = Date.now() - (state.at || 0) < MAX_AGE_MS;
+    if (state) {
+        // Acha a música pelo arquivo (se a lista mudou, a posição antiga não vale mais).
+        // Música que saiu da lista, ou estado antigo sem "src": começa pela primeira.
+        const saved = TRACKS.findIndex(t => t.src === state.src);
+        const recent = saved >= 0 && Date.now() - (state.at || 0) < MAX_AGE_MS;
         if (typeof state.vol === 'number') { audio.volume = state.vol; volumeEl.value = state.vol; }
         else audio.volume = volumeEl.value;
         setLoop(!!state.loop);
         setSfx(state.sfx !== false);
         setMuted(!!state.muted);
         userPaused = recent && !!state.paused;
-        loadTrack(state.track, false, recent ? state.time : 0);
+        loadTrack(recent ? saved : 0, false, recent ? state.time : 0);
     } else {
         audio.volume = volumeEl.value;
         setMuted(false);

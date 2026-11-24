@@ -523,8 +523,8 @@
         </symbol>
     </svg>
 
-    <!-- Volta pra tela anterior do convite (na primeira tela fica escondido) -->
-    <button type="button" class="back" id="btn-back" onclick="goBack()" hidden>← Voltar</button>
+    <!-- Primeira tela: volta pro cantinho. Nas outras: volta pra tela anterior do convite -->
+    <button type="button" class="back" id="btn-back" onclick="goBack()">← Início</button>
 
     <!-- Som de comemoração -->
     <audio id="celebration-sound" src="assets/Sounds/cheering.mp3" preload="auto"></audio>
@@ -662,15 +662,15 @@
         function showStep(id) {
             document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', s.id === id));
             loadGifs(document.getElementById(id));
-            // "← Voltar" só aparece depois da primeira tela
-            document.getElementById('btn-back').hidden = id === STEPS[0];
+            // Primeira tela: "← Início" (volta pro cantinho). Nas outras: "← Voltar" (tela anterior)
+            document.getElementById('btn-back').innerText = id === STEPS[0] ? '← Início' : '← Voltar';
             window.scrollTo(0, 0);
         }
 
         // Volta pra tela anterior (o que ela já preencheu continua lá)
         function goBack() {
             const current = STEPS.findIndex(id => document.getElementById(id).classList.contains('active'));
-            if (current <= 0) return;
+            if (current <= 0) { location.href = 'dina.html'; return; }
             const previous = STEPS[current - 1];
             if (previous === 'invite-step') resetNoButton();
             showStep(previous);
