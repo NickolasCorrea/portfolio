@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gato pianista</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Gato pianista</h1>
+      <p class="dica">Clique ou arraste nas teclas, ou use o teclado do computador (Z–M e Q–U). Clique no gato ou aperte espaço para ouvir um miau.</p>
+    </header>
+
+    <div class="cartao">
+      <svg id="palco" class="com-rotulos" viewBox="0 0 840 540" role="group" aria-label="Gato tocando piano">
+        <defs>
+          <linearGradient id="madeira" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#7a4a2e"/>
+            <stop offset="1" stop-color="#3b2416"/>
+          </linearGradient>
+          <linearGradient id="grad-branca" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#ece6df"/>
+          </linearGradient>
+          <linearGradient id="grad-preta" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4a4a4a"/>
+            <stop offset="1" stop-color="#111111"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Gato (fica atrás do piano) -->
+        <g id="gato">
+          <g id="rabo">
+            <path class="contorno-grosso" d="M505 255 C590 250 600 170 570 120 S585 62 612 72"/>
+            <path class="pelo-grosso" d="M505 255 C590 250 600 170 570 120 S585 62 612 72"/>
+          </g>
+          <ellipse class="pelo" cx="420" cy="255" rx="115" ry="95"/>
+          <ellipse class="barriga" cx="420" cy="268" rx="62" ry="62"/>
+
+          <g id="cabeca" role="button" aria-label="Fazer o gato miar">
+            <g class="orelha orelha-esq">
+              <polygon class="pelo" points="348,100 352,22 410,70"/>
+              <polygon class="rosa" points="362,86 363,44 396,72"/>
+            </g>
+            <g class="orelha orelha-dir">
+              <polygon class="pelo" points="492,100 488,22 430,70"/>
+              <polygon class="rosa" points="478,86 477,44 444,72"/>
+            </g>
+            <ellipse class="pelo" cx="420" cy="125" rx="88" ry="74"/>
+            <path class="listra" d="M420 54 v20 M398 58 q4 10 2 20 M442 58 q-4 10 -2 20"/>
+
+            <g class="olho-aberto">
+              <ellipse cx="390" cy="118" rx="11" ry="15" class="olho"/>
+              <ellipse cx="450" cy="118" rx="11" ry="15" class="olho"/>
+              <circle cx="394" cy="112" r="4" fill="#fff"/>
+              <circle cx="454" cy="112" r="4" fill="#fff"/>
+            </g>
+            <path class="olho-feliz" d="M378 122 Q390 106 402 122 M438 122 Q450 106 462 122"/>
+
+            <circle class="bochecha" cx="364" cy="146" r="12"/>
+            <circle class="bochecha" cx="476" cy="146" r="12"/>
+            <path class="nariz" d="M412 137 h16 l-8 9 z"/>
+            <path class="boca" d="M420 146 q-6 10 -16 6 M420 146 q6 10 16 6"/>
+            <ellipse class="boca-aberta" cx="420" cy="160" rx="9" ry="11"/>
+            <path class="bigode" d="M362 140 L300 130 M362 148 L298 154 M478 140 L540 130 M478 148 L542 154"/>
+          </g>
+        </g>
+
+        <!-- Piano -->
+        <rect x="0" y="262" width="840" height="48" rx="10" fill="url(#madeira)"/>
+        <rect x="0" y="302" width="840" height="8" fill="#2a180e"/>
+        <text class="marca" x="420" y="290">Miau &amp; Cia.</text>
+        <g id="teclas-brancas"></g>
+        <g id="teclas-pretas"></g>
+        <rect x="0" y="510" width="840" height="26" rx="6" fill="url(#madeira)"/>
+
+        <g id="notas-voando"></g>
+
+        <!-- Braços (por cima das teclas) -->
+        <g id="bracos">
+          <g id="pata-esq">
+            <path class="contorno-grosso"/>
+            <path class="pelo-grosso"/>
+            <g class="mao">
+              <ellipse class="pelo" rx="18" ry="15"/>
+              <path class="dedos" d="M-7 3 v7 M0 4 v7 M7 3 v7"/>
+            </g>
+          </g>
+          <g id="pata-dir">
+            <path class="contorno-grosso"/>
+            <path class="pelo-grosso"/>
+            <g class="mao">
+              <ellipse class="pelo" rx="18" ry="15"/>
+              <path class="dedos" d="M-7 3 v7 M0 4 v7 M7 3 v7"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <div class="controles">
+      <button id="botao-melodia" type="button">▶ Tocar melodia</button>
+      <button id="botao-miau" type="button">Miau!</button>
+      <label class="volume">Volume
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7">
+      </label>
+      <label class="opcao">
+        <input id="mostrar-rotulos" type="checkbox" checked>
+        Mostrar letras nas teclas
+      </label>
+    </div>
+  </main>
+
+  <script src="js/som.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
