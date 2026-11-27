@@ -359,7 +359,7 @@
 
         <header>
             <h1>Nossos momentos 📸</h1>
-            <p>Um cantinho pra guardar as nossas fotos. Por enquanto é só uma, mas já é um começo. 🌷</p>
+            <p>Um cantinho pra guardar as nossas fotos, encontro por encontro. 🌷</p>
         </header>
 
         <section class="gallery" id="gallery" aria-label="Fotos"></section>
@@ -383,15 +383,19 @@
             name é o nome do arquivo quando ela baixar a foto)
            ============================================================ */
         const MOMENTS = [
-            { src: 'assets/Dina/fotos/dina-e-nick.jpeg', caption: 'Nossa primeira foto 🤍', date: '18/11/2026 · nosso primeiro encontro', name: 'Diná e Nick' },
+            { src: 'assets/Dina/fotos/Diná e Nick 18-11-2026.jpeg', caption: 'Nossa primeira foto 🤍', date: '18/11/2026 · nosso primeiro encontro', name: 'Diná e Nick 18-11-2026' },
+            { src: 'assets/Dina/fotos/Diná e Nick 19-11-2026.jpeg', caption: 'Quando ganhamos sentimento 🌷', date: '19/11/2026 · um dia muito gostoso', name: 'Diná e Nick 19-11-2026' },
+            { src: 'assets/Dina/fotos/Diná e Nick 24-11-2026.jpeg', caption: 'Xadrez e muito tempo juntos ♟️', date: '24/11/2026 · com direito a vinho 🍷', name: 'Diná e Nick 24-11-2026' },
         ];
+        // ⚠️ Ao adicionar foto, atualize também o número em data-new="momentos-N" no dina.html
+        //    (assim o selo "Novo ✨" volta a aparecer pra ela)
 
         /* Aberta por cima do buquê (botão "Guardar" do dina0.html → cantinho → aqui)?
            Então o tocador é o de lá: só deixa o espaço embaixo pra ele */
         if (window.self !== window.top) document.documentElement.classList.add('embedded');
 
         // Ela já viu esta página: tira o selo "Novo ✨" do cartão no cantinho (dina.html)
-        try { localStorage.setItem('dina-visto-momentos', '1'); } catch (e) { }
+        try { localStorage.setItem('dina-visto-momentos-' + MOMENTS.length, '1'); } catch (e) { }
 
         const gallery = document.getElementById('gallery');
         const viewer = document.getElementById('viewer');
