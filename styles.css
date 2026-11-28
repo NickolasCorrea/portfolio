@@ -903,3 +903,21 @@ input:checked~.toggle {
 #contact {
     scroll-margin-top: 150px; /* Ajuste este valor conforme necessário */
 }
+
+/* Menu mobile com 6 botoes + modo escuro: reduz um pouco em telas estreitas */
+@media (max-width: 420px) {
+    .cabecalho__menu__mobile {
+        gap: 0.5em;
+    }
+
+    .botao__mobile {
+        width: 38px;
+        height: 38px;
+    }
+
+    .botao__mobile__icone,
+    .moon,
+    .sun {
+        font-size: 21px;
+    }
+}

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gato Guitarrista</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <main class="palco">
+    <header class="topo">
+      <h1>Gato Guitarrista</h1>
+      <p class="dica">Clique no gato ou aperte <kbd>Espaço</kbd> para tocar. Troque o acorde com <kbd>1</kbd>–<kbd>6</kbd>.</p>
+    </header>
+
+    <div class="cena" id="cena">
+      <div class="holofote" aria-hidden="true"></div>
+      <div class="notas" id="notas" aria-hidden="true"></div>
+
+      <svg id="gato" viewBox="0 0 400 460" role="img" aria-label="Gato laranja tocando um violão">
+        <!-- Rabo (atrás do corpo) -->
+        <g id="rabo">
+          <path d="M255 395 C 330 400, 360 330, 335 270 C 325 245, 345 230, 355 245"
+                fill="none" stroke="var(--pelo-escuro)" stroke-width="22" stroke-linecap="round"/>
+        </g>
+
+        <!-- Corpo -->
+        <ellipse cx="200" cy="330" rx="95" ry="110" fill="var(--pelo)"/>
+        <ellipse cx="200" cy="350" rx="58" ry="78" fill="var(--barriga)"/>
+        <ellipse cx="150" cy="435" rx="32" ry="16" fill="var(--pelo-escuro)"/>
+        <ellipse cx="250" cy="435" rx="32" ry="16" fill="var(--pelo-escuro)"/>
+
+        <!-- Cabeça -->
+        <g id="cabeca">
+          <polygon points="128,128 118,48 178,98" fill="var(--pelo)"/>
+          <polygon points="272,128 282,48 222,98" fill="var(--pelo)"/>
+          <polygon points="136,114 130,68 166,98" fill="var(--orelha)"/>
+          <polygon points="264,114 270,68 234,98" fill="var(--orelha)"/>
+          <ellipse cx="200" cy="160" rx="88" ry="74" fill="var(--pelo)"/>
+          <!-- listras -->
+          <path d="M200 88 v22 M182 92 l4 16 M218 92 l-4 16" stroke="var(--pelo-escuro)" stroke-width="6" stroke-linecap="round"/>
+          <ellipse cx="200" cy="192" rx="42" ry="28" fill="var(--barriga)"/>
+
+          <g id="olhos">
+            <ellipse cx="168" cy="152" rx="11" ry="15" fill="var(--olho)"/>
+            <ellipse cx="232" cy="152" rx="11" ry="15" fill="var(--olho)"/>
+            <circle cx="172" cy="146" r="4" fill="#fff"/>
+            <circle cx="236" cy="146" r="4" fill="#fff"/>
+          </g>
+
+          <!-- Óculos escuros do modo rock -->
+          <g id="oculos">
+            <rect x="140" y="136" width="54" height="32" rx="10" fill="#111"/>
+            <rect x="206" y="136" width="54" height="32" rx="10" fill="#111"/>
+            <path d="M194 148 h12 M140 146 l-22 -8 M260 146 l22 -8" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+            <path d="M150 144 l14 0" stroke="#555" stroke-width="4" stroke-linecap="round"/>
+            <path d="M216 144 l14 0" stroke="#555" stroke-width="4" stroke-linecap="round"/>
+          </g>
+
+          <path d="M193 178 h14 l-7 8 z" fill="var(--orelha)"/>
+          <path id="boca-fechada" d="M200 186 q-8 12 -18 4 M200 186 q8 12 18 4"
+                fill="none" stroke="var(--olho)" stroke-width="3" stroke-linecap="round"/>
+          <ellipse id="boca-aberta" cx="200" cy="197" rx="9" ry="11" fill="#7a2b2b"/>
+
+          <g stroke="var(--olho)" stroke-width="2" stroke-linecap="round" opacity=".7">
+            <path d="M160 186 l-50 -8 M160 194 l-50 4"/>
+            <path d="M240 186 l50 -8 M240 194 l50 4"/>
+          </g>
+        </g>
+
+        <!-- Violão -->
+        <g id="violao" transform="translate(215 345) rotate(25)">
+          <rect x="-205" y="-14" width="38" height="28" rx="6" fill="var(--madeira-escura)"/>
+          <circle cx="-198" cy="-17" r="4" fill="#ddd"/><circle cx="-186" cy="-17" r="4" fill="#ddd"/><circle cx="-174" cy="-17" r="4" fill="#ddd"/>
+          <circle cx="-198" cy="17" r="4" fill="#ddd"/><circle cx="-186" cy="17" r="4" fill="#ddd"/><circle cx="-174" cy="17" r="4" fill="#ddd"/>
+          <rect x="-170" y="-9" width="120" height="18" fill="var(--madeira-escura)"/>
+          <g stroke="#c9b79c" stroke-width="2">
+            <path d="M-150 -9 v18 M-128 -9 v18 M-108 -9 v18 M-90 -9 v18 M-74 -9 v18"/>
+          </g>
+          <ellipse cx="-28" cy="0" rx="40" ry="38" fill="var(--madeira)"/>
+          <ellipse cx="32" cy="0" rx="52" ry="50" fill="var(--madeira)"/>
+          <ellipse cx="32" cy="0" rx="44" ry="42" fill="none" stroke="var(--madeira-escura)" stroke-width="2" opacity=".4"/>
+          <circle cx="-8" cy="0" r="15" fill="#2a1608"/>
+          <rect x="52" y="-16" width="9" height="32" rx="3" fill="var(--madeira-escura)"/>
+          <g id="cordas" stroke="#f2ede4" stroke-width="1.2">
+            <path d="M57 -6 L-200 -6"/><path d="M57 -3.6 L-200 -3.6"/><path d="M57 -1.2 L-200 -1.2"/>
+            <path d="M57 1.2 L-200 1.2"/><path d="M57 3.6 L-200 3.6"/><path d="M57 6 L-200 6"/>
+          </g>
+        </g>
+
+        <!-- Braço que faz os acordes (a pata se move pelo braço do violão) -->
+        <path id="braco-acorde" d="M140 265 Q 110 270 100 290" fill="none"
+              stroke="var(--pelo)" stroke-width="26" stroke-linecap="round"/>
+        <circle id="pata-acorde" cx="100" cy="290" r="16" fill="var(--pelo)"/>
+
+        <!-- Braço que palheta -->
+        <g id="braco-ritmo">
+          <path d="M268 262 Q 275 320 238 348" fill="none" stroke="var(--pelo)" stroke-width="26" stroke-linecap="round"/>
+          <circle cx="238" cy="348" r="17" fill="var(--pelo)"/>
+          <path d="M228 356 l-10 10 l14 -2 z" fill="#e63946"/>
+        </g>
+      </svg>
+    </div>
+
+    <section class="controles" aria-label="Controles">
+      <div class="acordes" id="acordes" role="group" aria-label="Acordes"></div>
+
+      <div class="linha">
+        <button id="btn-tocar" class="principal" type="button">Tocar</button>
+        <button id="btn-auto" type="button" aria-pressed="false">Show automático</button>
+        <button id="btn-rock" type="button" aria-pressed="false">Modo rock</button>
+      </div>
+
+      <label class="tempo">
+        Andamento <output id="bpm-valor">100</output> BPM
+        <input id="bpm" type="range" min="60" max="160" value="100">
+      </label>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
